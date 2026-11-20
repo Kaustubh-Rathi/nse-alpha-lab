@@ -540,7 +540,7 @@ def build_architecture() -> Image.Image:
     nodes = [
         (
             "Checksummed data pack",
-            "SHA-256 manifest · verified before any run",
+            "SHA-256 manifest · verify before use",
             "INPUT",
             ACCENT,
             "manifest.json",
@@ -947,7 +947,7 @@ def build_sweep_distribution() -> Image.Image:
         d,
         "SENSITIVITY SWEEP",
         "The sweep is a map, not a menu",
-        "968 configurations · five universes · one identical charge stack",
+        "968 configurations · five universes · two cost models",
         x=80,
         y=54,
         title_size=42,
@@ -1095,7 +1095,7 @@ def build_sweep_distribution() -> Image.Image:
 
     # Footnote strip.
     rule(d, 80, 872, 1620, 872, BORDER)
-    text(d, 80, 894, "Only 26 / 968 clear t = 1.96; ~48 expected by chance at 5%.", F("semibold", 16), TEXT)
+    text(d, 80, 894, "Only 26 / 968 clear a positive t = 1.96; ~24 expected by chance.", F("semibold", 16), TEXT)
     text(d, 1620, 896, "Newey-West (5) alpha t-statistics · no multiple-testing correction", F("regular", 12.5), MUTED, anchor="ra")
     footer(d, W, H, margin=80, font_size=12)
     return finish(image, W, H)

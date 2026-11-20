@@ -3,7 +3,7 @@
 This walks from a clean checkout to a strategy specification you can run, inspect and test.
 It assumes Python and `uv`, not prior knowledge of this repository.
 
-Watch the [4-minute walkthrough](assets/demo.mp4). The [alpha anatomy diagram](assets/images/alpha-anatomy.png)
+Watch the [full walkthrough](assets/demo.mp4). The [alpha anatomy diagram](assets/images/alpha-anatomy.png)
 shows how a specification maps onto the engine.
 
 > **Research preview, not investment advice.** Read [DISCLAIMER.md](../DISCLAIMER.md) before relying on any output.

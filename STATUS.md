@@ -178,9 +178,10 @@ sample and one regime has not been shown to work.
 correction is applied anywhere in this repository.**
 
 - The highest Sharpe (1.3362) is the maximum of 968 trials, not an expectation.
-- Only **26 of 968** configurations have t > 1.96. Roughly **48** would be expected by
-  chance at the 5% level if nothing had any edge. The count is *lower* than chance would
-  produce, which is the opposite of the pattern a real, widespread edge would leave.
+- Only **26 of 968** configurations have a positive Newey–West t above 1.96, about the
+  **24** expected by chance in the upper 2.5% tail if nothing had any edge. Another **43**
+  are significantly negative, so the negative tail is the excess; the positive tail is
+  roughly at chance, not below it.
 - The median excess CAGR is **−9.73%**: the typical configuration loses to the NIFTY 50.
 - Only **220 of 968** configurations beat NIFTY 50 on CAGR (22.7%), and **none of the 150
   NIFTY 50 configurations** beat the index they are drawn from.

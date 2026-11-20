@@ -3,9 +3,10 @@
 
 Inputs
 ------
-    docs/assets/video/narration.json     scene narration + captions
-    docs/assets/video/audio/<id>.wav     one WAV per scene (build_audio.ps1)
+    docs/assets/video/narration.json     scene narration + caption text
+    docs/assets/video/audio/<id>.wav     one WAV per scene (tts.py)
     docs/assets/video/durations.json     measured WAV durations
+    docs/assets/video/captions.json      word-timed caption cues per scene
     docs/assets/images/*.png             optional design assets
     docs/assets/ui/*.png                 optional real Streamlit screenshots
 
@@ -16,9 +17,11 @@ Outputs
     docs/assets/demo-poster.png          poster frame
     docs/assets/demo.srt                 captions
 
-Run with the media venv (Pillow, qrcode) and ffmpeg on PATH:
+Run `tts.py` first to synthesise the audio and caption cues, then render with
+the media venv (Pillow, qrcode) and ffmpeg on PATH:
 
-    C:\\path\\to\\media-venv\\Scripts\\python.exe docs/assets/video/render_video.py
+    python docs/assets/video/tts.py
+    python docs/assets/video/render_video.py
 """
 from __future__ import annotations
 
@@ -44,6 +47,7 @@ OUT_MP4 = ASSETS / "demo.mp4"
 OUT_GIF = ASSETS / "demo.gif"
 OUT_POSTER = ASSETS / "demo-poster.png"
 OUT_SRT = ASSETS / "demo.srt"
+CAPTIONS = VIDEO_DIR / "captions.json"
 
 # Palette
 BG_TOP = (7, 14, 26)
@@ -194,14 +198,14 @@ def chrome(img, draw, caption, index, total, progress):
     # top-right slug
     text(draw, (W - 80, 50), "NSE ALPHA LAB  /  2026", font("semibold", 20),
          FAINT, anchor="ra")
-    # bottom rule + progress
-    draw.line((80, 1006, W - 80, 1006), fill=(28, 42, 64), width=2)
-    draw.line((80, 1006, 80 + int((W - 160) * progress), 1006), fill=SAFFRON, width=3)
-    text(draw, (80, 1022), "github.com/Kaustubh-Rathi/nse-alpha-lab",
-         font("regular", 18), FAINT)
-    text(draw, (W - 80, 1022), "research preview  ·  not investment advice",
-         font("regular", 18), FAINT, anchor="ra")
-    text(draw, (W / 2, 1022), f"{index + 1} / {total}", font("mono", 17),
+    # Bottom rule and progress sit below the caption band.
+    draw.line((80, 1048, W - 80, 1048), fill=(28, 42, 64), width=2)
+    draw.line((80, 1048, 80 + int((W - 160) * progress), 1048), fill=SAFFRON, width=3)
+    text(draw, (80, 1058), "github.com/Kaustubh-Rathi/nse-alpha-lab",
+         font("regular", 15), FAINT)
+    text(draw, (W - 80, 1058), "research preview  ·  not investment advice",
+         font("regular", 15), FAINT, anchor="ra")
+    text(draw, (W / 2, 1058), f"{index + 1} / {total}", font("mono", 14),
          FAINT, anchor="ma")
 
 
@@ -222,6 +226,53 @@ def header(draw, eyebrow, title, sub=None):
     text(draw, (80, 140), title, font("semibold", 54), TEXT)
     if sub:
         text(draw, (80, 210), sub, font("regular", 28), MUTED)
+
+
+def draw_captions(img: Image.Image, t: float, cues: list[dict]) -> Image.Image:
+    """Draw the active caption in a readable lower-third box."""
+    cue = next((item for item in cues if item["start"] <= t <= item["end"]), None)
+    if cue is None:
+        return img
+
+    lines = [line for line in str(cue["text"]).split("\n") if line.strip()]
+    if not lines:
+        return img
+
+    fnt = font("semibold", 31)
+    line_h = 40
+    probe = ImageDraw.Draw(img)
+    max_width = max(probe.textlength(line, font=fnt) for line in lines)
+    box_w = int(max_width) + 58
+    box_h = len(lines) * line_h + 30
+    box_w = min(box_w, W - 160)
+    x0 = (W - box_w) // 2
+    y0 = 1026 - box_h
+
+    overlay = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    od = ImageDraw.Draw(overlay)
+    od.rounded_rectangle(
+        (x0, y0, x0 + box_w, y0 + box_h),
+        14,
+        fill=(4, 9, 16, 224),
+        outline=(52, 70, 96, 255),
+        width=1,
+    )
+    od.rounded_rectangle(
+        (x0 + 1, y0 + 12, x0 + 6, y0 + box_h - 12), 2, fill=SAFFRON
+    )
+    y = y0 + 15
+    for line in lines:
+        od.text(
+            (W / 2, y),
+            line,
+            font=fnt,
+            fill=TEXT,
+            anchor="ma",
+            stroke_width=1,
+            stroke_fill=(0, 0, 0),
+        )
+        y += line_h
+    return Image.alpha_composite(img.convert("RGBA"), overlay).convert("RGB")
 
 
 # ---------------------------------------------------------------------------
@@ -374,14 +425,14 @@ def scene_title(t, dur):
          font("semibold", 20), MUTED)
 
     chrome(img, d, "A short tour", 0, 9, min(1, t / dur))
-    return fade(img, t, dur)
+    return img
 
 
 def scene_why(t, dur):
     img = BACKGROUND.copy()
     d = ImageDraw.Draw(img)
     header(d, "Why this exists", "Optimistic by accident",
-           "The lab makes the hidden choices explicit, in code.")
+           "The lab makes the hidden choices explicit: no look-ahead, no invented prices, no invented corporate actions.")
 
     panels = [
         (80, 300, 860, 470, "Typical backtest", RED, (38, 22, 30), [
@@ -390,9 +441,9 @@ def scene_why(t, dur):
             ("✕", "Charges mentioned in a footnote"),
         ]),
         (980, 300, 860, 470, "NSE Alpha Lab", TEAL, (16, 38, 40), [
-            ("✓", "Point-in-time index membership"),
+            ("✓", "Point-in-time membership (research harness)"),
             ("✓", "Signal on close T, fill at open T+1"),
-            ("✓", "Six charges on every buy and sell"),
+            ("✓", "Six charges, stamp duty on buys only"),
         ]),
     ]
     for pi, (x, y, w, h, title, accent, fill, rows) in enumerate(panels):
@@ -417,7 +468,7 @@ def scene_why(t, dur):
             text(d, (x + 88, ry + 2), value, font("regular", 29), TEXT)
 
     # Causal timeline strip
-    ty = 840
+    ty = 780
     appear = smooth((t - 1.6) / 0.6)
     if appear > 0:
         d.line((150, ty + 54, W - 150, ty + 54), fill=(32, 48, 72), width=3)
@@ -434,20 +485,21 @@ def scene_why(t, dur):
         if pos > start:
             d.line((start, ty + 54, pos, ty + 54), fill=SAFFRON, width=4)
             d.polygon([(pos, ty + 44), (pos + 16, ty + 54), (pos, ty + 64)], fill=SAFFRON)
-        text(d, (W / 2, 970),
-             "No look-ahead. No invented prices. No invented corporate actions.",
-             font("semibold", 25), TEXT, anchor="ma")
-
     chrome(img, d, "The defaults that flatter a backtest", 1, 9, (1 + t / dur) / 9)
-    return fade(img, t, dur)
+    return img
 
 
 def scene_pipeline(t, dur):
     img = BACKGROUND.copy()
     d = ImageDraw.Draw(img)
-    header(d, "How it works", "One spec in, one auditable result out")
+    header(
+        d,
+        "How it works",
+        "One spec in, one auditable result out",
+        "The engine performs no I/O and reads no clock. Same inputs produce the same CSV, every run.",
+    )
 
-    box = (60, 270, 1800, 660)
+    box = (60, 260, 1800, 600)
     rr(d, (box[0] - 12, box[1] - 12, box[0] + box[2] + 12, box[1] + box[3] + 12),
        24, fill=(9, 16, 28), outline=BORDER, width=2)
     zoom = 1.0 + 0.018 * smooth(t / dur)
@@ -459,7 +511,7 @@ def scene_pipeline(t, dur):
             ("03", "ADJUSTED BARS", "splits + bonuses"),
             ("04", "MOMENTUM RANK", "close T / close T-63"),
             ("05", "NEXT-OPEN FILL", "open of T+1 only"),
-            ("06", "SIX CHARGES", "buy and sell, itemised"),
+            ("06", "SIX CHARGES", "stamp duty on buys only"),
             ("07", "METRICS + CHECKS", "alpha, t-stats, 348 checks"),
             ("08", "PUBLISHED", "968 rows + Streamlit UI"),
         ]
@@ -479,17 +531,19 @@ def scene_pipeline(t, dur):
                 d.polygon([(x + 430, y + 102), (x + 444, y + 110), (x + 430, y + 118)],
                           fill=SAFFRON)
 
-    text(d, (80, 955),
-         "The engine is pure: it performs no I/O and reads no clock. Two runs over identical inputs are byte-identical.",
-         font("regular", 24), MUTED)
     chrome(img, d, "One spec in, one auditable result out", 2, 9, (2 + t / dur) / 9)
-    return fade(img, t, dur)
+    return img
 
 
 def scene_setup(t, dur):
     img = BACKGROUND.copy()
     d = ImageDraw.Draw(img)
-    header(d, "Setup", "Code and tests first. Data second.")
+    header(
+        d,
+        "Setup",
+        "Code and tests first. Data second.",
+        "No data pack is needed to install or test. Backtests never touch the network.",
+    )
 
     lines = [
         ("cmd", "git clone https://github.com/Kaustubh-Rathi/nse-alpha-lab.git"),
@@ -506,10 +560,10 @@ def scene_setup(t, dur):
         ("cmd", "uv run streamlit run apps/lab/app.py"),
         ("out", "Local URL: http://localhost:8501"),
     ]
-    terminal_frame(img, (70, 290, 1100, 620), lines, t, lead=0.15)
+    terminal_frame(img, (70, 280, 1100, 590), lines, t, lead=0.15)
 
     # Right: real UI screenshot if captured, else an honest page map.
-    x, y, w, h = 1215, 290, 635, 620
+    x, y, w, h = 1215, 280, 635, 590
     if not paste_cover(img, UI_DIR / "home.png", (x, y, w, h), radius=16):
         rr(d, (x, y, x + w, y + h), 18, fill=PANEL_2, outline=BORDER, width=2)
         d.rounded_rectangle((x, y, x + w, y + 46), radius=18, fill=(15, 25, 42))
@@ -529,12 +583,8 @@ def scene_setup(t, dur):
         d.rounded_rectangle((x - 6, y - 6, x + w + 6, y + h + 6), radius=20,
                             outline=BORDER, width=2)
 
-    text(d, (80, 950), "No data pack is needed to install, import the package, or run the test suite.",
-         font("regular", 24), MUTED)
-    text(d, (80, 986), "The data pack is a separate, checksummed download. Backtests never touch the network.",
-         font("regular", 24), FAINT)
-    chrome(img, d, "Setup: two commands to a green test run", 3, 9, (3 + t / dur) / 9)
-    return fade(img, t, dur)
+    chrome(img, d, "Setup: code and tests first", 3, 9, (3 + t / dur) / 9)
+    return img
 
 
 SPEC_LINES = [
@@ -590,10 +640,15 @@ def draw_json_line(d, x, y, line, fnt):
 def scene_spec(t, dur):
     img = BACKGROUND.copy()
     d = ImageDraw.Draw(img)
-    header(d, "Write your first alpha", "A JSON specification, not a class")
+    header(
+        d,
+        "Write your first alpha",
+        "A JSON specification, not a class",
+        "Unknown fields are errors, never ignored. The CLI runs the engine; the research harness applies membership.",
+    )
 
     # code panel
-    x, y, w, h = 70, 280, 1010, 620
+    x, y, w, h = 70, 270, 1010, 600
     rr(d, (x, y, x + w, y + h), 18, fill=(8, 14, 25), outline=BORDER, width=2)
     d.rounded_rectangle((x, y, x + w, y + 46), radius=18, fill=(15, 25, 42))
     d.rectangle((x, y + 28, x + w, y + 46), fill=(15, 25, 42))
@@ -618,25 +673,24 @@ def scene_spec(t, dur):
         appear = smooth((t - 0.9 - i * 0.20) / 0.45)
         if appear <= 0:
             continue
-        yy = 300 + i * 88
+        yy = 290 + i * 84
         d.ellipse((cx, yy + 6, cx + 12, yy + 18), fill=SAFFRON)
         text(d, (cx + 26, yy), key, font("mono_bold", 24), TEXT)
         text(d, (cx + 26, yy + 32), explain, font("regular", 21), MUTED)
 
-    text(d, (70, 932),
-         "Unknown fields are an error, never ignored. A typo can never silently change the result.",
-         font("semibold", 24), SAFFRON)
-    text(d, (70, 968),
-         "CLI scope: engine over pack bars. The research harness applies point-in-time membership.",
-         font("regular", 20), MUTED)
     chrome(img, d, "An alpha is a specification, not a class", 4, 9, (4 + t / dur) / 9)
-    return fade(img, t, dur)
+    return img
 
 
 def scene_run(t, dur):
     img = BACKGROUND.copy()
     d = ImageDraw.Draw(img)
-    header(d, "Run it", "One command. Every trade is auditable.")
+    header(
+        d,
+        "Run it",
+        "One command. Every trade is auditable.",
+        "The real pack is private and not in git. This run only proves the mechanics.",
+    )
 
     lines = [
         ("cmd", "$env:PYTHONPATH='src'"),
@@ -655,14 +709,15 @@ def scene_run(t, dur):
         ("out", "  trades            533"),
         ("out", "  exits             0"),
         ("out", "  skips             16"),
+        ("out", "  final cash        27.5103245146"),
         ("out", "  final equity      8886353.0450245146"),
         ("warn", "  total return      -11.1365%"),
         ("out", "  written to        examples/.../result.json"),
     ]
-    terminal_frame(img, (60, 285, 1160, 650), lines, t, lead=0.1)
+    terminal_frame(img, (60, 270, 1160, 600), lines, t, lead=0.1)
 
     # right: synthetic warning + result JSON
-    x, y, w, h = 1260, 285, 600, 650
+    x, y, w, h = 1260, 270, 600, 600
     rr(d, (x, y, x + w, y + h), 18, fill=(28, 20, 18), outline=(120, 70, 20), width=2)
     text(d, (x + 26, y + 24), "SYNTHETIC DEMO", font("semibold", 24), AMBER)
     text(d, (x + 26, y + 60), "NOT A RESULT · DO NOT CITE", font("semibold", 19), RED)
@@ -693,22 +748,24 @@ def scene_run(t, dur):
     text(d, (x + 26, y + h - 58), "Synthetic bars generated by a seeded RNG.",
          font("regular", 18), MUTED)
 
-    text(d, (60, 960),
-         "The real pack is checksummed and not in git. This run only proves the mechanics.",
-         font("regular", 23), MUTED)
     chrome(img, d, "Run one spec, audit every trade", 5, 9, (5 + t / dur) / 9)
-    return fade(img, t, dur)
+    return img
 
 
 def scene_test(t, dur):
     img = BACKGROUND.copy()
     d = ImageDraw.Draw(img)
-    header(d, "Test it", "Causality, accounting, and published numbers")
+    header(
+        d,
+        "Test it",
+        "Causality, accounting, and published numbers",
+        "A failed check is never rounded away.",
+    )
 
     cards = [
         ("LEVEL 1", "Targeted tests", "84 passed", "1 xfailed", "engine + causality", GREEN),
-        ("LEVEL 2", "Full suite", "1,952 passed", "68 skipped", "offline, no data pack", TEAL),
-        ("LEVEL 3", "Artifact validation", "348 / 348", "0 failed", "independent recomputation", SAFFRON),
+        ("LEVEL 2", "Full suite", "1,952 passed", "68 skipped · 1 xfailed", "offline, no data pack", TEAL),
+        ("LEVEL 3", "Artifact validation", "348 / 348", "0 failed", "348 fail-closed checks · 36 independent", SAFFRON),
     ]
     for i, (level, title, big, small, sub, color) in enumerate(cards):
         appear = smooth((t - 0.3 - i * 0.22) / 0.5)
@@ -724,7 +781,7 @@ def scene_test(t, dur):
         text(d, (x + 26, y + 196), sub, font("regular", 20), MUTED)
 
     # real pytest line
-    x, y, w, h = 80, 630, 1050, 250
+    x, y, w, h = 80, 620, 1050, 250
     rr(d, (x, y, x + w, y + h), 16, fill=(8, 14, 25), outline=BORDER, width=2)
     text(d, (x + 24, y + 18), "PowerShell  ·  $ uv run pytest -q", font("mono", 18), MUTED)
     py_lines = [
@@ -738,7 +795,7 @@ def scene_test(t, dur):
         text(d, (x + 92, y + 62 + i * 40), line, font("mono", 22), color)
 
     # real assertions
-    x2, y2, w2, h2 = 1180, 630, 660, 250
+    x2, y2, w2, h2 = 1180, 620, 660, 250
     rr(d, (x2, y2, x2 + w2, y2 + h2), 16, fill=PANEL_2, outline=BORDER, width=2)
     text(d, (x2 + 24, y2 + 18), "assertions that matter", font("semibold", 19), MUTED)
     asserts = [
@@ -750,22 +807,24 @@ def scene_test(t, dur):
         color = GREEN if a.startswith("assert") else SAFFRON
         text(d, (x2 + 24, y2 + 62 + i * 52), a, font("mono", 17), color)
 
-    text(d, (80, 960),
-         "The published record (research/validation.json) is 348 checks, 0 failures. A failed check is never rounded away.",
-         font("regular", 22), MUTED)
     chrome(img, d, "Three levels of testing", 6, 9, (6 + t / dur) / 9)
-    return fade(img, t, dur)
+    return img
 
 
 def scene_results(t, dur):
     img = BACKGROUND.copy()
     d = ImageDraw.Draw(img)
-    header(d, "Read the result honestly", "The headline is a null result")
+    header(
+        d,
+        "Read the result honestly",
+        "The headline is a null result",
+        "No multiple-testing correction is applied anywhere in this repository.",
+    )
 
     # Phase A: scorecard
     if t < 15.0:
         a = smooth(t / 0.6) * smooth((15.0 - t) / 0.6)
-        box = (120, 290, 1680, 650)
+        box = (120, 280, 1680, 580)
         if paste_contain(img, IMG_DIR / "headline-scorecard.png", box, radius=18):
             pass
         else:
@@ -784,7 +843,7 @@ def scene_results(t, dur):
 
     # Phase B: sweep chart
     if t >= 14.2:
-        box = (80, 280, 1760, 690)
+        box = (80, 270, 1760, 590)
         if paste_contain(img, IMG_DIR / "sweep-distribution.png", box, radius=18):
             pass
         else:
@@ -798,16 +857,13 @@ def scene_results(t, dur):
     if t >= 18.0:
         for i, (label, color) in enumerate((
                 ("median: −9.73 pp/yr vs NIFTY 50", AMBER),
-                ("26 / 968 clear t = 1.96", RED),
-                ("~48 expected by chance", MUTED),
+                ("26 / 968 positive t > 1.96", RED),
+                ("~24 expected by chance", MUTED),
                 ("max Sharpe 1.3362 · 4.66 yrs", SAFFRON))):
-            chip(d, 90 + i * 440, 920, label, fill=(18, 29, 48), outline=BORDER, color=color, size=19)
+            chip(d, 90 + i * 440, 868, label, fill=(18, 29, 48), outline=BORDER, color=color, size=19)
 
-    text(d, (80, 970),
-         "No multiple-testing correction is applied anywhere in this repository.",
-         font("regular", 22), FAINT)
     chrome(img, d, "The finding is a null result", 7, 9, (7 + min(t, dur) / dur) / 9)
-    return fade(img, t, dur)
+    return img
 
 
 def qr_image(url: str, size: int) -> Image.Image | None:
@@ -853,10 +909,10 @@ def scene_outro(t, dur):
         img.paste(qr, (qx, qy))
         text(d, (qx + 130, qy + 300), "Scan to open", font("regular", 19), MUTED, anchor="ma")
 
-    text(d, (110, 930), "Apache-2.0  ·  research preview  ·  not investment advice",
+    text(d, (110, 870), "Apache-2.0  ·  research preview  ·  not investment advice",
          font("regular", 22), FAINT)
     chrome(img, d, "Research preview. Not investment advice.", 8, 9, (8 + t / dur) / 9)
-    return fade(img, t, dur)
+    return img
 
 
 SCENES = {
@@ -876,15 +932,17 @@ SCENES = {
 # Encoding
 # ---------------------------------------------------------------------------
 
-def render_scene(scene_id, audio_path, duration, out_path):
+def render_scene(scene_id, audio_path, lead, duration, out_path, cues):
     fn = SCENES[scene_id]
     frames = int(round(duration * FPS))
+    lead_ms = int(round(lead * 1000))
     cmd = [
         "ffmpeg", "-y", "-hide_banner", "-loglevel", "error",
         "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS),
         "-i", "-",
         "-i", str(audio_path),
-        "-filter_complex", "[1:a]adelay=450|450,apad[a]",
+        "-filter_complex",
+        f"[1:a]loudnorm=I=-16:TP=-1.5:LRA=11,adelay={lead_ms}|{lead_ms},apad[a]",
         "-map", "0:v", "-map", "[a]",
         "-t", f"{duration:.3f}",
         "-c:v", "libx264", "-preset", "medium", "-crf", "20",
@@ -897,6 +955,8 @@ def render_scene(scene_id, audio_path, duration, out_path):
     for i in range(frames):
         t = i / FPS
         frame = fn(t, duration)
+        frame = draw_captions(frame, t, cues)
+        frame = fade(frame, t, duration)
         proc.stdin.write(frame.tobytes())
         if i % 300 == 0:
             print(f"  {scene_id}: {i}/{frames}", flush=True)
@@ -912,6 +972,7 @@ def main() -> int:
         return 2
     spec = json.loads((VIDEO_DIR / "narration.json").read_text(encoding="utf-8"))
     durations = json.loads((VIDEO_DIR / "durations.json").read_text(encoding="utf-8-sig"))
+    captions = json.loads(CAPTIONS.read_text(encoding="utf-8"))
 
     scenes = []
     for scene in spec["scenes"]:
@@ -920,23 +981,26 @@ def main() -> int:
         if not audio.is_file():
             print(f"missing audio: {audio}", file=sys.stderr)
             return 2
-        lead = 0.8 if sid == "00_title" else 0.45
-        tail = 0.9 if sid == "00_title" else 0.55
+        if sid not in captions:
+            print(f"missing captions for {sid}: run tts.py", file=sys.stderr)
+            return 2
+        lead = float(scene.get("lead", 0.35))
+        tail = float(scene.get("tail", 0.55))
         dur = float(durations[sid]) + lead + tail
-        scenes.append((sid, audio, dur, scene))
+        scenes.append((sid, audio, lead, dur, scene, captions[sid]))
 
-    total = sum(d for _, _, d, _ in scenes)
+    total = sum(item[3] for item in scenes)
     print(f"total duration: {total:.1f}s ({total / 60:.2f} min)")
 
     tmp = Path(tempfile.mkdtemp(prefix="nse-video-"))
     parts = []
     starts = []
     clock = 0.0
-    for sid, audio, dur, scene in scenes:
-        starts.append((clock, sid, scene))
+    for sid, audio, lead, dur, scene, cues in scenes:
+        starts.append((clock, sid, scene, cues, dur))
         out = tmp / f"{sid}.mp4"
         print(f"rendering {sid} ({dur:.1f}s)")
-        render_scene(sid, audio, dur, out)
+        render_scene(sid, audio, lead, dur, out, cues)
         parts.append(out)
         clock += dur
 
@@ -950,6 +1014,27 @@ def main() -> int:
         check=True,
     )
 
+    # Sidecar captions, shifted into the final timeline.
+    def ts(value: float) -> str:
+        h = int(value // 3600)
+        m = int((value % 3600) // 60)
+        s = int(value % 60)
+        ms = int(round((value - int(value)) * 1000))
+        return f"{h:02d}:{m:02d}:{s:02d},{ms:03d}"
+
+    lines = []
+    number = 0
+    for start, sid, scene, cues, dur in starts:
+        for cue in cues:
+            number += 1
+            lines.append(
+                f"{number}\n"
+                f"{ts(start + float(cue['start']))} --> "
+                f"{ts(start + float(cue['end']))}\n"
+                f"{cue['text']}\n"
+            )
+    OUT_SRT.write_text("\n".join(lines), encoding="utf-8")
+
     # Poster
     subprocess.run(
         ["ffmpeg", "-y", "-hide_banner", "-loglevel", "error",
@@ -959,7 +1044,10 @@ def main() -> int:
 
     # README GIF preview: five short highlights, not just the title card.
     print("building GIF preview")
-    segments = ((1.5, 2.4), (43.5, 2.4), (94.0, 2.4), (155.5, 2.4), (184.5, 2.4))
+    segments = []
+    for index in (0, 1, 4, 5, 7):
+        start, sid, scene, cues, dur = starts[index]
+        segments.append((start + min(1.2, max(0.4, dur * 0.12)), 2.3))
     clips = []
     for i, (start, length) in enumerate(segments):
         clip = tmp / f"gif_{i}.mp4"
@@ -989,24 +1077,6 @@ def main() -> int:
          "-loop", "0", str(OUT_GIF)],
         check=True,
     )
-
-    # Captions
-    lines = []
-    for i, (start, sid, scene) in enumerate(starts, 1):
-        end = start + scenes[i - 1][2]
-        def ts(value):
-            h = int(value // 3600)
-            m = int((value % 3600) // 60)
-            s = int(value % 60)
-            ms = int(round((value - int(value)) * 1000))
-            return f"{h:02d}:{m:02d}:{s:02d},{ms:03d}"
-        subtitle = scene["text"]
-        for src, dst in (("N S E", "NSE"), ("U V", "uv"), ("S T T", "STT"),
-                         ("G S T", "GST"), ("J S O N", "JSON"), ("C S V", "CSV"),
-                         ("T plus one", "T+1")):
-            subtitle = subtitle.replace(src, dst)
-        lines.append(f"{i}\n{ts(start + 0.3)} --> {ts(end - 0.2)}\n{subtitle}\n")
-    OUT_SRT.write_text("\n".join(lines), encoding="utf-8")
 
     size_mb = OUT_MP4.stat().st_size / (1024 * 1024)
     print(f"wrote {OUT_MP4} ({size_mb:.1f} MB)")

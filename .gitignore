@@ -114,6 +114,10 @@ examples/synthetic_demo/result.json
 # Export bookkeeping (local only)
 .export-manifest.json
 
-# Video narration WAVs are build intermediates; the published MP4 is the
-# artifact. Rebuild them with docs/assets/video/build_audio.ps1.
+# Video narration WAVs, per-scene SRTs and the web encode are build/upload
+# intermediates; the published MP4, GIF, poster, SRT and caption JSON are the
+# artifacts. Rebuild them with docs/assets/video/tts.py and
+# docs/assets/video/render_video.py.
 docs/assets/video/audio/
+docs/assets/video/subs/
+docs/assets/video/demo-web.mp4

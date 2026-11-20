@@ -1,0 +1,510 @@
+{
+  "00_title": [
+    {
+      "start": 0.9,
+      "end": 2.719,
+      "text": "This is NSE Alpha Lab,"
+    },
+    {
+      "start": 2.848,
+      "end": 8.014,
+      "text": "an open-source research workspace for testing\nmomentum rotation strategies on Indian equities."
+    },
+    {
+      "start": 8.35,
+      "end": 11.846,
+      "text": "In the next few minutes, I'll show\nyou what it does, how to set it up,"
+    },
+    {
+      "start": 11.876,
+      "end": 14.117,
+      "text": "and how to write and test your first alpha."
+    }
+  ],
+  "01_why": [
+    {
+      "start": 0.35,
+      "end": 3.195,
+      "text": "Most backtests are optimistic by accident."
+    },
+    {
+      "start": 3.529,
+      "end": 7.909,
+      "text": "They use today's index members, fill\nat the close that produced the signal,"
+    },
+    {
+      "start": 7.939,
+      "end": 9.921,
+      "text": "and treat charges as a footnote."
+    },
+    {
+      "start": 10.283,
+      "end": 12.842,
+      "text": "This lab makes those choices explicit."
+    },
+    {
+      "start": 13.203,
+      "end": 14.571,
+      "text": "In the research harness,"
+    },
+    {
+      "start": 14.606,
+      "end": 18.84,
+      "text": "membership is applied as of each\nrebalance date from official snapshots."
+    },
+    {
+      "start": 18.957,
+      "end": 22.559,
+      "text": "After 2022 those are irregular official anchors,"
+    },
+    {
+      "start": 22.589,
+      "end": 24.736,
+      "text": "with coverage between them marked unknown."
+    },
+    {
+      "start": 25.081,
+      "end": 29.268,
+      "text": "The command line records the universe\nlabel, but does not re-filter."
+    },
+    {
+      "start": 29.601,
+      "end": 34.212,
+      "text": "A signal formed on the close of day\nT can only fill at the open of T+1."
+    },
+    {
+      "start": 34.573,
+      "end": 38.276,
+      "text": "Every trade pays brokerage, STT, exchange fees,"
+    },
+    {
+      "start": 38.358,
+      "end": 40.776,
+      "text": "GST on brokerage, and slippage."
+    },
+    {
+      "start": 40.859,
+      "end": 43.266,
+      "text": "Stamp duty is charged on buys only,"
+    },
+    {
+      "start": 43.418,
+      "end": 47.865,
+      "text": "and the rates are 2026-style\nconstants, not the historical schedule."
+    }
+  ],
+  "02_pipeline": [
+    {
+      "start": 0.35,
+      "end": 2.417,
+      "text": "The repository is a pipeline."
+    },
+    {
+      "start": 2.727,
+      "end": 6.926,
+      "text": "A private, checksummed data pack\nsupplies split-and-bonus-adjusted bars."
+    },
+    {
+      "start": 7.043,
+      "end": 10.405,
+      "text": "The research harness joins\npoint-in-time membership to them."
+    },
+    {
+      "start": 10.763,
+      "end": 15.81,
+      "text": "The full point-in-time NIFTY 500 membership\nchain behind the headline is not public."
+    },
+    {
+      "start": 16.161,
+      "end": 19.947,
+      "text": "The canonical engine ranks\ntrailing returns, holds the top N,"
+    },
+    {
+      "start": 20.088,
+      "end": 22.14,
+      "text": "and executes at the next open."
+    },
+    {
+      "start": 22.493,
+      "end": 25.382,
+      "text": "The research report adds beta, Jensen's alpha,"
+    },
+    {
+      "start": 25.735,
+      "end": 30.158,
+      "text": "Newey-West t-statistics, and a\nblock-bootstrap p-value for the headline."
+    },
+    {
+      "start": 30.511,
+      "end": 35.233,
+      "text": "The 968-row table carries beta,\nalpha, and both t-statistics,"
+    },
+    {
+      "start": 35.263,
+      "end": 37.198,
+      "text": "but not the bootstrap p-value."
+    },
+    {
+      "start": 37.543,
+      "end": 40.555,
+      "text": "And all 968 sweep rows are published,"
+    },
+    {
+      "start": 40.585,
+      "end": 42.472,
+      "text": "including the rows that say no."
+    }
+  ],
+  "03_setup": [
+    {
+      "start": 0.353,
+      "end": 3.407,
+      "text": "Setup is quick if you only\nwant the code and tests."
+    },
+    {
+      "start": 3.773,
+      "end": 8.16,
+      "text": "Clone the repository, sync with\nuv, and run the test suite."
+    },
+    {
+      "start": 8.501,
+      "end": 11.237,
+      "text": "The suite is offline and needs no data pack."
+    },
+    {
+      "start": 11.593,
+      "end": 15.39,
+      "text": "For the research UI, install the\nlab extra and launch Streamlit."
+    },
+    {
+      "start": 15.475,
+      "end": 19.745,
+      "text": "Its pack detector does not yet\nrecognise the 1.0.0 layout,"
+    },
+    {
+      "start": 19.756,
+      "end": 22.115,
+      "text": "so use the CLI for a real pack."
+    },
+    {
+      "start": 22.473,
+      "end": 27.049,
+      "text": "To run a real backtest, request\naccess to the private pack, verify it,"
+    },
+    {
+      "start": 27.39,
+      "end": 31.471,
+      "text": "then point the command line\nat it with NSE_DATA_DIR,"
+    },
+    {
+      "start": 31.812,
+      "end": 34.301,
+      "text": "or by placing it in the local data directory."
+    },
+    {
+      "start": 34.653,
+      "end": 38.297,
+      "text": "Verification refuses to\ncontinue on a hash mismatch."
+    }
+  ],
+  "04_spec": [
+    {
+      "start": 0.35,
+      "end": 3.833,
+      "text": "An alpha here is a specification, not a class."
+    },
+    {
+      "start": 4.183,
+      "end": 8.157,
+      "text": "You label the universe, declare\nthe holding count, the lookback,"
+    },
+    {
+      "start": 8.357,
+      "end": 10.952,
+      "text": "the cadence, and any exit overlay."
+    },
+    {
+      "start": 11.291,
+      "end": 16.044,
+      "text": "The spec is explicit; charge rates\nand starting cash are fixed constants."
+    },
+    {
+      "start": 16.37,
+      "end": 20.18,
+      "text": "An unknown field is an error,\nnever silently ignored."
+    },
+    {
+      "start": 20.543,
+      "end": 23.803,
+      "text": "This is the pre-specified primary: NIFTY 500,"
+    },
+    {
+      "start": 23.833,
+      "end": 28.095,
+      "text": "the top 10 by 63-session momentum,\nmonthly cadence, next-open fills,"
+    },
+    {
+      "start": 28.125,
+      "end": 29.706,
+      "text": "and the full charge stack."
+    },
+    {
+      "start": 30.051,
+      "end": 33.158,
+      "text": "The published run rebalances\non membership evidence dates,"
+    },
+    {
+      "start": 33.188,
+      "end": 37.315,
+      "text": "so after 2022 it is event-anchored\nrather than strictly monthly."
+    }
+  ],
+  "05_run": [
+    {
+      "start": 0.353,
+      "end": 2.853,
+      "text": "Run one spec with the backtest command."
+    },
+    {
+      "start": 3.181,
+      "end": 6.672,
+      "text": "The command line runs the engine\nover the bars in the pack."
+    },
+    {
+      "start": 7.011,
+      "end": 11.292,
+      "text": "The published study applies point-in-time\nmembership in its research harness."
+    },
+    {
+      "start": 11.631,
+      "end": 15.245,
+      "text": "You get sessions, rebalances,\ntrades, skips, final cash,"
+    },
+    {
+      "start": 15.275,
+      "end": 16.502,
+      "text": "and final equity."
+    },
+    {
+      "start": 16.863,
+      "end": 21.29,
+      "text": "Add the out flag, and the full equity\ncurve, every trade, every exit,"
+    },
+    {
+      "start": 21.32,
+      "end": 23.667,
+      "text": "and every skip are written as JSON."
+    },
+    {
+      "start": 24.034,
+      "end": 26.622,
+      "text": "The run in this shot uses\na small synthetic pack,"
+    },
+    {
+      "start": 26.652,
+      "end": 30.674,
+      "text": "so you can see the mechanics\nwithout the 161 MB data pack."
+    },
+    {
+      "start": 31.01,
+      "end": 35.232,
+      "text": "It is labelled synthetic on screen,\nand it is not a research result."
+    }
+  ],
+  "06_test": [
+    {
+      "start": 0.35,
+      "end": 2.511,
+      "text": "Testing happens at three levels."
+    },
+    {
+      "start": 2.863,
+      "end": 7.502,
+      "text": "Targeted tests pin the engine's causality\nand accounting: next-open fills,"
+    },
+    {
+      "start": 7.532,
+      "end": 9.538,
+      "text": "charge sums, and no look-ahead."
+    },
+    {
+      "start": 9.871,
+      "end": 12.973,
+      "text": "The full suite runs offline on frozen fixtures."
+    },
+    {
+      "start": 13.323,
+      "end": 17.392,
+      "text": "A separate validation harness\nrecords 348 fail-closed checks,"
+    },
+    {
+      "start": 17.438,
+      "end": 22.208,
+      "text": "including 36 independent recomputations\nof beta, alpha, tracking error,"
+    },
+    {
+      "start": 22.238,
+      "end": 24.113,
+      "text": "and OLS t-statistics."
+    },
+    {
+      "start": 24.219,
+      "end": 27.686,
+      "text": "The rest are contract and\nCSV consistency checks."
+    },
+    {
+      "start": 28.031,
+      "end": 32.807,
+      "text": "The last published run records\n348 checks, 0 failures."
+    },
+    {
+      "start": 33.163,
+      "end": 36.076,
+      "text": "The harness checks every published\nrow's accounting identities,"
+    },
+    {
+      "start": 36.288,
+      "end": 39.838,
+      "text": "cross checks the six headline\nrows against the published CSV,"
+    },
+    {
+      "start": 40.085,
+      "end": 43.022,
+      "text": "and recomputes the alpha\nregressions from aligned returns."
+    },
+    {
+      "start": 43.106,
+      "end": 45.076,
+      "text": "Any mismatch fails the run."
+    }
+  ],
+  "07_results": [
+    {
+      "start": 0.35,
+      "end": 3.289,
+      "text": "And here is the part most repositories hide."
+    },
+    {
+      "start": 3.653,
+      "end": 7.207,
+      "text": "On a price-only basis, net\nof the full charge stack,"
+    },
+    {
+      "start": 7.237,
+      "end": 10.976,
+      "text": "the pre-specified strategy compounded at 19.3%."
+    },
+    {
+      "start": 11.334,
+      "end": 14.535,
+      "text": "On the benchmark-aligned sessions\nused for the alpha regression,"
+    },
+    {
+      "start": 14.565,
+      "end": 16.476,
+      "text": "19.45%."
+    },
+    {
+      "start": 16.833,
+      "end": 20.229,
+      "text": "Its Newey-West alpha t-statistic is 1.62,"
+    },
+    {
+      "start": 20.63,
+      "end": 23.272,
+      "text": "the OLS t is 1.67,"
+    },
+    {
+      "start": 23.566,
+      "end": 27.623,
+      "text": "and its block-bootstrap p-value is 0.096."
+    },
+    {
+      "start": 27.971,
+      "end": 30.153,
+      "text": "Not statistically significant."
+    },
+    {
+      "start": 30.513,
+      "end": 31.721,
+      "text": "Across the sweep,"
+    },
+    {
+      "start": 31.751,
+      "end": 36.94,
+      "text": "the median configuration lost to\nthe NIFTY 50 by 9.73 pp a year."
+    },
+    {
+      "start": 37.293,
+      "end": 42.718,
+      "text": "Only 26 of 968 rows have a\npositive Newey-West t above 1.96,"
+    },
+    {
+      "start": 42.882,
+      "end": 45.076,
+      "text": "about the 24 expected by chance,"
+    },
+    {
+      "start": 45.099,
+      "end": 47.777,
+      "text": "while another 43 are significantly negative."
+    },
+    {
+      "start": 48.133,
+      "end": 50.704,
+      "text": "The highest Sharpe is 1.3362,"
+    },
+    {
+      "start": 50.739,
+      "end": 55.968,
+      "text": "the maximum of 968 trials over\nwindows as short as 4.66 years,"
+    },
+    {
+      "start": 55.998,
+      "end": 57.119,
+      "text": "not an expectation."
+    }
+  ],
+  "08_outro": [
+    {
+      "start": 0.503,
+      "end": 4.937,
+      "text": "The tutorial, architecture notes,\nthe full 968-row results table,"
+    },
+    {
+      "start": 4.972,
+      "end": 7.437,
+      "text": "and the disclaimer are in the repository."
+    },
+    {
+      "start": 7.771,
+      "end": 11.745,
+      "text": "The study's JSON inputs and\nverification payload are not public,"
+    },
+    {
+      "start": 11.969,
+      "end": 15.248,
+      "text": "so read What is reproducible\nbefore you try to rerun it."
+    },
+    {
+      "start": 15.56,
+      "end": 17.082,
+      "text": "If you use it, cite it."
+    },
+    {
+      "start": 17.619,
+      "end": 20.025,
+      "text": "And remember, this is research software."
+    },
+    {
+      "start": 20.339,
+      "end": 22.108,
+      "text": "It is not investment advice,"
+    },
+    {
+      "start": 22.12,
+      "end": 25.281,
+      "text": "and past performance does\nnot predict future returns."
+    }
+  ]
+}

@@ -1,51 +1,132 @@
 {
-  "voice": "Microsoft Zira Desktop",
-  "rate": 1,
+  "voice": "en-US-BrianNeural",
+  "rate": "+6%",
   "scenes": [
     {
       "id": "00_title",
       "caption": "A short tour",
-      "text": "N S E Alpha Lab is an open research workspace for testing momentum rotation strategies on Indian equities. In the next few minutes: what it does, how to set it up, and how to write and test your first alpha."
+      "lead": 0.9,
+      "tail": 1.0,
+      "sentences": [
+        "This is N S E Alpha Lab, an open-source research workspace for testing momentum rotation strategies on Indian equities.",
+        "In the next few minutes, I'll show you what it does, how to set it up, and how to write and test your first alpha."
+      ]
     },
     {
       "id": "01_why",
       "caption": "The defaults that flatter a backtest",
-      "text": "Most backtests are optimistic by accident. They use today's index members, fill at the close that produced the signal, and treat charges as a footnote. This lab makes those choices explicit. The universe is point-in-time. A signal formed on close T can only fill at the open of T plus one. And every buy and sell pays brokerage, S T T, stamp duty, exchange fees, G S T, and slippage."
+      "lead": 0.35,
+      "tail": 0.55,
+      "sentences": [
+        "Most backtests are optimistic by accident.",
+        "They use today's index members, fill at the close that produced the signal, and treat charges as a footnote.",
+        "This lab makes those choices explicit.",
+        "In the research harness, membership is applied as of each rebalance date from official snapshots. After 2022 those are irregular official anchors, with coverage between them marked unknown.",
+        "The command line records the universe label, but does not re-filter membership.",
+        "A signal formed on the close of day T can only fill at the open of T plus one.",
+        "Every trade pays brokerage, S T T, exchange fees, G S T on brokerage, and slippage. Stamp duty is charged on buys only, and the rates are 2026-style constants, not the historical schedule."
+      ]
     },
     {
       "id": "02_pipeline",
       "caption": "One spec in, one auditable result out",
-      "text": "The repository is a pipeline. A checksummed data pack feeds point-in-time index membership and split-and-bonus-adjusted bars. The canonical engine ranks trailing returns, holds the top N, and executes at the next open. Metrics include beta, Jensen alpha, Newey West t-statistics, and bootstrap p-values. And all nine hundred and sixty-eight sweep rows are published, including the rows that say no."
+      "lead": 0.35,
+      "tail": 0.55,
+      "sentences": [
+        "The repository is a pipeline.",
+        "A private, checksummed data pack supplies split and bonus adjusted bars. The research harness joins point in time membership to them.",
+        "The full point in time Nifty 500 membership chain behind the headline is not public.",
+        "The canonical engine ranks trailing returns, holds the top N, and executes at the next open.",
+        "The research report adds beta, Jensen's alpha, Newey West t statistics, and a block bootstrap p value for the headline.",
+        "The 968 row table carries beta, alpha, and both t statistics, but not the bootstrap p value.",
+        "And all 968 sweep rows are published, including the rows that say no."
+      ]
     },
     {
       "id": "03_setup",
       "caption": "Setup: code and tests first",
-      "text": "Setup is quick if you only want the code and tests. Clone the repository, sync with U V, and run the test suite. The suite is offline and needs no data pack. For the research U I, install the lab extra and launch Streamlit. To run a real backtest, obtain the checksummed data pack and verify it first. Verification refuses to continue on a hash mismatch."
+      "lead": 0.35,
+      "tail": 0.55,
+      "sentences": [
+        "Setup is quick if you only want the code and tests.",
+        "Clone the repository, sync with U V, and run the test suite.",
+        "The suite is offline and needs no data pack.",
+        "For the research U I, install the lab extra and launch Streamlit. Its pack detector does not yet recognise the 1.0.0 layout, so use the C L I for a real pack.",
+        "To run a real backtest, request access to the private pack, verify it, then point the command line at it with N S E_DATA_DIR, or by placing it in the local data directory.",
+        "Verification refuses to continue on a hash mismatch."
+      ]
     },
     {
       "id": "04_spec",
       "caption": "An alpha is a specification, not a class",
-      "text": "An alpha here is a specification, not a class. You label the universe, declare the holding count, the lookback, the cadence, and any exit overlay. Every field that can change a result lives in the file. A typo is an error, never silently ignored. This is the pre-specified primary: Nifty five hundred, the top ten by sixty-three-session momentum, monthly rebalance, next-open fills, and the full charge stack."
+      "lead": 0.35,
+      "tail": 0.55,
+      "sentences": [
+        "An alpha here is a specification, not a class.",
+        "You label the universe, declare the holding count, the lookback, the cadence, and any exit overlay.",
+        "The spec is explicit; charge rates and starting cash are fixed constants.",
+        "An unknown field is an error, never silently ignored.",
+        "This is the pre specified primary: Nifty 500, the top 10 by 63 session momentum, monthly cadence, next-open fills, and the full charge stack.",
+        "The published run rebalances on membership evidence dates, so after 2022 it is event anchored rather than strictly monthly."
+      ]
     },
     {
       "id": "05_run",
       "caption": "Run one spec, audit every trade",
-      "text": "Run one spec with the backtest command. The command line runs the engine over the bars in the pack; the published study applies point-in-time membership in its research harness. You get sessions, rebalances, trades, skips, final cash, and final equity. Add the out flag, and the full equity curve, every trade, every exit, and every skip are written as J S O N. The run in this shot uses a small synthetic pack, so you can see the mechanics without the multi-gigabyte data pack. It is labelled synthetic on screen, and it is not a research result."
+      "lead": 0.35,
+      "tail": 0.55,
+      "sentences": [
+        "Run one spec with the backtest command.",
+        "The command line runs the engine over the bars in the pack.",
+        "The published study applies point in time membership in its research harness.",
+        "You get sessions, rebalances, trades, skips, final cash, and final equity.",
+        "Add the out flag, and the full equity curve, every trade, every exit, and every skip are written as J S O N.",
+        "The run in this shot uses a small synthetic pack, so you can see the mechanics without the 161 megabyte data pack.",
+        "It is labelled synthetic on screen, and it is not a research result."
+      ]
     },
     {
       "id": "06_test",
       "caption": "Three levels of testing",
-      "text": "Testing happens at three levels. Targeted tests pin the engine's causality and accounting: next-open fills, charge sums, and no look-ahead. The full suite runs offline on frozen fixtures. And the published artefacts are independently recomputed by a separate harness. The last published run records three hundred and forty-eight checks, zero failures. If a number in the C S V cannot be rebuilt from the trade ledger, the harness fails."
+      "lead": 0.35,
+      "tail": 0.55,
+      "sentences": [
+        "Testing happens at three levels.",
+        "Targeted tests pin the engine's causality and accounting: next-open fills, charge sums, and no look ahead.",
+        "The full suite runs offline on frozen fixtures.",
+        "A separate validation harness records 348 fail closed checks, including 36 independent recomputations of beta, alpha, tracking error, and O L S t statistics. The rest are contract and C S V consistency checks.",
+        "The last published run records 348 checks, zero failures.",
+        "The harness checks every published row's accounting identities, cross checks the six headline rows against the published C S V, and recomputes the alpha regressions from aligned returns. Any mismatch fails the run."
+      ]
     },
     {
       "id": "07_results",
       "caption": "The finding is a null result",
-      "text": "And here is the part most repositories hide. The pre-specified strategy compounded at nineteen point three percent, but its alpha t-statistic is one point six two, and its bootstrap p-value is zero point zero nine six. Not statistically significant. Across the sweep, the median configuration lost to the Nifty fifty by nine point seven three percentage points a year. Only twenty-six rows clear t equals one point nine six, fewer than the roughly forty-eight you would expect by chance. The highest Sharpe is the maximum of nine hundred and sixty-eight trials, not an expectation."
+      "lead": 0.35,
+      "tail": 0.55,
+      "sentences": [
+        "And here is the part most repositories hide.",
+        "On a price only basis, net of the full charge stack, the pre specified strategy compounded at 19.3 percent.",
+        "On the benchmark aligned sessions used for the alpha regression, 19.45 percent.",
+        "Its Newey West alpha t statistic is 1.62, the O L S t is 1.67, and its block bootstrap p value is 0.096.",
+        "Not statistically significant.",
+        "Across the sweep, the median configuration lost to the Nifty 50 by 9.73 percentage points a year.",
+        "Only 26 of 968 rows have a positive Newey West t above 1.96, about the 24 expected by chance, while another 43 are significantly negative.",
+        "The highest Sharpe is 1.3362, the maximum of 968 trials over windows as short as 4.66 years, not an expectation."
+      ]
     },
     {
       "id": "08_outro",
       "caption": "Research preview. Not investment advice.",
-      "text": "Everything is in the repository: the tutorial, the architecture notes, the full results table, and the disclaimer. If you use it, cite it. And remember: this is research software. It is not investment advice, and past performance does not predict future returns."
+      "lead": 0.5,
+      "tail": 1.2,
+      "sentences": [
+        "The tutorial, architecture notes, the full 968 row results table, and the disclaimer are in the repository.",
+        "The study's J S O N inputs and verification payload are not public, so read What is reproducible before you try to rerun it.",
+        "If you use it, cite it.",
+        "And remember, this is research software.",
+        "It is not investment advice, and past performance does not predict future returns."
+      ]
     }
   ]
 }

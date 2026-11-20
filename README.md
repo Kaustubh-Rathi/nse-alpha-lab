@@ -22,15 +22,27 @@ writing and testing your own specifications.
 The headline finding is a **null result**, and this README leads with it. The lab exists
 to make a strategy falsifiable, not to produce a flattering backtest.
 
-<p align="center">
-  <a href="docs/assets/demo.mp4">
-    <img src="docs/assets/demo.gif" alt="NSE Alpha Lab video walkthrough" width="880">
-  </a>
-</p>
+<!-- README walkthrough player. Once the compressed web encode is attached to the
+     pinned "Walkthrough video (media host)" issue, insert the bare user-attachment
+     URL on its own paragraph (blank lines around it, e.g.
+     https://github.com/user-attachments/assets/<uuid>). Do not wrap it in <video>,
+     an iframe, or Markdown link syntax, and do not delete the pinned issue: the
+     README depends on its attachment. -->
 
 <p align="center">
-  <strong><a href="docs/assets/demo.mp4">Watch the 4-minute walkthrough</a></strong> (MP4, 1080p, narrated)
+  <a href="https://github.com/Kaustubh-Rathi/nse-alpha-lab/raw/main/docs/assets/demo.mp4">
+    <img src="docs/assets/demo-poster.png" alt="Title card for the NSE Alpha Lab walkthrough: point-in-time, charge-aware momentum backtesting for NSE India" width="280">
+  </a>
+  <br>
+  <em>Full narrated walkthrough: the point-in-time pipeline, the 968-configuration sweep, and the null result.
+  The poster and download link open the committed 1080p master.</em>
+  <br>
+  <a href="https://github.com/Kaustubh-Rathi/nse-alpha-lab/raw/main/docs/assets/demo.mp4"><strong>Download the 1080p master</strong></a> (MP4, H.264/AAC)
   &nbsp;·&nbsp;
+  <a href="docs/assets/demo.srt">Captions (.srt)</a>
+  &nbsp;·&nbsp;
+  <a href="docs/assets/demo.gif">GIF preview</a>
+  <br>
   <strong><a href="docs/HELLO_ALPHA.md">Write your first alpha</a></strong>
 </p>
 
@@ -305,8 +317,9 @@ plus Parquet, opened in-process. Backtests never touch the network.
 </p>
 
 In this repository an **alpha is a strategy specification**, not a Python subclass. The
-engine is fixed; the JSON file selects the test. Every field that can change a result is
-in the file, and unknown fields are an error rather than silently ignored.
+engine is fixed; the JSON file selects the test. The spec is explicit, while charge rates
+and starting cash are fixed constants. Unknown fields are an error rather than silently
+ignored.
 
 `examples/specs/primary.json` is the pre-specified primary:
 
@@ -537,8 +550,9 @@ checkout. Column-by-column documentation is in
 >   parked in cash.
 > - **The highest Sharpe belongs to the shortest window.** All 25 top-Sharpe rows span
 >   only 4.66–4.92 years.
-> - **Only 26 of 968 configurations clear t = 1.96**, where roughly **48** would be
->   expected by chance alone at the 5% level if no configuration had any edge.
+> - **Only 26 of 968 configurations have a positive Newey–West t above 1.96** — about the
+>   **24** expected by chance in the upper 2.5% tail if no configuration had any edge —
+>   while **43** are significantly negative.
 >
 > The pre-specified primary configuration is the result that matters, and it is **not
 > statistically significant**.
@@ -554,7 +568,7 @@ checkout. Column-by-column documentation is in
 | Rows spanning the full 13-year window | **428 / 968** | Comparable, long-window evidence for less than half the grid |
 | Rows beating NIFTY 50 on CAGR | **220 / 968** | 22.7% — none of them a NIFTY 50 row |
 | Median excess CAGR vs NIFTY 50 | **−9.73%** | The median configuration *lost* to the index by ~10 pp/yr |
-| Rows with t > 1.96 | **26 / 968** | vs. ~**48** expected by chance |
+| Rows with positive t > 1.96 | **26 / 968** | vs. ~**24** expected by chance; **43** significantly negative |
 | Median Sharpe across all rows | 0.20 | The centre of the grid is close to zero |
 
 Two things follow, and they point in opposite directions:
@@ -628,7 +642,8 @@ validation state of each item, and the gate remains **OPEN** for an alpha claim.
    out-of-sample holdout, no walk-forward analysis.
 6. **Multiple-testing bias is uncorrected.** 968 configurations were evaluated and the
    best selected by Sharpe. No Deflated Sharpe, White's Reality Check or Bonferroni
-   correction is applied. The 26-vs-48 significant results are the direct symptom.
+   correction is applied. The lopsided tails — 26 positive versus 43 negative significant
+   results, against ~24 expected positive — are the direct symptom.
 7. **Terminal proceeds for delisted holdings are assumed.** The `last_close_writeoff`
    policy exits at the last observed close. That is optimistic if true proceeds were zero.
 8. **The charge schedule is a 2026-style constant.** Brokerage, STT, stamp duty, exchange
@@ -747,6 +762,15 @@ not invent it for you.
 
 No. It is research and educational software. Past performance does not predict future
 returns. Read [DISCLAIMER.md](DISCLAIMER.md).
+
+### How were the docs and video made?
+
+The documentation, diagrams and narrated walkthrough were built with multiple AI
+coding agents working in parallel under human direction, then reviewed and edited by
+the maintainer. The agents drafted prose and generated media; they did not originate
+or validate the research result. The numbers, caveats and null result are the ones in
+[STATUS.md](STATUS.md) and [research/REPORT.md](research/REPORT.md), and they stand
+regardless of how the documentation was produced.
 
 ### How do I cite it?
 

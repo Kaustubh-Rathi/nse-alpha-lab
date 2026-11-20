@@ -1,35 +1,441 @@
 1
-00:00:00,300 --> 00:00:13,662
-NSE Alpha Lab is an open research workspace for testing momentum rotation strategies on Indian equities. In the next few minutes: what it does, how to set it up, and how to write and test your first alpha.
+00:00:00,900 --> 00:00:02,719
+This is NSE Alpha Lab,
 
 2
-00:00:14,162 --> 00:00:40,717
-Most backtests are optimistic by accident. They use today's index members, fill at the close that produced the signal, and treat charges as a footnote. This lab makes those choices explicit. The universe is point-in-time. A signal formed on close T can only fill at the open of T+1. And every buy and sell pays brokerage, STT, stamp duty, exchange fees, GST, and slippage.
+00:00:02,848 --> 00:00:08,014
+an open-source research workspace for testing
+momentum rotation strategies on Indian equities.
 
 3
-00:00:41,217 --> 00:01:06,972
-The repository is a pipeline. A checksummed data pack feeds point-in-time index membership and split-and-bonus-adjusted bars. The canonical engine ranks trailing returns, holds the top N, and executes at the next open. Metrics include beta, Jensen alpha, Newey West t-statistics, and bootstrap p-values. And all nine hundred and sixty-eight sweep rows are published, including the rows that say no.
+00:00:08,350 --> 00:00:11,846
+In the next few minutes, I'll show
+you what it does, how to set it up,
 
 4
-00:01:07,472 --> 00:01:31,043
-Setup is quick if you only want the code and tests. Clone the repository, sync with uv, and run the test suite. The suite is offline and needs no data pack. For the research U I, install the lab extra and launch Streamlit. To run a real backtest, obtain the checksummed data pack and verify it first. Verification refuses to continue on a hash mismatch.
+00:00:11,876 --> 00:00:14,117
+and how to write and test your first alpha.
 
 5
-00:01:31,543 --> 00:01:58,227
-An alpha here is a specification, not a class. You label the universe, declare the holding count, the lookback, the cadence, and any exit overlay. Every field that can change a result lives in the file. A typo is an error, never silently ignored. This is the pre-specified primary: Nifty five hundred, the top ten by sixty-three-session momentum, monthly rebalance, next-open fills, and the full charge stack.
+00:00:15,630 --> 00:00:18,475
+Most backtests are optimistic by accident.
 
 6
-00:01:58,727 --> 00:02:32,435
-Run one spec with the backtest command. The command line runs the engine over the bars in the pack; the published study applies point-in-time membership in its research harness. You get sessions, rebalances, trades, skips, final cash, and final equity. Add the out flag, and the full equity curve, every trade, every exit, and every skip are written as JSON. The run in this shot uses a small synthetic pack, so you can see the mechanics without the multi-gigabyte data pack. It is labelled synthetic on screen, and it is not a research result.
+00:00:18,809 --> 00:00:23,189
+They use today's index members, fill
+at the close that produced the signal,
 
 7
-00:02:32,935 --> 00:03:00,075
-Testing happens at three levels. Targeted tests pin the engine's causality and accounting: next-open fills, charge sums, and no look-ahead. The full suite runs offline on frozen fixtures. And the published artefacts are independently recomputed by a separate harness. The last published run records three hundred and forty-eight checks, zero failures. If a number in the CSV cannot be rebuilt from the trade ledger, the harness fails.
+00:00:23,219 --> 00:00:25,201
+and treat charges as a footnote.
 
 8
-00:03:00,575 --> 00:03:35,457
-And here is the part most repositories hide. The pre-specified strategy compounded at nineteen point three percent, but its alpha t-statistic is one point six two, and its bootstrap p-value is zero point zero nine six. Not statistically significant. Across the sweep, the median configuration lost to the Nifty fifty by nine point seven three percentage points a year. Only twenty-six rows clear t equals one point nine six, fewer than the roughly forty-eight you would expect by chance. The highest Sharpe is the maximum of nine hundred and sixty-eight trials, not an expectation.
+00:00:25,563 --> 00:00:28,122
+This lab makes those choices explicit.
 
 9
-00:03:35,957 --> 00:03:53,914
-Everything is in the repository: the tutorial, the architecture notes, the full results table, and the disclaimer. If you use it, cite it. And remember: this is research software. It is not investment advice, and past performance does not predict future returns.
+00:00:28,483 --> 00:00:29,851
+In the research harness,
+
+10
+00:00:29,886 --> 00:00:34,120
+membership is applied as of each
+rebalance date from official snapshots.
+
+11
+00:00:34,237 --> 00:00:37,839
+After 2022 those are irregular official anchors,
+
+12
+00:00:37,869 --> 00:00:40,016
+with coverage between them marked unknown.
+
+13
+00:00:40,361 --> 00:00:44,548
+The command line records the universe
+label, but does not re-filter.
+
+14
+00:00:44,881 --> 00:00:49,492
+A signal formed on the close of day
+T can only fill at the open of T+1.
+
+15
+00:00:49,853 --> 00:00:53,556
+Every trade pays brokerage, STT, exchange fees,
+
+16
+00:00:53,638 --> 00:00:56,056
+GST on brokerage, and slippage.
+
+17
+00:00:56,139 --> 00:00:58,546
+Stamp duty is charged on buys only,
+
+18
+00:00:58,698 --> 00:01:03,145
+and the rates are 2026-style
+constants, not the historical schedule.
+
+19
+00:01:04,220 --> 00:01:06,287
+The repository is a pipeline.
+
+20
+00:01:06,597 --> 00:01:10,796
+A private, checksummed data pack
+supplies split-and-bonus-adjusted bars.
+
+21
+00:01:10,913 --> 00:01:14,275
+The research harness joins
+point-in-time membership to them.
+
+22
+00:01:14,633 --> 00:01:19,680
+The full point-in-time NIFTY 500 membership
+chain behind the headline is not public.
+
+23
+00:01:20,031 --> 00:01:23,817
+The canonical engine ranks
+trailing returns, holds the top N,
+
+24
+00:01:23,958 --> 00:01:26,010
+and executes at the next open.
+
+25
+00:01:26,363 --> 00:01:29,252
+The research report adds beta, Jensen's alpha,
+
+26
+00:01:29,605 --> 00:01:34,028
+Newey-West t-statistics, and a
+block-bootstrap p-value for the headline.
+
+27
+00:01:34,381 --> 00:01:39,103
+The 968-row table carries beta,
+alpha, and both t-statistics,
+
+28
+00:01:39,133 --> 00:01:41,068
+but not the bootstrap p-value.
+
+29
+00:01:41,413 --> 00:01:44,425
+And all 968 sweep rows are published,
+
+30
+00:01:44,455 --> 00:01:46,342
+including the rows that say no.
+
+31
+00:01:47,433 --> 00:01:50,487
+Setup is quick if you only
+want the code and tests.
+
+32
+00:01:50,853 --> 00:01:55,240
+Clone the repository, sync with
+uv, and run the test suite.
+
+33
+00:01:55,581 --> 00:01:58,317
+The suite is offline and needs no data pack.
+
+34
+00:01:58,673 --> 00:02:02,470
+For the research UI, install the
+lab extra and launch Streamlit.
+
+35
+00:02:02,555 --> 00:02:06,825
+Its pack detector does not yet
+recognise the 1.0.0 layout,
+
+36
+00:02:06,836 --> 00:02:09,195
+so use the CLI for a real pack.
+
+37
+00:02:09,553 --> 00:02:14,129
+To run a real backtest, request
+access to the private pack, verify it,
+
+38
+00:02:14,470 --> 00:02:18,551
+then point the command line
+at it with NSE_DATA_DIR,
+
+39
+00:02:18,892 --> 00:02:21,381
+or by placing it in the local data directory.
+
+40
+00:02:21,733 --> 00:02:25,377
+Verification refuses to
+continue on a hash mismatch.
+
+41
+00:02:26,450 --> 00:02:29,933
+An alpha here is a specification, not a class.
+
+42
+00:02:30,283 --> 00:02:34,257
+You label the universe, declare
+the holding count, the lookback,
+
+43
+00:02:34,457 --> 00:02:37,052
+the cadence, and any exit overlay.
+
+44
+00:02:37,391 --> 00:02:42,144
+The spec is explicit; charge rates
+and starting cash are fixed constants.
+
+45
+00:02:42,470 --> 00:02:46,280
+An unknown field is an error,
+never silently ignored.
+
+46
+00:02:46,643 --> 00:02:49,903
+This is the pre-specified primary: NIFTY 500,
+
+47
+00:02:49,933 --> 00:02:54,195
+the top 10 by 63-session momentum,
+monthly cadence, next-open fills,
+
+48
+00:02:54,225 --> 00:02:55,806
+and the full charge stack.
+
+49
+00:02:56,151 --> 00:02:59,258
+The published run rebalances
+on membership evidence dates,
+
+50
+00:02:59,288 --> 00:03:03,415
+so after 2022 it is event-anchored
+rather than strictly monthly.
+
+51
+00:03:04,473 --> 00:03:06,973
+Run one spec with the backtest command.
+
+52
+00:03:07,301 --> 00:03:10,792
+The command line runs the engine
+over the bars in the pack.
+
+53
+00:03:11,131 --> 00:03:15,412
+The published study applies point-in-time
+membership in its research harness.
+
+54
+00:03:15,751 --> 00:03:19,365
+You get sessions, rebalances,
+trades, skips, final cash,
+
+55
+00:03:19,395 --> 00:03:20,622
+and final equity.
+
+56
+00:03:20,983 --> 00:03:25,410
+Add the out flag, and the full equity
+curve, every trade, every exit,
+
+57
+00:03:25,440 --> 00:03:27,787
+and every skip are written as JSON.
+
+58
+00:03:28,154 --> 00:03:30,742
+The run in this shot uses
+a small synthetic pack,
+
+59
+00:03:30,772 --> 00:03:34,794
+so you can see the mechanics
+without the 161 MB data pack.
+
+60
+00:03:35,130 --> 00:03:39,352
+It is labelled synthetic on screen,
+and it is not a research result.
+
+61
+00:03:40,430 --> 00:03:42,591
+Testing happens at three levels.
+
+62
+00:03:42,943 --> 00:03:47,582
+Targeted tests pin the engine's causality
+and accounting: next-open fills,
+
+63
+00:03:47,612 --> 00:03:49,618
+charge sums, and no look-ahead.
+
+64
+00:03:49,951 --> 00:03:53,053
+The full suite runs offline on frozen fixtures.
+
+65
+00:03:53,403 --> 00:03:57,472
+A separate validation harness
+records 348 fail-closed checks,
+
+66
+00:03:57,518 --> 00:04:02,288
+including 36 independent recomputations
+of beta, alpha, tracking error,
+
+67
+00:04:02,318 --> 00:04:04,193
+and OLS t-statistics.
+
+68
+00:04:04,299 --> 00:04:07,766
+The rest are contract and
+CSV consistency checks.
+
+69
+00:04:08,111 --> 00:04:12,887
+The last published run records
+348 checks, 0 failures.
+
+70
+00:04:13,243 --> 00:04:16,156
+The harness checks every published
+row's accounting identities,
+
+71
+00:04:16,368 --> 00:04:19,918
+cross checks the six headline
+rows against the published CSV,
+
+72
+00:04:20,165 --> 00:04:23,102
+and recomputes the alpha
+regressions from aligned returns.
+
+73
+00:04:23,186 --> 00:04:25,156
+Any mismatch fails the run.
+
+74
+00:04:26,220 --> 00:04:29,159
+And here is the part most repositories hide.
+
+75
+00:04:29,523 --> 00:04:33,077
+On a price-only basis, net
+of the full charge stack,
+
+76
+00:04:33,107 --> 00:04:36,846
+the pre-specified strategy compounded at 19.3%.
+
+77
+00:04:37,204 --> 00:04:40,405
+On the benchmark-aligned sessions
+used for the alpha regression,
+
+78
+00:04:40,435 --> 00:04:42,346
+19.45%.
+
+79
+00:04:42,703 --> 00:04:46,099
+Its Newey-West alpha t-statistic is 1.62,
+
+80
+00:04:46,500 --> 00:04:49,142
+the OLS t is 1.67,
+
+81
+00:04:49,436 --> 00:04:53,493
+and its block-bootstrap p-value is 0.096.
+
+82
+00:04:53,841 --> 00:04:56,023
+Not statistically significant.
+
+83
+00:04:56,383 --> 00:04:57,591
+Across the sweep,
+
+84
+00:04:57,621 --> 00:05:02,810
+the median configuration lost to
+the NIFTY 50 by 9.73 pp a year.
+
+85
+00:05:03,163 --> 00:05:08,588
+Only 26 of 968 rows have a
+positive Newey-West t above 1.96,
+
+86
+00:05:08,752 --> 00:05:10,946
+about the 24 expected by chance,
+
+87
+00:05:10,969 --> 00:05:13,647
+while another 43 are significantly negative.
+
+88
+00:05:14,003 --> 00:05:16,574
+The highest Sharpe is 1.3362,
+
+89
+00:05:16,609 --> 00:05:21,838
+the maximum of 968 trials over
+windows as short as 4.66 years,
+
+90
+00:05:21,868 --> 00:05:22,989
+not an expectation.
+
+91
+00:05:24,213 --> 00:05:28,647
+The tutorial, architecture notes,
+the full 968-row results table,
+
+92
+00:05:28,682 --> 00:05:31,147
+and the disclaimer are in the repository.
+
+93
+00:05:31,481 --> 00:05:35,455
+The study's JSON inputs and
+verification payload are not public,
+
+94
+00:05:35,679 --> 00:05:38,958
+so read What is reproducible
+before you try to rerun it.
+
+95
+00:05:39,270 --> 00:05:40,792
+If you use it, cite it.
+
+96
+00:05:41,329 --> 00:05:43,735
+And remember, this is research software.
+
+97
+00:05:44,049 --> 00:05:45,818
+It is not investment advice,
+
+98
+00:05:45,830 --> 00:05:48,991
+and past performance does
+not predict future returns.
