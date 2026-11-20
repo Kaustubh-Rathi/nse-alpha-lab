@@ -251,13 +251,14 @@ Logs are under `dist/_verify/` (git-ignored):
    `id` in `dist/kaggle-upload/dataset-metadata.json` and rebuild; the URL
    follows `<owner-slug>/nse-alpha-lab-data-pack`.
 5. **Sweep reproduction is a separate, pre-existing repo gap.** The pack runs the
-   CLI `backtest` end-to-end, but the published 968-row sweep still is not
-   reproducible from the public repo: `research/run_sweep.py` /
+   CLI `backtest` end-to-end. `research/FINAL_RESULTS_public.csv` is now present
+   (it is byte-identical to `research/FINAL_RESULTS.csv`), so the published table
+   can be read from the checkout. A byte-for-byte rerun of the sweep is still not
+   possible from the public tree: `research/run_sweep.py` /
    `momentum_grid.DEFAULT_SNAPSHOTS` read the deliberately unexported
-   `verification/` payload, and `research/benchmark-series.json` plus
-   `research/FINAL_RESULTS_public.csv` are absent from the exported tree. Those
-   files are outside the data pack (and outside this task's write scope); fix
-   them in the repo export before publishing a "reproducible sweep" claim.
+   `verification/` payload, and `research/benchmark-series.json` is absent. Do not
+   publish a "reproducible sweep" claim until those inputs ship or the runner is
+   rewritten against public inputs.
 6. **`.gitignore`.** Current `dist/` rule (line 54) already ignores the pack
    tree, archive, Kaggle staging and evidence logs — verified with
    `git check-ignore`. `*.tar.gz` is **not** globally ignored, so if the archive

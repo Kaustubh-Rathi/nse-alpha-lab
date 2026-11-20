@@ -1,0 +1,35 @@
+1
+00:00:00,300 --> 00:00:13,662
+NSE Alpha Lab is an open research workspace for testing momentum rotation strategies on Indian equities. In the next few minutes: what it does, how to set it up, and how to write and test your first alpha.
+
+2
+00:00:14,162 --> 00:00:40,717
+Most backtests are optimistic by accident. They use today's index members, fill at the close that produced the signal, and treat charges as a footnote. This lab makes those choices explicit. The universe is point-in-time. A signal formed on close T can only fill at the open of T+1. And every buy and sell pays brokerage, STT, stamp duty, exchange fees, GST, and slippage.
+
+3
+00:00:41,217 --> 00:01:06,972
+The repository is a pipeline. A checksummed data pack feeds point-in-time index membership and split-and-bonus-adjusted bars. The canonical engine ranks trailing returns, holds the top N, and executes at the next open. Metrics include beta, Jensen alpha, Newey West t-statistics, and bootstrap p-values. And all nine hundred and sixty-eight sweep rows are published, including the rows that say no.
+
+4
+00:01:07,472 --> 00:01:31,043
+Setup is quick if you only want the code and tests. Clone the repository, sync with uv, and run the test suite. The suite is offline and needs no data pack. For the research U I, install the lab extra and launch Streamlit. To run a real backtest, obtain the checksummed data pack and verify it first. Verification refuses to continue on a hash mismatch.
+
+5
+00:01:31,543 --> 00:01:58,227
+An alpha here is a specification, not a class. You label the universe, declare the holding count, the lookback, the cadence, and any exit overlay. Every field that can change a result lives in the file. A typo is an error, never silently ignored. This is the pre-specified primary: Nifty five hundred, the top ten by sixty-three-session momentum, monthly rebalance, next-open fills, and the full charge stack.
+
+6
+00:01:58,727 --> 00:02:32,435
+Run one spec with the backtest command. The command line runs the engine over the bars in the pack; the published study applies point-in-time membership in its research harness. You get sessions, rebalances, trades, skips, final cash, and final equity. Add the out flag, and the full equity curve, every trade, every exit, and every skip are written as JSON. The run in this shot uses a small synthetic pack, so you can see the mechanics without the multi-gigabyte data pack. It is labelled synthetic on screen, and it is not a research result.
+
+7
+00:02:32,935 --> 00:03:00,075
+Testing happens at three levels. Targeted tests pin the engine's causality and accounting: next-open fills, charge sums, and no look-ahead. The full suite runs offline on frozen fixtures. And the published artefacts are independently recomputed by a separate harness. The last published run records three hundred and forty-eight checks, zero failures. If a number in the CSV cannot be rebuilt from the trade ledger, the harness fails.
+
+8
+00:03:00,575 --> 00:03:35,457
+And here is the part most repositories hide. The pre-specified strategy compounded at nineteen point three percent, but its alpha t-statistic is one point six two, and its bootstrap p-value is zero point zero nine six. Not statistically significant. Across the sweep, the median configuration lost to the Nifty fifty by nine point seven three percentage points a year. Only twenty-six rows clear t equals one point nine six, fewer than the roughly forty-eight you would expect by chance. The highest Sharpe is the maximum of nine hundred and sixty-eight trials, not an expectation.
+
+9
+00:03:35,957 --> 00:03:53,914
+Everything is in the repository: the tutorial, the architecture notes, the full results table, and the disclaimer. If you use it, cite it. And remember: this is research software. It is not investment advice, and past performance does not predict future returns.

@@ -1,9 +1,9 @@
 {
   "name": "primary",
-  "description": "Flagship: monthly top-20 momentum on the point-in-time NIFTY 500, full charges, no exit overlay.",
+  "description": "Pre-specified primary: monthly top-10 momentum on the point-in-time NIFTY 500, full charges, no exit overlay.",
   "universe": "nifty500",
-  "benchmark": "nifty500",
-  "top_n": 20,
+  "benchmark": "nifty50",
+  "top_n": 10,
   "direction": "top",
   "lookback_sessions": 63,
   "cadence": "monthly",

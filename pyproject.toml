@@ -1,15 +1,48 @@
 [project]
 name = "nse-rotation-research"
 version = "0.1.0"
-description = "NSE Alpha Lab - momentum rotation research, backtesting engine and strategy lab"
+description = "Point-in-time, charge-aware momentum backtesting for NSE India, with the full 968-configuration sweep published including the null result"
 readme = "README.md"
 requires-python = ">=3.12,<3.15"
+authors = [{ name = "Kaustubh Rathi" }]
+keywords = [
+    "backtesting",
+    "quantitative-finance",
+    "momentum",
+    "nse",
+    "nifty500",
+    "india",
+    "equity-research",
+    "reproducible-research",
+    "transaction-costs",
+    "survivorship-bias",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Topic :: Scientific/Engineering",
+]
 dependencies = [
     "duckdb>=1.4,<2",
     "pandas>=2.2,<4",
     "pyarrow>=18,<26",
     "numpy>=2,<3",
 ]
+
+[project.urls]
+Homepage = "https://github.com/Kaustubh-Rathi/nse-alpha-lab#readme"
+Repository = "https://github.com/Kaustubh-Rathi/nse-alpha-lab"
+Issues = "https://github.com/Kaustubh-Rathi/nse-alpha-lab/issues"
+Documentation = "https://github.com/Kaustubh-Rathi/nse-alpha-lab/blob/main/docs/HELLO_ALPHA.md"
+Research = "https://github.com/Kaustubh-Rathi/nse-alpha-lab/blob/main/research/REPORT.md"
 
 [project.optional-dependencies]
 pdf = ["pypdf>=6,<7", "pymupdf>=1.26,<2"]

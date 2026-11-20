@@ -1,0 +1,51 @@
+{
+  "voice": "Microsoft Zira Desktop",
+  "rate": 1,
+  "scenes": [
+    {
+      "id": "00_title",
+      "caption": "A short tour",
+      "text": "N S E Alpha Lab is an open research workspace for testing momentum rotation strategies on Indian equities. In the next few minutes: what it does, how to set it up, and how to write and test your first alpha."
+    },
+    {
+      "id": "01_why",
+      "caption": "The defaults that flatter a backtest",
+      "text": "Most backtests are optimistic by accident. They use today's index members, fill at the close that produced the signal, and treat charges as a footnote. This lab makes those choices explicit. The universe is point-in-time. A signal formed on close T can only fill at the open of T plus one. And every buy and sell pays brokerage, S T T, stamp duty, exchange fees, G S T, and slippage."
+    },
+    {
+      "id": "02_pipeline",
+      "caption": "One spec in, one auditable result out",
+      "text": "The repository is a pipeline. A checksummed data pack feeds point-in-time index membership and split-and-bonus-adjusted bars. The canonical engine ranks trailing returns, holds the top N, and executes at the next open. Metrics include beta, Jensen alpha, Newey West t-statistics, and bootstrap p-values. And all nine hundred and sixty-eight sweep rows are published, including the rows that say no."
+    },
+    {
+      "id": "03_setup",
+      "caption": "Setup: code and tests first",
+      "text": "Setup is quick if you only want the code and tests. Clone the repository, sync with U V, and run the test suite. The suite is offline and needs no data pack. For the research U I, install the lab extra and launch Streamlit. To run a real backtest, obtain the checksummed data pack and verify it first. Verification refuses to continue on a hash mismatch."
+    },
+    {
+      "id": "04_spec",
+      "caption": "An alpha is a specification, not a class",
+      "text": "An alpha here is a specification, not a class. You label the universe, declare the holding count, the lookback, the cadence, and any exit overlay. Every field that can change a result lives in the file. A typo is an error, never silently ignored. This is the pre-specified primary: Nifty five hundred, the top ten by sixty-three-session momentum, monthly rebalance, next-open fills, and the full charge stack."
+    },
+    {
+      "id": "05_run",
+      "caption": "Run one spec, audit every trade",
+      "text": "Run one spec with the backtest command. The command line runs the engine over the bars in the pack; the published study applies point-in-time membership in its research harness. You get sessions, rebalances, trades, skips, final cash, and final equity. Add the out flag, and the full equity curve, every trade, every exit, and every skip are written as J S O N. The run in this shot uses a small synthetic pack, so you can see the mechanics without the multi-gigabyte data pack. It is labelled synthetic on screen, and it is not a research result."
+    },
+    {
+      "id": "06_test",
+      "caption": "Three levels of testing",
+      "text": "Testing happens at three levels. Targeted tests pin the engine's causality and accounting: next-open fills, charge sums, and no look-ahead. The full suite runs offline on frozen fixtures. And the published artefacts are independently recomputed by a separate harness. The last published run records three hundred and forty-eight checks, zero failures. If a number in the C S V cannot be rebuilt from the trade ledger, the harness fails."
+    },
+    {
+      "id": "07_results",
+      "caption": "The finding is a null result",
+      "text": "And here is the part most repositories hide. The pre-specified strategy compounded at nineteen point three percent, but its alpha t-statistic is one point six two, and its bootstrap p-value is zero point zero nine six. Not statistically significant. Across the sweep, the median configuration lost to the Nifty fifty by nine point seven three percentage points a year. Only twenty-six rows clear t equals one point nine six, fewer than the roughly forty-eight you would expect by chance. The highest Sharpe is the maximum of nine hundred and sixty-eight trials, not an expectation."
+    },
+    {
+      "id": "08_outro",
+      "caption": "Research preview. Not investment advice.",
+      "text": "Everything is in the repository: the tutorial, the architecture notes, the full results table, and the disclaimer. If you use it, cite it. And remember: this is research software. It is not investment advice, and past performance does not predict future returns."
+    }
+  ]
+}

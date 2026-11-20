@@ -20,9 +20,10 @@ Design rules for this file
 3. **No silent assumptions.** A result the UI cannot fully price (an unpriced
    holding, an incomplete rebalance calendar, a non-causal fill mode) is
    labelled where the user is looking at it, not buried in a log.
-4. **Honest about testing.** This app was *syntax-checked* with
-   ``python -m py_compile``. It has **not** been visually tested: Streamlit is
-   not installed in this environment. Do not tell anyone otherwise.
+4. **Honest about testing.** The pages have been rendered in Streamlit and
+   captured for the README screenshots in ``docs/assets/ui/``. There is still
+   no automated browser test suite, so treat layout and interaction changes as
+   manually tested only.
 
 How to read a result
 --------------------
@@ -304,19 +305,24 @@ def data_pack_absent_message() -> None:
         "acquisition stage, then place it under `data/`:"
     )
     st.code(
-        "# 1. install the pipeline and its data dependencies\n"
-        "uv sync\n\n"
-        "# 2. acquire raw NSE archives (official sources only)\n"
-        "uv run python -m nse_pipeline.download --help\n\n"
-        "# 3. build the normalised catalog: data/market.duckdb\n"
-        "uv run python -m nse_pipeline.build --help\n\n"
-        "# 4. verify byte-for-byte integrity before using it\n"
-        "uv run python scripts/verify_stage1_inventory.py --out reports/verify.json",
+        "# 1. install the pipeline, data dependencies and optional fetchers\n"
+        "uv sync --extra fetch\n"
+        "$env:PYTHONPATH='src'   # PowerShell; use: export PYTHONPATH=src\n\n"
+        "# 2. copy a pack you have access to into data/, or use the fetcher\n"
+        "uv run python -m nse_pipeline fetch --help\n\n"
+        "# 3. verify the checksummed pack before using it\n"
+        "uv run python -m nse_pipeline verify --pack data",
         language="bash",
     )
     st.caption(
         "The commands above are the pipeline's documented stages. Exact flags depend on "
         "your checkout; run each `--help` before relying on a flag."
+    )
+    st.info(
+        "**Pack-layout limit.** This detector looks for a `market.duckdb` catalog or the "
+        "older partitioned layout under `data/`. It does not yet recognise the 1.0.0 "
+        "pack's `processed/adjusted/` tree; use the CLI and `verify --pack data` for that "
+        "pack."
     )
 
 
@@ -782,9 +788,9 @@ def page_home() -> None:
         language="bash",
     )
     st.caption(
-        "This application was syntax-checked (`python -m py_compile apps/lab/app.py`). "
-        "It has **not** been visually tested: Streamlit is not installed in the "
-        "environment where it was written."
+        "The pages have been rendered and captured for the README "
+        "(`docs/assets/ui/`). There is no automated browser test suite yet, so "
+        "layout and interaction changes are still manually tested."
     )
 
     st.markdown("### Before you trust a number")
@@ -939,12 +945,14 @@ def page_create() -> None:
 
     # Validate eagerly so the user sees the engine's own objection, not a crash.
     errors = []
-    if spec["stop_loss_pct"]:
-        raw = _dec(spec["stop_loss_pct"])
+    stop_loss = spec["exit_policy"]["stop_loss_pct"]
+    take_profit = spec["exit_policy"]["take_profit_pct"]
+    if stop_loss:
+        raw = _dec(stop_loss)
         if raw is None or raw <= 0 or raw >= 100:
             errors.append("stop loss % must be between 0 and 100 (exclusive)")
-    if spec["take_profit_pct"]:
-        raw = _dec(spec["take_profit_pct"])
+    if take_profit:
+        raw = _dec(take_profit)
         if raw is None or raw <= 0 or raw >= 100:
             errors.append("take profit % must be between 0 and 100 (exclusive)")
     if ENGINE_AVAILABLE:
@@ -1296,9 +1304,9 @@ def page_docs() -> None:
     )
 
     st.caption(
-        "Testing status: `apps/lab/app.py` was verified with `python -m py_compile` only. "
-        "Streamlit is not installed in the authoring environment, so this interface has "
-        "never been rendered. Treat the first real run as untested code."
+        "Testing status: the pages have been rendered and captured in "
+        "`docs/assets/ui/`, but there is no automated browser test suite. "
+        "Treat layout regressions as possible."
     )
 
 

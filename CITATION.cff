@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use this software or its published results, please cite it using the metadata below."
 title: "NSE Alpha Lab"
 abstract: >-
-  A reproducible research and backtesting lab for NSE momentum-rotation strategies,
+  A research and backtesting lab for NSE momentum-rotation strategies,
   including point-in-time index membership, split/bonus-adjusted prices, a charge-aware
   momentum rotation engine, a 968-configuration sensitivity sweep and benchmark-relative
   alpha statistics. Research preview: results are price-vs-price, the headline alpha is
@@ -23,6 +23,6 @@ authors:
   - family-names: "Rathi"
     given-names: "Kaustubh"
     alias: "Kaustubh Rathi"
-repository-code: "https://github.com/<owner>/nse-alpha-lab"
-url: "https://github.com/<owner>/nse-alpha-lab"
+repository-code: "https://github.com/Kaustubh-Rathi/nse-alpha-lab"
+url: "https://github.com/Kaustubh-Rathi/nse-alpha-lab"
 type: software

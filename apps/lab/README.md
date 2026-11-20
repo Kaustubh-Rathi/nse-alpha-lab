@@ -6,18 +6,13 @@ engine. It builds a real `EngineConfig`, runs the real
 
 **Research preview. Not investment advice. Not a trading system.**
 
-## Status: not visually tested
+## Status: rendered, not browser-tested
 
-This app was verified with:
-
-```
-python -m py_compile apps/lab/app.py
-```
-
-It has **never been rendered**. Streamlit is not installed in the environment
-where it was written, so no page, chart, widget or layout has been seen by a
-human or an agent. Treat the first real launch as untested code: expect to fix
-wiring, not logic.
+The pages have been launched under Streamlit and captured with Playwright for the
+README screenshots in [`docs/assets/ui/`](../../docs/assets/ui/). The capture pass
+found and fixed a `KeyError` on the Create page; Home, Data, Compare and Docs
+rendered without exceptions. There is still **no automated browser test suite**,
+so layout and interaction changes are manually tested only.
 
 ## Install and run
 
@@ -77,8 +72,9 @@ message naming the install command rather than an opaque `ImportError`.
 ## Data
 
 No data pack is installed in this repository, and the app does not download any.
-To see a backtest instead of the "no data pack installed" message, fetch a pack
-with the pipeline's acquisition stage and place it under `data/`.
+The current detector recognises a `market.duckdb` file or the older partitioned
+layout under `data/`; it does **not yet** recognise the 1.0.0 pack's
+`processed/adjusted/` tree. Use the CLI for that pack.
 
-Data is not redistributable; see the Docs page in the app and the repository's
-licensing notes.
+Redistribution terms are source-specific; see
+[DATA_LICENSES.md](../../DATA_LICENSES.md) and the Docs page in the app.

@@ -14,7 +14,7 @@ validated" section first.
 |---|---|
 | Project state | Research preview — validation in progress |
 | Version | 0.1.0 |
-| Test suite | Runs offline with no data pack and no network. Tests that need deliberately non-public content (`verification/` evidence, the separate data pack) skip with a visible reason instead of failing. No cross-platform CI has been run yet, so this document makes no three-OS claim. |
+| Test suite | Runs offline with no data pack and no network. Tests that need deliberately non-public content (`verification/` evidence, the separate data pack) skip with a visible reason instead of failing. CI runs the suite on Ubuntu with Python 3.14; no Windows or macOS CI job exists, so this document makes no three-OS claim. |
 | Internal consistency checks | 348 / 348 passing, recomputed from the published artefacts (`research/validate_alpha_output.py`) |
 | Results published | All 968 configurations, including the null result |
 | Live trading | Not supported, not planned for this release |

@@ -1,6 +1,6 @@
 {
   "name": "stop_loss",
-  "description": "Same selection as primary with a 20% stop-loss overlay, evaluated on the completed close and filled at the next open (causal, not intraday).",
+  "description": "Top-20 momentum with a 20% stop-loss overlay, evaluated on the completed close and filled at the next open (causal, not intraday). Not the pre-specified primary.",
   "universe": "nifty500",
   "benchmark": "nifty500",
   "top_n": 20,
