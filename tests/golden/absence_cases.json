@@ -1,0 +1,347 @@
+{
+  "schema_version": 1,
+  "status": "hand_derived_independent_oracle_not_production_output",
+  "decision": "D-09 recommended semantics; owner approval PENDING; U-13 remains OPEN",
+  "derivation": "Hand-derived from Stage-1 decision D-09 and regression cases T2.7-T2.9. These are arithmetic literals and hand-written expectations, never production output. Sessions are synthetic decision sessions (2024-03-01 plus one day per session), so no exchange-calendar claim is made. Window coverage is observed_sessions/window_sessions: a session with any bar for the key is observed, and traded_sessions counts observed bars that are valid and carry a known value, including explicit zeros. A never-seen key is unknown with reason no_observations and can never become zero, even under the verified-listed opt-in. A full window of explicit zero bars is known zero (exact == 0, value == 0.00, traded_sessions == 20) and is distinguishable from absence because exact is not None. Partial coverage exposes the partial estimate over the full denominator and labels it partial_coverage, but capacity_notional withholds capacity unless the caller passes allow_partial_adv=True (the documented verified-listed/no-trade assumption, U-13); coverage itself is unchanged by that opt-in. Capacity also returns None whenever coverage is below the full-window threshold (1/1). security_status is an explicit evidence input: null means no lifecycle evidence was supplied (partial estimates remain visible, capacity fails closed), unknown means status evidence is explicitly unknown (mean unknown), listed means verified listed and not suspended (absent bars may be treated as no trade only under the opt-in), and suspended/delisted means not tradable (mean unknown regardless of opt-in). Rate 0.05, floor to paise: capacity = floor_to_paise(mean * 0.05).",
+  "start_session": "2024-03-01",
+  "window_sessions": 20,
+  "capacity_rate": "0.05",
+  "d09_rows": [
+    {
+      "row": 1,
+      "bar_state": "Present, valid, value > 0",
+      "evidence": "Observed",
+      "contribution": "Value",
+      "result": "Included",
+      "case_ids": ["R1_full_window_positive_values"]
+    },
+    {
+      "row": 2,
+      "bar_state": "Present, valid, value = 0",
+      "evidence": "Observed zero",
+      "contribution": "0",
+      "result": "Included",
+      "case_ids": ["R2_full_window_explicit_zeros", "R2b_full_window_mixed_zero_and_positive", "missing_vs_zero_partial_zero"]
+    },
+    {
+      "row": 3,
+      "bar_state": "Present, invalid",
+      "evidence": "Invalid",
+      "contribution": "None",
+      "result": "Mean unknown",
+      "case_ids": ["R3_invalid_bar"]
+    },
+    {
+      "row": 4,
+      "bar_state": "Present, field None",
+      "evidence": "Unknown",
+      "contribution": "None",
+      "result": "Mean unknown",
+      "case_ids": ["R4_unknown_field"]
+    },
+    {
+      "row": 5,
+      "bar_state": "Present, security status unknown",
+      "evidence": "Unknown",
+      "contribution": "None",
+      "result": "Mean unknown",
+      "case_ids": ["R5_present_status_unknown"]
+    },
+    {
+      "row": 6,
+      "bar_state": "Absent, key never seen",
+      "evidence": "Unknown",
+      "contribution": "None",
+      "result": "Mean unknown",
+      "case_ids": ["R6_never_seen_key"]
+    },
+    {
+      "row": 7,
+      "bar_state": "Absent, key previously seen, suspension/listing unknown",
+      "evidence": "Unknown under default",
+      "contribution": "None under default",
+      "result": "Coverage reported; below threshold -> capacity unknown",
+      "case_ids": ["R7a_previously_seen_absent_unknown_status", "R7b_previously_seen_partial_unknown_status", "T2.9_partial_one_of_twenty", "partial_19_of_20_below_min_coverage"]
+    },
+    {
+      "row": 8,
+      "bar_state": "Absent, verified listed and not suspended",
+      "evidence": "No trade",
+      "contribution": "0 only under explicit policy",
+      "result": "Included as zero only with allow_partial_adv=True",
+      "case_ids": ["R8a_verified_listed_absent_default", "R8b_verified_listed_absent_optin", "T2.9_partial_one_of_twenty"]
+    },
+    {
+      "row": 9,
+      "bar_state": "Absent, verified suspended/delisted",
+      "evidence": "Not tradable",
+      "contribution": "None",
+      "result": "Mean unknown",
+      "case_ids": ["R9a_verified_suspended_absent", "R9b_verified_delisted_absent"]
+    }
+  ],
+  "cases": [
+    {
+      "id": "R1_full_window_positive_values",
+      "working": "20 valid bars of 100 each: total 2000, mean 2000/20 = 100 exactly, value 100.00, all 20 sessions traded, full coverage 20/20. Capacity 100 * 0.05 = 5.00.",
+      "field": "traded_value",
+      "preload_sessions": 0,
+      "all_bars": {"valid": true, "traded_value": "100", "trades": 10},
+      "bars": [],
+      "call": {"security_status": null, "allow_partial_adv": false},
+      "expected": {
+        "total": "2000", "exact": "100", "value": "100.00",
+        "traded_sessions": 20, "observed_sessions": 20, "missing_sessions": 0,
+        "zero_volume_sessions": 0, "invalid_sessions": 0, "unknown_sessions": 0,
+        "coverage": "1/1", "reason": "",
+        "capacity_default": "5.00", "capacity_optin": "5.00"
+      }
+    },
+    {
+      "id": "R2_full_window_explicit_zeros",
+      "working": "T2.8: 20 valid bars, each with traded_value 0, volume 0 and trades 0. Total 0, mean 0/20 = 0 exactly, value 0.00, traded_sessions 20 (explicit zero is observed, not missing), full coverage, empty reason. Capacity 0 * 0.05 = 0.00. Absence would instead leave exact None.",
+      "field": "traded_value",
+      "preload_sessions": 0,
+      "all_bars": {"valid": true, "traded_value": "0", "trades": 0, "volume": 0},
+      "bars": [],
+      "call": {"security_status": null, "allow_partial_adv": false},
+      "expected": {
+        "total": "0", "exact": "0", "value": "0.00",
+        "traded_sessions": 20, "observed_sessions": 20, "missing_sessions": 0,
+        "zero_volume_sessions": 20, "invalid_sessions": 0, "unknown_sessions": 0,
+        "coverage": "1/1", "reason": "",
+        "capacity_default": "0.00", "capacity_optin": "0.00"
+      }
+    },
+    {
+      "id": "R2b_full_window_mixed_zero_and_positive",
+      "working": "19 bars of 100 and one explicit zero bar at index 10: total 1900, mean 1900/20 = 95 exactly, value 95.00, traded_sessions 20 because the zero bar was observed, zero_volume_sessions 1, full coverage and empty reason. Capacity 95 * 0.05 = 4.75.",
+      "field": "traded_value",
+      "preload_sessions": 0,
+      "all_bars": {"valid": true, "traded_value": "100", "trades": 10},
+      "bars": [{"index": 10, "traded_value": "0", "trades": 0, "volume": 0}],
+      "call": {"security_status": null, "allow_partial_adv": false},
+      "expected": {
+        "total": "1900", "exact": "95", "value": "95.00",
+        "traded_sessions": 20, "observed_sessions": 20, "missing_sessions": 0,
+        "zero_volume_sessions": 1, "invalid_sessions": 0, "unknown_sessions": 0,
+        "coverage": "1/1", "reason": "",
+        "capacity_default": "4.75", "capacity_optin": "4.75"
+      }
+    },
+    {
+      "id": "R3_invalid_bar",
+      "working": "20 bars are present, but the bar at index 4 is invalid. The window is fully observed (20/20) yet the mean is unknown: total and value are None and the reason names the invalid session. Capacity is None by default and under the opt-in because there is no exact value.",
+      "field": "traded_value",
+      "preload_sessions": 0,
+      "all_bars": {"valid": true, "traded_value": "100", "trades": 10},
+      "bars": [{"index": 4, "valid": false}],
+      "call": {"security_status": null, "allow_partial_adv": false},
+      "expected": {
+        "total": null, "exact": null, "value": null,
+        "traded_sessions": 0, "observed_sessions": 20, "missing_sessions": 0,
+        "zero_volume_sessions": 0, "invalid_sessions": 1, "unknown_sessions": 0,
+        "coverage": "1/1", "reason_prefix": "invalid_bar",
+        "capacity_default": null, "capacity_optin": null
+      }
+    },
+    {
+      "id": "R4_unknown_field",
+      "working": "20 valid bars are present, but traded_value is None at index 7. The session is observed yet the field is unknown, so total and value are None and the reason names the session. Capacity is None in both modes.",
+      "field": "traded_value",
+      "preload_sessions": 0,
+      "all_bars": {"valid": true, "traded_value": "100", "trades": 10},
+      "bars": [{"index": 7, "traded_value": null}],
+      "call": {"security_status": null, "allow_partial_adv": false},
+      "expected": {
+        "total": null, "exact": null, "value": null,
+        "traded_sessions": 0, "observed_sessions": 20, "missing_sessions": 0,
+        "zero_volume_sessions": 0, "invalid_sessions": 0, "unknown_sessions": 1,
+        "coverage": "1/1", "reason_prefix": "traded_value_unknown",
+        "capacity_default": null, "capacity_optin": null
+      }
+    },
+    {
+      "id": "R5_present_status_unknown",
+      "working": "All 20 bars are valid and positive, but the caller explicitly supplies security_status=unknown. D-09 row 5 makes the mean unknown regardless of present values: total and value are None, reason security_status_unknown, capacity None in both modes.",
+      "field": "traded_value",
+      "preload_sessions": 0,
+      "all_bars": {"valid": true, "traded_value": "100", "trades": 10},
+      "bars": [],
+      "call": {"security_status": "unknown", "allow_partial_adv": false},
+      "expected": {
+        "total": null, "exact": null, "value": null,
+        "traded_sessions": 0, "observed_sessions": 20, "missing_sessions": 0,
+        "zero_volume_sessions": 0, "invalid_sessions": 0, "unknown_sessions": 0,
+        "coverage": "1/1", "reason": "security_status_unknown",
+        "capacity_default": null, "capacity_optin": null
+      }
+    },
+    {
+      "id": "R6_never_seen_key",
+      "working": "T2.7: 20 observed sessions exist but the key NEVER appears in any of them. Even with security_status=listed and allow_partial_adv=True, absence is unknown, never 0.00: total, exact and value are None, traded_sessions 0, coverage 0, reason no_observations, capacity None in both modes.",
+      "field": "traded_value",
+      "preload_sessions": 0,
+      "all_bars": null,
+      "bars": [],
+      "call": {"security_status": "listed", "allow_partial_adv": true},
+      "expected": {
+        "total": null, "exact": null, "value": null,
+        "traded_sessions": 0, "observed_sessions": 0, "missing_sessions": 20,
+        "zero_volume_sessions": 0, "invalid_sessions": 0, "unknown_sessions": 0,
+        "coverage": "0/1", "reason": "no_observations",
+        "capacity_default": null, "capacity_optin": null
+      }
+    },
+    {
+      "id": "R7a_previously_seen_absent_unknown_status",
+      "working": "The key has one bar in a preload session before the window, then no bar in any of the 20 window sessions and no lifecycle evidence. D-09 row 7 keeps the mean unknown: total/exact/value None, traded_sessions 0, coverage 0, reason no_observations_in_window, capacity None in both modes.",
+      "field": "traded_value",
+      "preload_sessions": 1,
+      "preload_bar": {"valid": true, "traded_value": "500", "trades": 5},
+      "all_bars": null,
+      "bars": [],
+      "call": {"security_status": null, "allow_partial_adv": false},
+      "expected": {
+        "total": null, "exact": null, "value": null,
+        "traded_sessions": 0, "observed_sessions": 0, "missing_sessions": 20,
+        "zero_volume_sessions": 0, "invalid_sessions": 0, "unknown_sessions": 0,
+        "coverage": "0/1", "reason": "no_observations_in_window",
+        "capacity_default": null, "capacity_optin": null
+      }
+    },
+    {
+      "id": "R7b_previously_seen_partial_unknown_status",
+      "working": "Preloaded key with one positive bar of 1000 at the last window session and 19 missing sessions. The partial estimate is exposed: total 1000, exact 1000/20 = 50, value 50.00, traded_sessions 1, coverage 1/20, reason partial_coverage. Default capacity is None because coverage is below 1/1; the opt-in permits 50 * 0.05 = 2.50.",
+      "field": "traded_value",
+      "preload_sessions": 1,
+      "preload_bar": {"valid": true, "traded_value": "500", "trades": 5},
+      "all_bars": null,
+      "bars": [{"index": 19, "traded_value": "1000", "trades": 10}],
+      "call": {"security_status": null, "allow_partial_adv": false},
+      "expected": {
+        "total": "1000", "exact": "50", "value": "50.00",
+        "traded_sessions": 1, "observed_sessions": 1, "missing_sessions": 19,
+        "zero_volume_sessions": 0, "invalid_sessions": 0, "unknown_sessions": 0,
+        "coverage": "1/20", "reason": "partial_coverage",
+        "capacity_default": null, "capacity_optin": "2.50"
+      }
+    },
+    {
+      "id": "R8a_verified_listed_absent_default",
+      "working": "Preloaded key, no bars in the window, caller verifies listed/not-suspended but does not opt in. Zero-fill is not authorized by default: total/exact/value None, reason no_observations_in_window. Default capacity is None; the explicit opt-in would treat absence as no trade and produce 0.00, which is shown only in capacity_optin.",
+      "field": "traded_value",
+      "preload_sessions": 1,
+      "preload_bar": {"valid": true, "traded_value": "500", "trades": 5},
+      "all_bars": null,
+      "bars": [],
+      "call": {"security_status": "listed", "allow_partial_adv": false},
+      "expected": {
+        "total": null, "exact": null, "value": null,
+        "traded_sessions": 0, "observed_sessions": 0, "missing_sessions": 20,
+        "zero_volume_sessions": 0, "invalid_sessions": 0, "unknown_sessions": 0,
+        "coverage": "0/1", "reason": "no_observations_in_window",
+        "capacity_default": null, "capacity_optin": "0.00"
+      }
+    },
+    {
+      "id": "R8b_verified_listed_absent_optin",
+      "working": "Same verified-listed, all-absent window as R8a, but allow_partial_adv=True is the documented no-trade assumption. Absence is included as zero: total 0, exact 0, value 0.00, traded_sessions 0 (no bar traded), coverage still 0. Reason verified_listed_no_trade. Default capacity (without opt-in) is still None; the opt-in capacity is 0.00.",
+      "field": "traded_value",
+      "preload_sessions": 1,
+      "preload_bar": {"valid": true, "traded_value": "500", "trades": 5},
+      "all_bars": null,
+      "bars": [],
+      "call": {"security_status": "listed", "allow_partial_adv": true},
+      "expected": {
+        "total": "0", "exact": "0", "value": "0.00",
+        "traded_sessions": 0, "observed_sessions": 0, "missing_sessions": 20,
+        "zero_volume_sessions": 0, "invalid_sessions": 0, "unknown_sessions": 0,
+        "coverage": "0/1", "reason": "verified_listed_no_trade",
+        "capacity_default": null, "capacity_optin": "0.00"
+      }
+    },
+    {
+      "id": "R9a_verified_suspended_absent",
+      "working": "Preloaded key, no bars in the window and verified suspended status. Not tradable, so the mean is unknown even with allow_partial_adv=True: total/exact/value None, reason security_status:suspended, both capacities None.",
+      "field": "traded_value",
+      "preload_sessions": 1,
+      "preload_bar": {"valid": true, "traded_value": "500", "trades": 5},
+      "all_bars": null,
+      "bars": [],
+      "call": {"security_status": "suspended", "allow_partial_adv": true},
+      "expected": {
+        "total": null, "exact": null, "value": null,
+        "traded_sessions": 0, "observed_sessions": 0, "missing_sessions": 20,
+        "zero_volume_sessions": 0, "invalid_sessions": 0, "unknown_sessions": 0,
+        "coverage": "0/1", "reason_prefix": "security_status",
+        "capacity_default": null, "capacity_optin": null
+      }
+    },
+    {
+      "id": "R9b_verified_delisted_absent",
+      "working": "Same as R9a with verified delisted status: not tradable, mean unknown, reason security_status:delisted, both capacities None.",
+      "field": "traded_value",
+      "preload_sessions": 1,
+      "preload_bar": {"valid": true, "traded_value": "500", "trades": 5},
+      "all_bars": null,
+      "bars": [],
+      "call": {"security_status": "delisted", "allow_partial_adv": true},
+      "expected": {
+        "total": null, "exact": null, "value": null,
+        "traded_sessions": 0, "observed_sessions": 0, "missing_sessions": 20,
+        "zero_volume_sessions": 0, "invalid_sessions": 0, "unknown_sessions": 0,
+        "coverage": "0/1", "reason_prefix": "security_status",
+        "capacity_default": null, "capacity_optin": null
+      }
+    },
+    {
+      "id": "T2.9_partial_one_of_twenty",
+      "working": "T2.9: one valid bar with traded value 1000 at index 19 and 19 missing bars. total 1000, exact 1000/20 = 50, value 50.00, traded_sessions 1, coverage 1/20, reason partial_coverage. Default capacity is None because coverage 1/20 is below 1/1. With allow_partial_adv=True capacity is floor(50 * 0.05) = 2.50 and the result is still labelled partial_coverage with coverage 1/20.",
+      "field": "traded_value",
+      "preload_sessions": 0,
+      "all_bars": null,
+      "bars": [{"index": 19, "traded_value": "1000", "trades": 10}],
+      "call": {"security_status": null, "allow_partial_adv": false},
+      "expected": {
+        "total": "1000", "exact": "50", "value": "50.00",
+        "traded_sessions": 1, "observed_sessions": 1, "missing_sessions": 19,
+        "zero_volume_sessions": 0, "invalid_sessions": 0, "unknown_sessions": 0,
+        "coverage": "1/20", "reason": "partial_coverage",
+        "capacity_default": null, "capacity_optin": "2.50"
+      }
+    },
+    {
+      "id": "missing_vs_zero_partial_zero",
+      "working": "One explicit zero bar at index 19 and 19 missing bars. The zero bar is observed: total 0, exact 0, value 0.00, traded_sessions 1, zero_volume_sessions 1, coverage 1/20, reason partial_coverage. This is not a never-seen key (exact is not None) and not a full 20-of-20 zero window (traded_sessions is 1, not 20). Default capacity None; the opt-in gives floor(0 * 0.05) = 0.00.",
+      "field": "traded_value",
+      "preload_sessions": 0,
+      "all_bars": null,
+      "bars": [{"index": 19, "traded_value": "0", "trades": 0, "volume": 0}],
+      "call": {"security_status": null, "allow_partial_adv": false},
+      "expected": {
+        "total": "0", "exact": "0", "value": "0.00",
+        "traded_sessions": 1, "observed_sessions": 1, "missing_sessions": 19,
+        "zero_volume_sessions": 1, "invalid_sessions": 0, "unknown_sessions": 0,
+        "coverage": "1/20", "reason": "partial_coverage",
+        "capacity_default": null, "capacity_optin": "0.00"
+      }
+    },
+    {
+      "id": "partial_19_of_20_below_min_coverage",
+      "working": "Nineteen valid bars of 100 and one missing session. total 1900, exact 1900/20 = 95, value 95.00, traded_sessions 19, coverage 19/20, reason partial_coverage. 19-of-20 is still below the 1/1 minimum, so default capacity is None; the explicit opt-in gives floor(95 * 0.05) = 4.75.",
+      "field": "traded_value",
+      "preload_sessions": 0,
+      "all_bars": {"valid": true, "traded_value": "100", "trades": 10},
+      "bars": [{"index": 19, "missing": true}],
+      "call": {"security_status": null, "allow_partial_adv": false},
+      "expected": {
+        "total": "1900", "exact": "95", "value": "95.00",
+        "traded_sessions": 19, "observed_sessions": 19, "missing_sessions": 1,
+        "zero_volume_sessions": 0, "invalid_sessions": 0, "unknown_sessions": 0,
+        "coverage": "19/20", "reason": "partial_coverage",
+        "capacity_default": null, "capacity_optin": "4.75"
+      }
+    }
+  ]
+}

@@ -1,0 +1,2611 @@
+{
+  "generated_at_utc": "2026-11-19T07:06:01.181956+00:00",
+  "passed": true,
+  "checks_total": 348,
+  "checks_failed": 0,
+  "checks": [
+    {
+      "name": "expected_configs_present",
+      "ok": true,
+      "detail": [
+        "as-committed-month-end-exact-match",
+        "evidence-N10-L63-next_open-no_stop",
+        "evidence-N10-L63-next_open-no_stop-gross_of_costs",
+        "evidence-N10-L63-next_open-sl0.10",
+        "evidence-N20-L63-next_open-no_stop",
+        "evidence-N20-L63-next_open-no_stop-bottom"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:publishable",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:no_unknown_equity",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:equity_rows",
+      "ok": true,
+      "detail": [
+        3300,
+        3300
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:equity_non_null",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:dates_sorted",
+      "ok": true,
+      "detail": [
+        3300,
+        3300
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:total_return_identity",
+      "ok": true,
+      "detail": [
+        "9.07974685351257230624948475",
+        "9.07974685351257230624948475"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:drawdown_details_present",
+      "ok": true,
+      "detail": "dict"
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:drawdown_episode_count",
+      "ok": true,
+      "detail": [
+        93,
+        93
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:max_drawdown_depth",
+      "ok": true,
+      "detail": [
+        "-0.5530274963947277036474604098880325",
+        "-0.5530274963947277036474604099"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:worst_drawdown_peak_date",
+      "ok": true,
+      "detail": [
+        "2018-08-28",
+        "2018-08-28"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:worst_drawdown_trough_date",
+      "ok": true,
+      "detail": [
+        "2020-03-24",
+        "2020-03-24"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:worst_drawdown_recovery_date",
+      "ok": true,
+      "detail": [
+        "2021-04-06",
+        "2021-04-06"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:worst_drawdown_peak_to_trough_days",
+      "ok": true,
+      "detail": [
+        574,
+        574
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:worst_drawdown_peak_to_trough_sessions",
+      "ok": true,
+      "detail": [
+        385,
+        385
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:worst_drawdown_trough_to_recovery_days",
+      "ok": true,
+      "detail": [
+        378,
+        378
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:worst_drawdown_trough_to_recovery_sessions",
+      "ok": true,
+      "detail": [
+        257,
+        257
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:worst_drawdown_total_days",
+      "ok": true,
+      "detail": [
+        952,
+        952
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:worst_drawdown_total_sessions",
+      "ok": true,
+      "detail": [
+        642,
+        642
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:worst_drawdown_recovered",
+      "ok": true,
+      "detail": [
+        true,
+        true
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:longest_drawdown_peak_date",
+      "ok": true,
+      "detail": [
+        "2018-08-28",
+        "2018-08-28"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:longest_drawdown_trough_date",
+      "ok": true,
+      "detail": [
+        "2020-03-24",
+        "2020-03-24"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:longest_drawdown_recovery_date",
+      "ok": true,
+      "detail": [
+        "2021-04-06",
+        "2021-04-06"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:longest_drawdown_total_days",
+      "ok": true,
+      "detail": [
+        952,
+        952
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:longest_drawdown_total_sessions",
+      "ok": true,
+      "detail": [
+        642,
+        642
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:sessions_underwater",
+      "ok": true,
+      "detail": [
+        3067,
+        3067
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:pct_sessions_underwater",
+      "ok": true,
+      "detail": [
+        "0.9293939393939393939393939393939394",
+        3067,
+        3300
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:publishable",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:no_unknown_equity",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:equity_rows",
+      "ok": true,
+      "detail": [
+        3300,
+        3300
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:equity_non_null",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:dates_sorted",
+      "ok": true,
+      "detail": [
+        3300,
+        3300
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:total_return_identity",
+      "ok": true,
+      "detail": [
+        "8.522386025651640107680594774",
+        "8.522386025651640107680594774"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:drawdown_details_present",
+      "ok": true,
+      "detail": "dict"
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:drawdown_episode_count",
+      "ok": true,
+      "detail": [
+        98,
+        98
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:max_drawdown_depth",
+      "ok": true,
+      "detail": [
+        "-0.4163189631488365432417072339682699",
+        "-0.4163189631488365432417072340"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:worst_drawdown_peak_date",
+      "ok": true,
+      "detail": [
+        "2018-05-09",
+        "2018-05-09"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:worst_drawdown_trough_date",
+      "ok": true,
+      "detail": [
+        "2019-09-19",
+        "2019-09-19"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:worst_drawdown_recovery_date",
+      "ok": true,
+      "detail": [
+        "2020-09-16",
+        "2020-09-16"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:worst_drawdown_peak_to_trough_days",
+      "ok": true,
+      "detail": [
+        498,
+        498
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:worst_drawdown_peak_to_trough_sessions",
+      "ok": true,
+      "detail": [
+        336,
+        336
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:worst_drawdown_trough_to_recovery_days",
+      "ok": true,
+      "detail": [
+        363,
+        363
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:worst_drawdown_trough_to_recovery_sessions",
+      "ok": true,
+      "detail": [
+        246,
+        246
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:worst_drawdown_total_days",
+      "ok": true,
+      "detail": [
+        861,
+        861
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:worst_drawdown_total_sessions",
+      "ok": true,
+      "detail": [
+        582,
+        582
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:worst_drawdown_recovered",
+      "ok": true,
+      "detail": [
+        true,
+        true
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:longest_drawdown_peak_date",
+      "ok": true,
+      "detail": [
+        "2018-05-09",
+        "2018-05-09"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:longest_drawdown_trough_date",
+      "ok": true,
+      "detail": [
+        "2019-09-19",
+        "2019-09-19"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:longest_drawdown_recovery_date",
+      "ok": true,
+      "detail": [
+        "2020-09-16",
+        "2020-09-16"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:longest_drawdown_total_days",
+      "ok": true,
+      "detail": [
+        861,
+        861
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:longest_drawdown_total_sessions",
+      "ok": true,
+      "detail": [
+        582,
+        582
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:sessions_underwater",
+      "ok": true,
+      "detail": [
+        3069,
+        3069
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:pct_sessions_underwater",
+      "ok": true,
+      "detail": [
+        "0.93",
+        3069,
+        3300
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:publishable",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:no_unknown_equity",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:equity_rows",
+      "ok": true,
+      "detail": [
+        3300,
+        3300
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:equity_non_null",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:dates_sorted",
+      "ok": true,
+      "detail": [
+        3300,
+        3300
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:total_return_identity",
+      "ok": true,
+      "detail": [
+        "7.521779653673394058473513223",
+        "7.521779653673394058473513223"
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:drawdown_details_present",
+      "ok": true,
+      "detail": "dict"
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:drawdown_episode_count",
+      "ok": true,
+      "detail": [
+        85,
+        85
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:max_drawdown_depth",
+      "ok": true,
+      "detail": [
+        "-0.5670845105872322466302064678427955",
+        "-0.5670845105872322466302064678"
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:worst_drawdown_peak_date",
+      "ok": true,
+      "detail": [
+        "2018-01-08",
+        "2018-01-08"
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:worst_drawdown_trough_date",
+      "ok": true,
+      "detail": [
+        "2020-03-24",
+        "2020-03-24"
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:worst_drawdown_recovery_date",
+      "ok": true,
+      "detail": [
+        "2021-05-10",
+        "2021-05-10"
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:worst_drawdown_peak_to_trough_days",
+      "ok": true,
+      "detail": [
+        806,
+        806
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:worst_drawdown_peak_to_trough_sessions",
+      "ok": true,
+      "detail": [
+        543,
+        543
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:worst_drawdown_trough_to_recovery_days",
+      "ok": true,
+      "detail": [
+        412,
+        412
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:worst_drawdown_trough_to_recovery_sessions",
+      "ok": true,
+      "detail": [
+        279,
+        279
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:worst_drawdown_total_days",
+      "ok": true,
+      "detail": [
+        1218,
+        1218
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:worst_drawdown_total_sessions",
+      "ok": true,
+      "detail": [
+        822,
+        822
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:worst_drawdown_recovered",
+      "ok": true,
+      "detail": [
+        true,
+        true
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:longest_drawdown_peak_date",
+      "ok": true,
+      "detail": [
+        "2018-01-08",
+        "2018-01-08"
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:longest_drawdown_trough_date",
+      "ok": true,
+      "detail": [
+        "2020-03-24",
+        "2020-03-24"
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:longest_drawdown_recovery_date",
+      "ok": true,
+      "detail": [
+        "2021-05-10",
+        "2021-05-10"
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:longest_drawdown_total_days",
+      "ok": true,
+      "detail": [
+        1218,
+        1218
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:longest_drawdown_total_sessions",
+      "ok": true,
+      "detail": [
+        822,
+        822
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:sessions_underwater",
+      "ok": true,
+      "detail": [
+        3069,
+        3069
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:pct_sessions_underwater",
+      "ok": true,
+      "detail": [
+        "0.93",
+        3069,
+        3300
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:publishable",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:no_unknown_equity",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:equity_rows",
+      "ok": true,
+      "detail": [
+        3300,
+        3300
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:equity_non_null",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:dates_sorted",
+      "ok": true,
+      "detail": [
+        3300,
+        3300
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:total_return_identity",
+      "ok": true,
+      "detail": [
+        "-0.640062577452619946675051177",
+        "-0.640062577452619946675051177"
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:drawdown_details_present",
+      "ok": true,
+      "detail": "dict"
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:drawdown_episode_count",
+      "ok": true,
+      "detail": [
+        6,
+        6
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:max_drawdown_depth",
+      "ok": true,
+      "detail": [
+        "-0.9160165099036775885034036888342863",
+        "-0.9160165099036775885034036888"
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:worst_drawdown_peak_date",
+      "ok": true,
+      "detail": [
+        "2015-04-16",
+        "2015-04-16"
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:worst_drawdown_trough_date",
+      "ok": true,
+      "detail": [
+        "2020-03-25",
+        "2020-03-25"
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:worst_drawdown_recovery_date",
+      "ok": true,
+      "detail": [
+        null,
+        null
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:worst_drawdown_peak_to_trough_days",
+      "ok": true,
+      "detail": [
+        1805,
+        1805
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:worst_drawdown_peak_to_trough_sessions",
+      "ok": true,
+      "detail": [
+        1222,
+        1222
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:worst_drawdown_trough_to_recovery_days",
+      "ok": true,
+      "detail": [
+        null,
+        null
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:worst_drawdown_trough_to_recovery_sessions",
+      "ok": true,
+      "detail": [
+        null,
+        null
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:worst_drawdown_total_days",
+      "ok": true,
+      "detail": [
+        4185,
+        4185
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:worst_drawdown_total_sessions",
+      "ok": true,
+      "detail": [
+        2839,
+        2839
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:worst_drawdown_recovered",
+      "ok": true,
+      "detail": [
+        false,
+        false
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:longest_drawdown_peak_date",
+      "ok": true,
+      "detail": [
+        "2015-04-16",
+        "2015-04-16"
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:longest_drawdown_trough_date",
+      "ok": true,
+      "detail": [
+        "2020-03-25",
+        "2020-03-25"
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:longest_drawdown_recovery_date",
+      "ok": true,
+      "detail": [
+        null,
+        null
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:longest_drawdown_total_days",
+      "ok": true,
+      "detail": [
+        4185,
+        4185
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:longest_drawdown_total_sessions",
+      "ok": true,
+      "detail": [
+        2839,
+        2839
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:sessions_underwater",
+      "ok": true,
+      "detail": [
+        3280,
+        3280
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:pct_sessions_underwater",
+      "ok": true,
+      "detail": [
+        "0.9939393939393939393939393939393939",
+        3280,
+        3300
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:publishable",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:no_unknown_equity",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:equity_rows",
+      "ok": true,
+      "detail": [
+        3300,
+        3300
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:equity_non_null",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:dates_sorted",
+      "ok": true,
+      "detail": [
+        3300,
+        3300
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:total_return_identity",
+      "ok": true,
+      "detail": [
+        "13.0444347473958635085311",
+        "13.0444347473958635085311"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:drawdown_details_present",
+      "ok": true,
+      "detail": "dict"
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:drawdown_episode_count",
+      "ok": true,
+      "detail": [
+        100,
+        100
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:max_drawdown_depth",
+      "ok": true,
+      "detail": [
+        "-0.5330841384600618206435863836386959",
+        "-0.5330841384600618206435863836"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:worst_drawdown_peak_date",
+      "ok": true,
+      "detail": [
+        "2018-08-28",
+        "2018-08-28"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:worst_drawdown_trough_date",
+      "ok": true,
+      "detail": [
+        "2020-03-24",
+        "2020-03-24"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:worst_drawdown_recovery_date",
+      "ok": true,
+      "detail": [
+        "2021-02-25",
+        "2021-02-25"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:worst_drawdown_peak_to_trough_days",
+      "ok": true,
+      "detail": [
+        574,
+        574
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:worst_drawdown_peak_to_trough_sessions",
+      "ok": true,
+      "detail": [
+        385,
+        385
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:worst_drawdown_trough_to_recovery_days",
+      "ok": true,
+      "detail": [
+        338,
+        338
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:worst_drawdown_trough_to_recovery_sessions",
+      "ok": true,
+      "detail": [
+        232,
+        232
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:worst_drawdown_total_days",
+      "ok": true,
+      "detail": [
+        912,
+        912
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:worst_drawdown_total_sessions",
+      "ok": true,
+      "detail": [
+        617,
+        617
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:worst_drawdown_recovered",
+      "ok": true,
+      "detail": [
+        true,
+        true
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:longest_drawdown_peak_date",
+      "ok": true,
+      "detail": [
+        "2018-08-28",
+        "2018-08-28"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:longest_drawdown_trough_date",
+      "ok": true,
+      "detail": [
+        "2020-03-24",
+        "2020-03-24"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:longest_drawdown_recovery_date",
+      "ok": true,
+      "detail": [
+        "2021-02-25",
+        "2021-02-25"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:longest_drawdown_total_days",
+      "ok": true,
+      "detail": [
+        912,
+        912
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:longest_drawdown_total_sessions",
+      "ok": true,
+      "detail": [
+        617,
+        617
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:sessions_underwater",
+      "ok": true,
+      "detail": [
+        3046,
+        3046
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:pct_sessions_underwater",
+      "ok": true,
+      "detail": [
+        "0.9230303030303030303030303030303030",
+        3046,
+        3300
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:publishable",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "name": "as-committed-month-end-exact-match:no_unknown_equity",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "as-committed-month-end-exact-match:equity_rows",
+      "ok": true,
+      "detail": [
+        3300,
+        3300
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:equity_non_null",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "as-committed-month-end-exact-match:dates_sorted",
+      "ok": true,
+      "detail": [
+        3300,
+        3300
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:total_return_identity",
+      "ok": true,
+      "detail": [
+        "12.64001116241470001905741208",
+        "12.64001116241470001905741208"
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:drawdown_details_present",
+      "ok": true,
+      "detail": "dict"
+    },
+    {
+      "name": "as-committed-month-end-exact-match:drawdown_episode_count",
+      "ok": true,
+      "detail": [
+        95,
+        95
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:max_drawdown_depth",
+      "ok": true,
+      "detail": [
+        "-0.5530274963947277036474604098880325",
+        "-0.5530274963947277036474604099"
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:worst_drawdown_peak_date",
+      "ok": true,
+      "detail": [
+        "2018-08-28",
+        "2018-08-28"
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:worst_drawdown_trough_date",
+      "ok": true,
+      "detail": [
+        "2020-03-24",
+        "2020-03-24"
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:worst_drawdown_recovery_date",
+      "ok": true,
+      "detail": [
+        "2021-04-06",
+        "2021-04-06"
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:worst_drawdown_peak_to_trough_days",
+      "ok": true,
+      "detail": [
+        574,
+        574
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:worst_drawdown_peak_to_trough_sessions",
+      "ok": true,
+      "detail": [
+        385,
+        385
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:worst_drawdown_trough_to_recovery_days",
+      "ok": true,
+      "detail": [
+        378,
+        378
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:worst_drawdown_trough_to_recovery_sessions",
+      "ok": true,
+      "detail": [
+        257,
+        257
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:worst_drawdown_total_days",
+      "ok": true,
+      "detail": [
+        952,
+        952
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:worst_drawdown_total_sessions",
+      "ok": true,
+      "detail": [
+        642,
+        642
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:worst_drawdown_recovered",
+      "ok": true,
+      "detail": [
+        true,
+        true
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:longest_drawdown_peak_date",
+      "ok": true,
+      "detail": [
+        "2018-08-28",
+        "2018-08-28"
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:longest_drawdown_trough_date",
+      "ok": true,
+      "detail": [
+        "2020-03-24",
+        "2020-03-24"
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:longest_drawdown_recovery_date",
+      "ok": true,
+      "detail": [
+        "2021-04-06",
+        "2021-04-06"
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:longest_drawdown_total_days",
+      "ok": true,
+      "detail": [
+        952,
+        952
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:longest_drawdown_total_sessions",
+      "ok": true,
+      "detail": [
+        642,
+        642
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:sessions_underwater",
+      "ok": true,
+      "detail": [
+        3060,
+        3060
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:pct_sessions_underwater",
+      "ok": true,
+      "detail": [
+        "0.9272727272727272727272727272727273",
+        3060,
+        3300
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:no_unproven_universe_holds",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:no_unproven_universe_holds",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:no_unproven_universe_holds",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:no_unproven_universe_holds",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:no_unproven_universe_holds",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "primary_direction_top",
+      "ok": true,
+      "detail": "top"
+    },
+    {
+      "name": "bottom_direction_bottom",
+      "ok": true,
+      "detail": "bottom"
+    },
+    {
+      "name": "bottom_engine_label_marked",
+      "ok": true,
+      "detail": "monthly-N20-L63-next_open-no_exit_overlay-bottom-last_close_writeoff"
+    },
+    {
+      "name": "bottom_and_top_select_different_books",
+      "ok": true,
+      "detail": [
+        20,
+        10
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:charges_reconcile",
+      "ok": true,
+      "detail": [
+        "15178939.58430128592167815255",
+        "15178939.58430128592167815255"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:buy_charges_positive",
+      "ok": true,
+      "detail": "7901818.606725600837421531864"
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop:sell_charges_positive",
+      "ok": true,
+      "detail": "7277120.977575685084256620682"
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:charges_reconcile",
+      "ok": true,
+      "detail": [
+        "15333863.09507871838749605223",
+        "15333863.09507871838749605223"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:buy_charges_positive",
+      "ok": true,
+      "detail": "7965548.295215723172624427724"
+    },
+    {
+      "name": "evidence-N10-L63-next_open-sl0.10:sell_charges_positive",
+      "ok": true,
+      "detail": "7368314.799862995214871624506"
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:charges_reconcile",
+      "ok": true,
+      "detail": [
+        "11446499.11499189277971186777",
+        "11446499.11499189277971186777"
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:buy_charges_positive",
+      "ok": true,
+      "detail": "5955078.111466446295358318136"
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop:sell_charges_positive",
+      "ok": true,
+      "detail": "5491421.003525446484353549638"
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:charges_reconcile",
+      "ok": true,
+      "detail": [
+        "1787343.562374126401603011770",
+        "1787343.562374126401603011770"
+      ]
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:buy_charges_positive",
+      "ok": true,
+      "detail": "937625.629738668653017570690"
+    },
+    {
+      "name": "evidence-N20-L63-next_open-no_stop-bottom:sell_charges_positive",
+      "ok": true,
+      "detail": "849717.932635457748585441080"
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:charges_reconcile",
+      "ok": true,
+      "detail": [
+        "0E-19",
+        "0E-19"
+      ]
+    },
+    {
+      "name": "evidence-N10-L63-next_open-no_stop-gross_of_costs:zero_charges",
+      "ok": true,
+      "detail": "0E-19"
+    },
+    {
+      "name": "as-committed-month-end-exact-match:charges_reconcile",
+      "ok": true,
+      "detail": [
+        "10075666.50944667259235887923",
+        "10075666.50944667259235887923"
+      ]
+    },
+    {
+      "name": "as-committed-month-end-exact-match:buy_charges_positive",
+      "ok": true,
+      "detail": "5230776.959969697508757414424"
+    },
+    {
+      "name": "as-committed-month-end-exact-match:sell_charges_positive",
+      "ok": true,
+      "detail": "4844889.549476975083601464802"
+    },
+    {
+      "name": "gross_costs_raise_final_equity",
+      "ok": true,
+      "detail": [
+        "140444347.4739586350853110000",
+        "100797468.5351257230624948475"
+      ]
+    },
+    {
+      "name": "calendar_count",
+      "ok": true,
+      "detail": 171
+    },
+    {
+      "name": "calendar_composition",
+      "ok": true,
+      "detail": {
+        "batch8_monthly_exact_snapshots": 107,
+        "batch9_post_2022_anchors": 64
+      }
+    },
+    {
+      "name": "universe_no_empty_dates",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "universe_min_members",
+      "ok": true,
+      "detail": {
+        "min": 499,
+        "median": 501,
+        "max": 505
+      }
+    },
+    {
+      "name": "benchmark:NIFTY500_SPLICED_NSE:sorted_unique",
+      "ok": true,
+      "detail": [
+        3419,
+        3419
+      ]
+    },
+    {
+      "name": "benchmark:NIFTY500_SPLICED_NSE:positive",
+      "ok": true,
+      "detail": 3848.8
+    },
+    {
+      "name": "benchmark:NIFTY50_SPLICED_NSE:sorted_unique",
+      "ok": true,
+      "detail": [
+        3419,
+        3419
+      ]
+    },
+    {
+      "name": "benchmark:NIFTY50_SPLICED_NSE:positive",
+      "ok": true,
+      "detail": 4835.65
+    },
+    {
+      "name": "benchmark:NIFTY50_YAHOO:sorted_unique",
+      "ok": true,
+      "detail": [
+        4697,
+        4697
+      ]
+    },
+    {
+      "name": "benchmark:NIFTY50_YAHOO:positive",
+      "ok": true,
+      "detail": 2524.199951171875
+    },
+    {
+      "name": "benchmark:nifty500_spliced_coverage",
+      "ok": true,
+      "detail": [
+        "2012-02-21",
+        "2025-12-31"
+      ]
+    },
+    {
+      "name": "recompute:evidence-N10-L63-next_open-no_stop:NIFTY500_SPLICED_NSE:n",
+      "ok": true,
+      "detail": [
+        3098,
+        3098
+      ]
+    },
+    {
+      "name": "recompute:evidence-N10-L63-next_open-no_stop:NIFTY500_SPLICED_NSE:beta",
+      "ok": true,
+      "detail": [
+        "1.114826081851222375227218965476201",
+        1.1148260818512221
+      ]
+    },
+    {
+      "name": "recompute:evidence-N10-L63-next_open-no_stop:NIFTY500_SPLICED_NSE:alpha_linear",
+      "ok": true,
+      "detail": [
+        "0.05564199242673423229866891097486493",
+        0.05564199242673371
+      ]
+    },
+    {
+      "name": "recompute:evidence-N10-L63-next_open-no_stop:NIFTY500_SPLICED_NSE:alpha_geometric",
+      "ok": true,
+      "detail": [
+        "0.057212630088141639520028732164592",
+        0.05721263008813127
+      ]
+    },
+    {
+      "name": "recompute:evidence-N10-L63-next_open-no_stop:NIFTY500_SPLICED_NSE:tracking_error",
+      "ok": true,
+      "detail": [
+        "0.2130219999534406104529347565247111",
+        0.21302199995344057
+      ]
+    },
+    {
+      "name": "recompute:evidence-N10-L63-next_open-no_stop:NIFTY500_SPLICED_NSE:alpha_t_ols",
+      "ok": true,
+      "detail": [
+        0.9176863646122272,
+        0.9176863646122133
+      ]
+    },
+    {
+      "name": "recompute:evidence-N10-L63-next_open-no_stop:NIFTY50_SPLICED_NSE:n",
+      "ok": true,
+      "detail": [
+        3098,
+        3098
+      ]
+    },
+    {
+      "name": "recompute:evidence-N10-L63-next_open-no_stop:NIFTY50_SPLICED_NSE:beta",
+      "ok": true,
+      "detail": [
+        "0.9510226955476525673264908138162201",
+        0.9510226955476523
+      ]
+    },
+    {
+      "name": "recompute:evidence-N10-L63-next_open-no_stop:NIFTY50_SPLICED_NSE:alpha_linear",
+      "ok": true,
+      "detail": [
+        "0.09138275944614749791557499148753590",
+        0.09138275944614707
+      ]
+    },
+    {
+      "name": "recompute:evidence-N10-L63-next_open-no_stop:NIFTY50_SPLICED_NSE:alpha_geometric",
+      "ok": true,
+      "detail": [
+        "0.095670160064920268642275247558523",
+        0.09567016006490636
+      ]
+    },
+    {
+      "name": "recompute:evidence-N10-L63-next_open-no_stop:NIFTY50_SPLICED_NSE:tracking_error",
+      "ok": true,
+      "detail": [
+        "0.2314790899398079080675510401924729",
+        0.2314790899398079
+      ]
+    },
+    {
+      "name": "recompute:evidence-N10-L63-next_open-no_stop:NIFTY50_SPLICED_NSE:alpha_t_ols",
+      "ok": true,
+      "detail": [
+        1.3829304405763825,
+        1.382930440576375
+      ]
+    },
+    {
+      "name": "recompute:evidence-N10-L63-next_open-no_stop:NIFTY50_YAHOO:n",
+      "ok": true,
+      "detail": [
+        3276,
+        3276
+      ]
+    },
+    {
+      "name": "recompute:evidence-N10-L63-next_open-no_stop:NIFTY50_YAHOO:beta",
+      "ok": true,
+      "detail": [
+        "0.9468182167001639135546323753171849",
+        0.9468182167001638
+      ]
+    },
+    {
+      "name": "recompute:evidence-N10-L63-next_open-no_stop:NIFTY50_YAHOO:alpha_linear",
+      "ok": true,
+      "detail": [
+        "0.1069669072006570877057500659376699",
+        0.10696690720065703
+      ]
+    },
+    {
+      "name": "recompute:evidence-N10-L63-next_open-no_stop:NIFTY50_YAHOO:alpha_geometric",
+      "ok": true,
+      "detail": [
+        "0.112872167169732215274746615248454",
+        0.11287216716970505
+      ]
+    },
+    {
+      "name": "recompute:evidence-N10-L63-next_open-no_stop:NIFTY50_YAHOO:tracking_error",
+      "ok": true,
+      "detail": [
+        "0.2304037215402889652141892669985759",
+        0.23040372154028899
+      ]
+    },
+    {
+      "name": "recompute:evidence-N10-L63-next_open-no_stop:NIFTY50_YAHOO:alpha_t_ols",
+      "ok": true,
+      "detail": [
+        1.6731256274430055,
+        1.6731256274430064
+      ]
+    },
+    {
+      "name": "recompute:evidence-N20-L63-next_open-no_stop-bottom:NIFTY500_SPLICED_NSE:n",
+      "ok": true,
+      "detail": [
+        3098,
+        3098
+      ]
+    },
+    {
+      "name": "recompute:evidence-N20-L63-next_open-no_stop-bottom:NIFTY500_SPLICED_NSE:beta",
+      "ok": true,
+      "detail": [
+        "1.091700309578443775659544874119812",
+        1.091700309578443
+      ]
+    },
+    {
+      "name": "recompute:evidence-N20-L63-next_open-no_stop-bottom:NIFTY500_SPLICED_NSE:alpha_linear",
+      "ok": true,
+      "detail": [
+        "-0.2056660557554844502492797466730947",
+        -0.20566605575548508
+      ]
+    },
+    {
+      "name": "recompute:evidence-N20-L63-next_open-no_stop-bottom:NIFTY500_SPLICED_NSE:alpha_geometric",
+      "ok": true,
+      "detail": [
+        "-0.1859634620694083750045089619221195",
+        -0.18596346206940595
+      ]
+    },
+    {
+      "name": "recompute:evidence-N20-L63-next_open-no_stop-bottom:NIFTY500_SPLICED_NSE:tracking_error",
+      "ok": true,
+      "detail": [
+        "0.1930181455791589358306675555552076",
+        0.19301814557915895
+      ]
+    },
+    {
+      "name": "recompute:evidence-N20-L63-next_open-no_stop-bottom:NIFTY500_SPLICED_NSE:alpha_t_ols",
+      "ok": true,
+      "detail": [
+        -3.740345482322339,
+        -3.7403454823223514
+      ]
+    },
+    {
+      "name": "recompute:evidence-N20-L63-next_open-no_stop-bottom:NIFTY50_SPLICED_NSE:n",
+      "ok": true,
+      "detail": [
+        3098,
+        3098
+      ]
+    },
+    {
+      "name": "recompute:evidence-N20-L63-next_open-no_stop-bottom:NIFTY50_SPLICED_NSE:beta",
+      "ok": true,
+      "detail": [
+        "0.9448562097453877226762361237275755",
+        0.9448562097453872
+      ]
+    },
+    {
+      "name": "recompute:evidence-N20-L63-next_open-no_stop-bottom:NIFTY50_SPLICED_NSE:alpha_linear",
+      "ok": true,
+      "detail": [
+        "-0.1724726679462694045045474291191488",
+        -0.17247266794626984
+      ]
+    },
+    {
+      "name": "recompute:evidence-N20-L63-next_open-no_stop-bottom:NIFTY50_SPLICED_NSE:alpha_geometric",
+      "ok": true,
+      "detail": [
+        "-0.1584684019313189831693977629743168",
+        -0.15846840193131329
+      ]
+    },
+    {
+      "name": "recompute:evidence-N20-L63-next_open-no_stop-bottom:NIFTY50_SPLICED_NSE:tracking_error",
+      "ok": true,
+      "detail": [
+        "0.2111448709437944259678691854459499",
+        0.21114487094379447
+      ]
+    },
+    {
+      "name": "recompute:evidence-N20-L63-next_open-no_stop-bottom:NIFTY50_SPLICED_NSE:alpha_t_ols",
+      "ok": true,
+      "detail": [
+        -2.862345086058966,
+        -2.8623450860589723
+      ]
+    },
+    {
+      "name": "recompute:evidence-N20-L63-next_open-no_stop-bottom:NIFTY50_YAHOO:n",
+      "ok": true,
+      "detail": [
+        3276,
+        3276
+      ]
+    },
+    {
+      "name": "recompute:evidence-N20-L63-next_open-no_stop-bottom:NIFTY50_YAHOO:beta",
+      "ok": true,
+      "detail": [
+        "0.9524328842467490168875141579248312",
+        0.9524328842467488
+      ]
+    },
+    {
+      "name": "recompute:evidence-N20-L63-next_open-no_stop-bottom:NIFTY50_YAHOO:alpha_linear",
+      "ok": true,
+      "detail": [
+        "-0.1545690935198178154078972992374398",
+        -0.15456909351981782
+      ]
+    },
+    {
+      "name": "recompute:evidence-N20-L63-next_open-no_stop-bottom:NIFTY50_YAHOO:alpha_geometric",
+      "ok": true,
+      "detail": [
+        "-0.1432563387810276058493570901694759",
+        -0.14325633878103505
+      ]
+    },
+    {
+      "name": "recompute:evidence-N20-L63-next_open-no_stop-bottom:NIFTY50_YAHOO:tracking_error",
+      "ok": true,
+      "detail": [
+        "0.2095577752801771761751425026740989",
+        0.20955777528017716
+      ]
+    },
+    {
+      "name": "recompute:evidence-N20-L63-next_open-no_stop-bottom:NIFTY50_YAHOO:alpha_t_ols",
+      "ok": true,
+      "detail": [
+        -2.6581379632423348,
+        -2.6581379632423365
+      ]
+    },
+    {
+      "name": "gsec:plausible_rate",
+      "ok": true,
+      "detail": "0.064902298532256782405232967"
+    },
+    {
+      "name": "flagship_csv_exists",
+      "ok": true,
+      "detail": "D:\\fix_Investment_backtesting\\verification\\research\\alpha-backtest\\FLAGSHIP_RESULTS.csv"
+    },
+    {
+      "name": "final_csv_exists",
+      "ok": true,
+      "detail": "D:\\fix_Investment_backtesting\\verification\\research\\alpha-backtest\\FINAL_RESULTS.csv"
+    },
+    {
+      "name": "flagship_csv:header_unique",
+      "ok": true,
+      "detail": 130
+    },
+    {
+      "name": "flagship_csv:row_count",
+      "ok": true,
+      "detail": 6
+    },
+    {
+      "name": "flagship_csv:config_ids",
+      "ok": true,
+      "detail": [
+        "nifty500_bottom_N20_L63_monthly_none",
+        "nifty500_top_N10_L63_monthly_none",
+        "nifty500_top_N10_L63_monthly_none_month_end_exact",
+        "nifty500_top_N10_L63_monthly_none_zero_cost",
+        "nifty500_top_N10_L63_monthly_sl10",
+        "nifty500_top_N20_L63_monthly_none"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none:final_equity",
+      "ok": true,
+      "detail": [
+        "100797468.54",
+        "100797468.5351257230624948475"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none:cagr",
+      "ok": true,
+      "detail": [
+        "19.30",
+        "0.192963242125897321707756876394504"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none:max_drawdown",
+      "ok": true,
+      "detail": [
+        "-55.30",
+        "-0.5530274963947277036474604098880325"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none:max_dd_total_days",
+      "ok": true,
+      "detail": [
+        "952",
+        952
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none:max_dd_total_sessions",
+      "ok": true,
+      "detail": [
+        "642",
+        642
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none:pct_sessions_underwater",
+      "ok": true,
+      "detail": [
+        "92.94",
+        "0.9293939393939393939393939393939394"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none:scheduled_rebalances",
+      "ok": true,
+      "detail": [
+        "171",
+        171
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none:alpha_linear",
+      "ok": true,
+      "detail": [
+        "10.70",
+        "0.1069669072006570877057500659376699"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none:alpha_t_nw5",
+      "ok": true,
+      "detail": [
+        "1.6166",
+        1.6166459264392703
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none:total_charges",
+      "ok": true,
+      "detail": [
+        "15178939.58",
+        "15178939.58430128592167815255"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none:benchmark",
+      "ok": true,
+      "detail": "NIFTY 50 price index (Yahoo ^NSEI)"
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_sl10:final_equity",
+      "ok": true,
+      "detail": [
+        "95223860.26",
+        "95223860.25651640107680594774"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_sl10:cagr",
+      "ok": true,
+      "detail": [
+        "18.78",
+        "0.187792522897620715784488341705195"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_sl10:max_drawdown",
+      "ok": true,
+      "detail": [
+        "-41.63",
+        "-0.4163189631488365432417072339682699"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_sl10:max_dd_total_days",
+      "ok": true,
+      "detail": [
+        "861",
+        861
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_sl10:max_dd_total_sessions",
+      "ok": true,
+      "detail": [
+        "582",
+        582
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_sl10:pct_sessions_underwater",
+      "ok": true,
+      "detail": [
+        "93.00",
+        "0.93"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_sl10:scheduled_rebalances",
+      "ok": true,
+      "detail": [
+        "171",
+        171
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_sl10:alpha_linear",
+      "ok": true,
+      "detail": [
+        "12.06",
+        "0.1205835036378072855490358401188577"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_sl10:alpha_t_nw5",
+      "ok": true,
+      "detail": [
+        "1.9527",
+        1.9527075489649957
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_sl10:total_charges",
+      "ok": true,
+      "detail": [
+        "15333863.10",
+        "15333863.09507871838749605223"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_sl10:benchmark",
+      "ok": true,
+      "detail": "NIFTY 50 price index (Yahoo ^NSEI)"
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N20_L63_monthly_none:final_equity",
+      "ok": true,
+      "detail": [
+        "85217796.54",
+        "85217796.53673394058473513223"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N20_L63_monthly_none:cagr",
+      "ok": true,
+      "detail": [
+        "17.78",
+        "0.177765090523809006066720815008085"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N20_L63_monthly_none:max_drawdown",
+      "ok": true,
+      "detail": [
+        "-56.71",
+        "-0.5670845105872322466302064678427955"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N20_L63_monthly_none:max_dd_total_days",
+      "ok": true,
+      "detail": [
+        "1218",
+        1218
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N20_L63_monthly_none:max_dd_total_sessions",
+      "ok": true,
+      "detail": [
+        "822",
+        822
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N20_L63_monthly_none:pct_sessions_underwater",
+      "ok": true,
+      "detail": [
+        "93.00",
+        "0.93"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N20_L63_monthly_none:scheduled_rebalances",
+      "ok": true,
+      "detail": [
+        "171",
+        171
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N20_L63_monthly_none:alpha_linear",
+      "ok": true,
+      "detail": [
+        "8.48",
+        "0.08482447379272707710115561077030158"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N20_L63_monthly_none:alpha_t_nw5",
+      "ok": true,
+      "detail": [
+        "1.5373",
+        1.5372653180884874
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N20_L63_monthly_none:total_charges",
+      "ok": true,
+      "detail": [
+        "11446499.11",
+        "11446499.11499189277971186777"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N20_L63_monthly_none:benchmark",
+      "ok": true,
+      "detail": "NIFTY 50 price index (Yahoo ^NSEI)"
+    },
+    {
+      "name": "flagship_csv:nifty500_bottom_N20_L63_monthly_none:final_equity",
+      "ok": true,
+      "detail": [
+        "3599374.23",
+        "3599374.225473800533249488230"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_bottom_N20_L63_monthly_none:cagr",
+      "ok": true,
+      "detail": [
+        "-7.51",
+        "-0.0750635805075063664632342541369244"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_bottom_N20_L63_monthly_none:max_drawdown",
+      "ok": true,
+      "detail": [
+        "-91.60",
+        "-0.9160165099036775885034036888342863"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_bottom_N20_L63_monthly_none:max_dd_total_days",
+      "ok": true,
+      "detail": [
+        "4185",
+        4185
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_bottom_N20_L63_monthly_none:max_dd_total_sessions",
+      "ok": true,
+      "detail": [
+        "2839",
+        2839
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_bottom_N20_L63_monthly_none:pct_sessions_underwater",
+      "ok": true,
+      "detail": [
+        "99.39",
+        "0.9939393939393939393939393939393939"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_bottom_N20_L63_monthly_none:scheduled_rebalances",
+      "ok": true,
+      "detail": [
+        "171",
+        171
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_bottom_N20_L63_monthly_none:alpha_linear",
+      "ok": true,
+      "detail": [
+        "-15.46",
+        "-0.1545690935198178154078972992374398"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_bottom_N20_L63_monthly_none:alpha_t_nw5",
+      "ok": true,
+      "detail": [
+        "-2.1305",
+        -2.1305091007077372
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_bottom_N20_L63_monthly_none:total_charges",
+      "ok": true,
+      "detail": [
+        "1787343.56",
+        "1787343.562374126401603011770"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_bottom_N20_L63_monthly_none:benchmark",
+      "ok": true,
+      "detail": "NIFTY 50 price index (Yahoo ^NSEI)"
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_zero_cost:final_equity",
+      "ok": true,
+      "detail": [
+        "140444347.47",
+        "140444347.4739586350853110000"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_zero_cost:cagr",
+      "ok": true,
+      "detail": [
+        "22.36",
+        "0.223566557628462947031764054149947"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_zero_cost:max_drawdown",
+      "ok": true,
+      "detail": [
+        "-53.31",
+        "-0.5330841384600618206435863836386959"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_zero_cost:max_dd_total_days",
+      "ok": true,
+      "detail": [
+        "912",
+        912
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_zero_cost:max_dd_total_sessions",
+      "ok": true,
+      "detail": [
+        "617",
+        617
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_zero_cost:pct_sessions_underwater",
+      "ok": true,
+      "detail": [
+        "92.30",
+        "0.9230303030303030303030303030303030"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_zero_cost:scheduled_rebalances",
+      "ok": true,
+      "detail": [
+        "171",
+        171
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_zero_cost:alpha_linear",
+      "ok": true,
+      "detail": [
+        "13.23",
+        "0.1323098989226332900028323556822950"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_zero_cost:alpha_t_nw5",
+      "ok": true,
+      "detail": [
+        "1.9980",
+        1.9979786897783796
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_zero_cost:total_charges",
+      "ok": true,
+      "detail": [
+        "0.00",
+        "0E-19"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_zero_cost:benchmark",
+      "ok": true,
+      "detail": "NIFTY 50 price index (Yahoo ^NSEI)"
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_month_end_exact:final_equity",
+      "ok": true,
+      "detail": [
+        "136400111.62",
+        "136400111.6241470001905741208"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_month_end_exact:cagr",
+      "ok": true,
+      "detail": [
+        "22.08",
+        "0.220839518870247625081833715206730"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_month_end_exact:max_drawdown",
+      "ok": true,
+      "detail": [
+        "-55.30",
+        "-0.5530274963947277036474604098880325"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_month_end_exact:max_dd_total_days",
+      "ok": true,
+      "detail": [
+        "952",
+        952
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_month_end_exact:max_dd_total_sessions",
+      "ok": true,
+      "detail": [
+        "642",
+        642
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_month_end_exact:pct_sessions_underwater",
+      "ok": true,
+      "detail": [
+        "92.73",
+        "0.9272727272727272727272727272727273"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_month_end_exact:scheduled_rebalances",
+      "ok": true,
+      "detail": [
+        "161",
+        161
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_month_end_exact:alpha_linear",
+      "ok": true,
+      "detail": [
+        "12.93",
+        "0.1293341973838232777860197756408355"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_month_end_exact:alpha_t_nw5",
+      "ok": true,
+      "detail": [
+        "1.9824",
+        1.9824352559589489
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_month_end_exact:total_charges",
+      "ok": true,
+      "detail": [
+        "10075666.51",
+        "10075666.50944667259235887923"
+      ]
+    },
+    {
+      "name": "flagship_csv:nifty500_top_N10_L63_monthly_none_month_end_exact:benchmark",
+      "ok": true,
+      "detail": "NIFTY 50 price index (Yahoo ^NSEI)"
+    },
+    {
+      "name": "flagship_csv:primary_cost_drag",
+      "ok": true,
+      "detail": [
+        "22.36",
+        "19.30",
+        "0.223566557628462947031764054149947",
+        "0.192963242125897321707756876394504"
+      ]
+    },
+    {
+      "name": "sweep_csv:header_unique",
+      "ok": true,
+      "detail": 130
+    },
+    {
+      "name": "sweep_csv:row_count",
+      "ok": true,
+      "detail": 968
+    },
+    {
+      "name": "sweep_csv:unique_configs",
+      "ok": true,
+      "detail": [
+        968,
+        968
+      ]
+    },
+    {
+      "name": "sweep_csv:no_nifty750",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "sweep_csv:family_counts",
+      "ok": true,
+      "detail": {
+        "exit_grid_monthly": 576,
+        "universe_core": 150,
+        "counterfactual_zero_cost": 1,
+        "superseded_diagnostic": 1,
+        "nifty50_exit_annual": 144,
+        "bottom_hold_exit": 96
+      }
+    },
+    {
+      "name": "sweep_csv:universe_counts",
+      "ok": true,
+      "detail": {
+        "smallcap250": 180,
+        "midcap150": 180,
+        "msc400": 180,
+        "nifty500": 278,
+        "nifty50": 150
+      }
+    },
+    {
+      "name": "sweep_csv:cadences",
+      "ok": true,
+      "detail": [
+        "2y",
+        "3y",
+        "annual",
+        "monthly",
+        "quarterly",
+        "semiannual"
+      ]
+    },
+    {
+      "name": "sweep_csv:directions",
+      "ok": true,
+      "detail": [
+        "bottom",
+        "top"
+      ]
+    },
+    {
+      "name": "sweep_csv:top_n",
+      "ok": true,
+      "detail": [
+        "10",
+        "20",
+        "25"
+      ]
+    },
+    {
+      "name": "sweep_csv:flagship_rows",
+      "ok": true,
+      "detail": 6
+    },
+    {
+      "name": "sweep_csv:superseded_rows",
+      "ok": true,
+      "detail": 1
+    },
+    {
+      "name": "sweep_csv:zero_cost_rows",
+      "ok": true,
+      "detail": 1
+    },
+    {
+      "name": "sweep_csv:alpha_available",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "sweep_csv:monthly_exit_grid_rows",
+      "ok": true,
+      "detail": 600
+    },
+    {
+      "name": "sweep_csv:monthly_overlays_complete",
+      "ok": true,
+      "detail": [
+        "none",
+        "sl05",
+        "sl05_tp05",
+        "sl05_tp10",
+        "sl05_tp15",
+        "sl05_tp20",
+        "sl10",
+        "sl10_tp05",
+        "sl10_tp10",
+        "sl10_tp15",
+        "sl10_tp20",
+        "sl15",
+        "sl15_tp05",
+        "sl15_tp10",
+        "sl15_tp15",
+        "sl15_tp20",
+        "sl20",
+        "sl20_tp05",
+        "sl20_tp10",
+        "sl20_tp15",
+        "sl20_tp20",
+        "tp05",
+        "tp10",
+        "tp15",
+        "tp20"
+      ]
+    },
+    {
+      "name": "sweep_csv:bottom_hold_exit_rows",
+      "ok": true,
+      "detail": 100
+    },
+    {
+      "name": "sweep_csv:bottom_hold_overlays_complete",
+      "ok": true,
+      "detail": [
+        "none",
+        "sl05",
+        "sl05_tp05",
+        "sl05_tp10",
+        "sl05_tp15",
+        "sl05_tp20",
+        "sl10",
+        "sl10_tp05",
+        "sl10_tp10",
+        "sl10_tp15",
+        "sl10_tp20",
+        "sl15",
+        "sl15_tp05",
+        "sl15_tp10",
+        "sl15_tp15",
+        "sl15_tp20",
+        "sl20",
+        "sl20_tp05",
+        "sl20_tp10",
+        "sl20_tp15",
+        "sl20_tp20",
+        "tp05",
+        "tp10",
+        "tp15",
+        "tp20"
+      ]
+    },
+    {
+      "name": "sweep_csv:bottom_long_holds_all_monthly_universes",
+      "ok": true,
+      "detail": {
+        "midcap150": 4,
+        "msc400": 4,
+        "smallcap250": 4,
+        "nifty500": 4
+      }
+    },
+    {
+      "name": "sweep_csv:nifty50_rows",
+      "ok": true,
+      "detail": 150
+    },
+    {
+      "name": "sweep_csv:rank_contiguous",
+      "ok": true,
+      "detail": [
+        968,
+        "1",
+        "968"
+      ]
+    },
+    {
+      "name": "sweep_csv:sorted_by_sharpe_desc",
+      "ok": true,
+      "detail": [
+        [
+          1.3362,
+          1.3269,
+          1.3159
+        ],
+        [
+          -0.9423,
+          -1.0296,
+          -1.0701
+        ]
+      ]
+    },
+    {
+      "name": "sweep_csv:unranked_rows_last",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "sweep_csv:all_rows:publishable",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "sweep_csv:all_rows:total_return",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "sweep_csv:all_rows:cagr",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "sweep_csv:all_rows:window_years",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "sweep_csv:all_rows:calendar_days",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "sweep_csv:all_rows:pct_underwater",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "sweep_csv:all_rows:drawdown_bounds",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "sweep_csv:all_rows:drawdown_sessions",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "sweep_csv:all_rows:drawdown_days",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "sweep_csv:all_rows:charges_total",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "sweep_csv:all_rows:charges_components",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "sweep_csv:all_rows:turnover",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "sweep_csv:all_rows:charges_bps",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "sweep_csv:all_rows:alpha_geometric",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "sweep_csv:all_rows:flags",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "sweep_csv:all_rows:basis",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "sweep_csv:all_rows:fills",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "sweep_csv:all_rows:horizon",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "sweep_csv:primary_total_return",
+      "ok": true,
+      "detail": [
+        "907.97",
+        "9.07974685351257230624948475"
+      ]
+    },
+    {
+      "name": "sweep_csv:primary_max_dd_duration",
+      "ok": true,
+      "detail": [
+        "952",
+        952
+      ]
+    },
+    {
+      "name": "sweep_csv:primary_alpha",
+      "ok": true,
+      "detail": [
+        "10.70",
+        "0.1069669072006570877057500659376699"
+      ]
+    },
+    {
+      "name": "sweep_csv:primary_evidence_label",
+      "ok": true,
+      "detail": "evidence-N10-L63-next_open-no_stop"
+    }
+  ]
+}

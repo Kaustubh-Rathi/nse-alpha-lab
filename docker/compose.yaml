@@ -1,0 +1,180 @@
+name: nse-alpha-lab
+
+# NSE rotation research lab - container composition.
+#
+# Run from the repository root:
+#   docker compose -f docker/compose.yaml up lab                          # UI on :8501
+#   docker compose -f docker/compose.yaml build lab
+#   docker compose -f docker/compose.yaml --profile test run --rm test    # pytest suite
+#   docker compose -f docker/compose.yaml --profile cli run --rm cli      # shell: pytest + CLI
+#   docker compose -f docker/compose.yaml --profile pdf build pdf         # PDF lane (AGPL)
+#   docker compose -f docker/compose.yaml --profile fetch run --rm fetch  # network lane
+#
+# DELIBERATELY ABSENT: no `postgres` and no `redis` service. Storage is an embedded
+# DuckDB file plus parquet, opened in-process; no module imports psycopg /
+# sqlalchemy / redis / celery. Backtests read local files only and never touch the
+# network; the `fetch` profile is the only lane that fetches data (network access
+# itself is not restricted by this file - that is a policy, not a firewall).
+
+# Shared image for the published runtime (used by `lab`). The context is the
+# repository root (..) so the builder stage can see pyproject.toml and uv.lock.
+x-image: &image
+  build:
+    context: ..
+    dockerfile: docker/Dockerfile
+    args:
+      PYTHON_BASE: ${PYTHON_BASE:-python:3.14-slim}
+  image: ${NSE_IMAGE:-nse-alpha-lab:local}
+
+# Test/dev image: the same Dockerfile with `target: test`, which adds the dev
+# dependency group (pytest) and bakes in tests/. Used by the `test` and `cli`
+# services; it is never the published image.
+x-test-image: &test-image
+  build:
+    context: ..
+    dockerfile: docker/Dockerfile
+    target: test
+    args:
+      PYTHON_BASE: ${PYTHON_BASE:-python:3.14-slim}
+  image: ${NSE_TEST_IMAGE:-nse-alpha-lab:test}
+
+x-pdf-image: &pdf-image
+  build:
+    context: ..
+    dockerfile: docker/Dockerfile
+    args:
+      PYTHON_BASE: ${PYTHON_BASE:-python:3.14-slim}
+      UV_EXTRA: pdf
+  image: ${NSE_PDF_IMAGE:-nse-alpha-lab:pdf}
+
+x-env: &env
+  NSE_DATA_DIR: /app/data
+  PYTHONPATH: /app/src
+  PYTHONUNBUFFERED: "1"
+  HOME: /app
+  MPLBACKEND: Agg
+
+x-hardening: &hardening
+  security_opt:
+    - no-new-privileges:true
+  cap_drop:
+    - ALL
+
+# The DuckDB catalog + parquet live in the repository's ./data so the host CLI and
+# the container agree on exactly one dataset. Bind mount, never a named volume.
+x-data: &data
+  - ../data:/app/data
+
+services:
+  # ---------------------------------------------------------------------------
+  # Default service: the research UI. A bare `up` starts only this one.
+  # ---------------------------------------------------------------------------
+  lab:
+    <<: [*image, *hardening]
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      args:
+        PYTHON_BASE: ${PYTHON_BASE:-python:3.14-slim}
+        UV_EXTRA: lab
+    command:
+      - python
+      - -m
+      - streamlit
+      - run
+      - /app/apps/lab/app.py
+      - --server.port=8501
+      - --server.address=0.0.0.0
+      - --server.headless=true
+      - --browser.gatherUsageStats=false
+    ports:
+      - "8501:8501"
+    volumes: *data
+    environment: *env
+    working_dir: /app
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 15s
+    healthcheck:
+      # Real CLI check: nse_pipeline ships __main__.py, so this runs the same
+      # cli.main() as the console script and exits 0 (verified from a source
+      # checkout: `python -m nse_pipeline --help` -> exit 0). A bare
+      # `import nse_pipeline` would not prove the entry point works.
+      test: ["CMD", "python", "-m", "nse_pipeline", "--help"]
+      interval: 30s
+      timeout: 10s
+      start_period: 20s
+      retries: 3
+
+  # ---------------------------------------------------------------------------
+  # Test lane: opt in with --profile test. Runs the pytest suite offline from the
+  # test image (pytest + tests/ are inside it; no bind mount needed).
+  # ---------------------------------------------------------------------------
+  test:
+    <<: [*test-image, *hardening]
+    profiles: ["test"]
+    entrypoint: []
+    command: ["python", "-m", "pytest", "-q"]
+    working_dir: /app
+    environment: *env
+    restart: "no"
+
+  # ---------------------------------------------------------------------------
+  # CLI lane: opt in with --profile cli. Any command, no ports, no restart.
+  # Runs from the test image, so pytest is available: the dockerised equivalent
+  # of `uv run ...` (pytest, python -m nse_pipeline ...).
+  # ---------------------------------------------------------------------------
+  cli:
+    <<: [*test-image, *hardening]
+    profiles: ["cli"]
+    entrypoint: []
+    command: ["/bin/bash"]
+    stdin_open: true
+    tty: true
+    working_dir: /app
+    volumes:
+      - ../data:/app/data
+      # Read-only source overlays for live iteration; irrelevant to one-shot runs.
+      - ../src:/app/src:ro
+      - ../scripts:/app/scripts:ro
+      - ../tests:/app/tests:ro
+    environment: *env
+
+  # ---------------------------------------------------------------------------
+  # fetch lane: the ONLY service intended to reach the network (NSE archives,
+  # Kaggle, Wayback). Opt in with --profile fetch, and run it explicitly.
+  # ---------------------------------------------------------------------------
+  fetch:
+    <<: [*image, *hardening]
+    profiles: ["fetch"]
+    # The downloaders are the CLI's `fetch` subcommand. There is no
+    # `nse_pipeline.download.__main__`, and the `nse-alpha` console script is not
+    # installed in the image ([tool.uv] package = false), so the module form is
+    # the entrypoint. A bare `run --rm fetch` prints the subcommand help; any
+    # extra arguments are forwarded to it, e.g.
+    #   docker compose ... --profile fetch run --rm fetch \
+    #     --source url --from https://... --dest /app/data/pack
+    entrypoint: ["python", "-m", "nse_pipeline", "fetch"]
+    command: ["--help"]
+    stdin_open: true
+    tty: true
+    working_dir: /app
+    volumes: *data
+    environment: *env
+    restart: "no"
+
+  # ---------------------------------------------------------------------------
+  # PDF lane: same Dockerfile with UV_EXTRA=pdf (pypdf + pymupdf).
+  # pymupdf is AGPL-3.0 - treat the resulting image as the AGPL one.
+  # ---------------------------------------------------------------------------
+  pdf:
+    <<: [*pdf-image, *hardening]
+    profiles: ["pdf"]
+    entrypoint: []
+    command: ["python", "-m", "nse_pipeline.schemes.attachments", "--help"]
+    working_dir: /app
+    volumes: *data
+    environment: *env
+    restart: "no"
+    stdin_open: true
+    tty: true

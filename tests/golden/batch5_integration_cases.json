@@ -1,0 +1,230 @@
+{
+  "schema_version": 1,
+  "fixture": "synthetic_fixture",
+  "status": "hand_derived_independent_oracle_only_not_production_P0_pass",
+  "derivation": "One synthetic identity migrates AAA (INE000000001) to BBB (INE000000002) on 2024-05-03 under a dated documentary merger. The identity edge, continuity boundary, adjustment scope, lifecycle records, scenario portfolio and liquidation order all use the same successor key. Scenario arithmetic is hand-computed: 100000 - 50*102 - 5.10 = 94894.90, then +25*104 - 2.60 = 97492.30; 125 shares marked at 104 give 13000 and NAV 110492.30. Liquidation is hand-computed: 104*(1-100/10000)=102.96; capacity 50 gives gross 5148.00 and STT 10 bps 5.148 rounded half-up to 5.15; net 5142.85. Future documents are appended only to prove they cannot change a frozen decision.",
+  "series": ["EQ"],
+  "bind_first_isin": true,
+  "observations": [
+    {"symbol": "AAA", "series": "EQ", "isin": "INE000000001", "session": "2024-05-01"},
+    {"symbol": "AAA", "series": "EQ", "isin": "INE000000001", "session": "2024-05-02"},
+    {"symbol": "BBB", "series": "EQ", "isin": "INE000000002", "session": "2024-05-03"}
+  ],
+  "edge": {
+    "edge_id": "edge-aaa-bbb",
+    "old_symbol": "AAA",
+    "new_symbol": "BBB",
+    "effective_on": "2024-05-03",
+    "available_at": {"session": "2024-05-03", "phase": 10, "sequence": 0},
+    "citation": "https://example.invalid/synthetic/identity-edge-aaa-bbb",
+    "old_isin": "INE000000001",
+    "new_isin": "INE000000002"
+  },
+  "expected_keys": {
+    "old": "AAA|INE000000001|2024-05-01",
+    "new": "BBB|INE000000002|2024-05-03"
+  },
+  "continuity": {
+    "decision_at": {"session": "2024-05-03", "phase": 60, "sequence": 0},
+    "query_on": "2024-05-03",
+    "boundary": {
+      "boundary_id": "b-merger-aaa-bbb",
+      "event_kind": "merger",
+      "effective_on": "2024-05-03",
+      "evidence": {
+        "publisher": "Synthetic Exchange",
+        "document_id": "SYN/2024/MERGER/101",
+        "published_at": "2024-05-02",
+        "available_at": {"session": "2024-05-03", "phase": 10, "sequence": 0},
+        "effective_from": "2024-05-01",
+        "effective_to": null,
+        "citation": "https://example.invalid/synthetic/merger-101",
+        "content_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      }
+    }
+  },
+  "future_continuity_boundary": {
+    "boundary_id": "b-merger-aaa-bbb-confirm",
+    "event_kind": "merger",
+    "effective_on": "2024-05-03",
+    "evidence": {
+      "publisher": "Synthetic Exchange",
+      "document_id": "SYN/2024/MERGER/102",
+      "published_at": "2024-06-04",
+      "available_at": {"session": "2024-06-05", "phase": 10, "sequence": 0},
+      "effective_from": "2024-05-01",
+      "effective_to": null,
+      "citation": "https://example.invalid/synthetic/merger-102",
+      "content_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+    }
+  },
+  "adjustment": {
+    "prices": [
+      {"on": "2024-05-03", "price": "100"},
+      {"on": "2024-05-06", "price": "102"},
+      {"on": "2024-05-07", "price": "104"}
+    ],
+    "factor": {
+      "action_id": "split-1-for-2",
+      "effective_date": "2024-05-06",
+      "available_at": {"session": "2024-05-06", "phase": 10, "sequence": 0},
+      "factor": "1/2",
+      "scope_from": "2024-05-03",
+      "scope_to": "2024-05-05",
+      "version": 1,
+      "citation": "https://example.invalid/synthetic/split-1-for-2"
+    },
+    "queries": [
+      {
+        "decision_at": {"session": "2024-05-03", "phase": 60, "sequence": 0},
+        "expected_points": [["2024-05-03", "100"], ["2024-05-06", "102"], ["2024-05-07", "104"]],
+        "expected_applied": []
+      },
+      {
+        "decision_at": {"session": "2024-05-06", "phase": 10, "sequence": 0},
+        "expected_points": [["2024-05-03", "50"], ["2024-05-06", "102"], ["2024-05-07", "104"]],
+        "expected_applied": [["split-1-for-2", 1]]
+      }
+    ]
+  },
+  "lifecycle": {
+    "records": [
+      {
+        "state": "listed",
+        "effective_from": "2024-05-03",
+        "available_at": {"session": "2024-05-03", "phase": 10, "sequence": 0},
+        "citation": "https://example.invalid/synthetic/listing-bbb",
+        "terminal_proceeds": null,
+        "effective_to": null,
+        "proceeds_verified": false
+      },
+      {
+        "state": "suspended",
+        "effective_from": "2024-05-08",
+        "available_at": {"session": "2024-05-08", "phase": 10, "sequence": 0},
+        "citation": "https://example.invalid/synthetic/suspension-bbb",
+        "terminal_proceeds": null,
+        "effective_to": "2024-05-10",
+        "proceeds_verified": false
+      },
+      {
+        "state": "listed",
+        "effective_from": "2024-05-13",
+        "available_at": {"session": "2024-05-13", "phase": 10, "sequence": 0},
+        "citation": "https://example.invalid/synthetic/relisting-bbb",
+        "terminal_proceeds": null,
+        "effective_to": null,
+        "proceeds_verified": false
+      },
+      {
+        "state": "delisted",
+        "effective_from": "2024-06-03",
+        "available_at": {"session": "2024-06-03", "phase": 10, "sequence": 0},
+        "citation": "https://example.invalid/synthetic/delisting-bbb",
+        "terminal_proceeds": null,
+        "effective_to": null,
+        "proceeds_verified": false
+      }
+    ],
+    "future_record": {
+      "state": "delisted",
+      "effective_from": "2024-05-14",
+      "available_at": {"session": "2024-06-05", "phase": 10, "sequence": 0},
+      "citation": "https://example.invalid/synthetic/delisting-bbb-confirm",
+      "terminal_proceeds": null,
+      "effective_to": null,
+      "proceeds_verified": false
+    },
+    "queries": [
+      {
+        "on": "2024-05-09",
+        "decision_at": {"session": "2024-05-09", "phase": 60, "sequence": 0},
+        "expected": {"state": "suspended", "reason": "suspended", "terminal_proceeds": null, "blocking_reason": "lifecycle_suspended", "negotiable": false}
+      },
+      {
+        "on": "2024-05-14",
+        "decision_at": {"session": "2024-05-14", "phase": 60, "sequence": 0},
+        "expected": {"state": "listed", "reason": "listed", "terminal_proceeds": null, "blocking_reason": "", "negotiable": true}
+      },
+      {
+        "on": "2024-05-14",
+        "decision_at": {"session": "2024-06-05", "phase": 10, "sequence": 0},
+        "expected": {"state": "delisted", "reason": "delisted_terminal_proceeds_unknown", "terminal_proceeds": null, "blocking_reason": "lifecycle_delisted_terminal_proceeds_unknown", "negotiable": false}
+      },
+      {
+        "on": "2024-06-04",
+        "decision_at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+        "expected": {"state": "delisted", "reason": "delisted_terminal_proceeds_unknown", "terminal_proceeds": null, "blocking_reason": "lifecycle_delisted_terminal_proceeds_unknown", "negotiable": false}
+      },
+      {
+        "on": "2024-04-30",
+        "decision_at": {"session": "2024-04-30", "phase": 60, "sequence": 0},
+        "expected": {"state": "unknown", "reason": "no_authoritative_evidence", "terminal_proceeds": null, "blocking_reason": "lifecycle_unknown", "negotiable": false}
+      }
+    ]
+  },
+  "scenario": {
+    "reference": {
+      "cash": "100000",
+      "holdings": [["BBB|INE000000002|2024-05-03", 100]],
+      "claims": [],
+      "as_of": "2024-05-07"
+    },
+    "operations": [
+      {"kind": "buy", "security_key": "BBB|INE000000002|2024-05-03", "quantity": 50, "price": "102", "fee": "5.10"},
+      {"kind": "sell", "security_key": "BBB|INE000000002|2024-05-03", "quantity": 25, "price": "104", "fee": "2.60"}
+    ],
+    "mark": {"security_key": "BBB|INE000000002|2024-05-03", "price": "104", "on": "2024-05-07", "available_at": {"session": "2024-05-07", "phase": 60, "sequence": 0}},
+    "future_mark": {"security_key": "BBB|INE000000002|2024-05-03", "price": "106", "on": "2024-05-07", "available_at": {"session": "2024-05-08", "phase": 10, "sequence": 0}},
+    "at": {"session": "2024-05-07", "phase": 60, "sequence": 0},
+    "expected": {
+      "reference_cash": "100000",
+      "reference_shares": 100,
+      "cash": "97492.30",
+      "shares": 125,
+      "marked_value": "13000.00",
+      "nav": "110492.30",
+      "reason": "complete_marks",
+      "future_mark_nav": null,
+      "future_mark_reason": "unpriced_holdings"
+    }
+  },
+  "liquidation": {
+    "schedule": {
+      "schedule_id": "synthetic-sell-costs-2024",
+      "effective_from": "2024-01-01",
+      "effective_to": null,
+      "available_at": {"session": "2024-01-01", "phase": 10, "sequence": 0},
+      "citation": "https://example.invalid/synthetic/sell-cost-schedule",
+      "costs": {
+        "brokerage_bps": 0,
+        "brokerage_cap_per_order": 0,
+        "stt_bps_buy": 0,
+        "stt_bps_sell": 10,
+        "stamp_bps_buy": 0,
+        "exchange_bps": 0,
+        "gst_on_brokerage_pct": 0,
+        "schedule_basis": "flat_research_assumption",
+        "monetary_rounding": "paise_half_up_per_component"
+      },
+      "adverse_slippage_bps": "100"
+    },
+    "order": {"order_id": "liq-1", "security_key": "BBB|INE000000002|2024-05-03", "quantity": 60},
+    "price": {"security_key": "BBB|INE000000002|2024-05-03", "price": "104", "on": "2024-05-07", "available_at": {"session": "2024-05-07", "phase": 60, "sequence": 0}, "citation": "https://example.invalid/synthetic/close-bbb"},
+    "capacity": {"security_key": "BBB|INE000000002|2024-05-03", "as_of": "2024-05-07", "available_at": {"session": "2024-05-07", "phase": 60, "sequence": 0}, "capacity_shares": 50, "citation": "https://example.invalid/synthetic/capacity-bbb"},
+    "on": "2024-05-07",
+    "decision_at": {"session": "2024-05-07", "phase": 60, "sequence": 0},
+    "expected": {
+      "status": "estimated",
+      "gross_proceeds": "5148.00",
+      "fees": "5.15",
+      "net_proceeds": "5142.85",
+      "zero_friction_subtotal": "5200.00",
+      "line_status": "capacity_limited",
+      "filled_quantity": 50,
+      "requested_quantity": 60,
+      "reference_price": "104",
+      "slipped_price": "102.96"
+    }
+  }
+}

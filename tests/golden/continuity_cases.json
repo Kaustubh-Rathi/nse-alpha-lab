@@ -1,0 +1,228 @@
+{
+  "schema_version": 1,
+  "fixture": "synthetic_fixture",
+  "status": "hand_derived_independent_oracle_only_not_production_P0_pass",
+  "derivation": "Each case is a hand-written documentary fixture. Expected admission, conflict and non-join outcomes were derived from the owner-approved continuity contract, not from production output. Effective intervals and information horizons are explicit; no name or ISIN similarity is used to join identities.",
+  "cases": [
+    {
+      "id": "admitted_merger_boundary",
+      "working": "A verified merger document published in the 2024-01-01..open interval is available by the 2024-06-03 close and says AAA became BBB on 2024-05-01 plus four synthetic days of settlement/decision lag. Querying 2024-06-04 returns exactly one admitted boundary and preserves AAA and BBB as separate identities.",
+      "boundaries": [
+        {
+          "boundary_id": "b-merger-aaa-bbb",
+          "source_key": "AAA|INE000000001|2019-01-01",
+          "successor_key": "BBB|INE000000002|2024-05-01",
+          "event_kind": "merger",
+          "effective_on": "2024-05-01",
+          "evidence": {
+            "publisher": "Synthetic Exchange",
+            "document_id": "SYN/2024/MERGER/001",
+            "published_at": "2024-05-02",
+            "available_at": {"session": "2024-06-03", "phase": 60, "sequence": 0},
+            "effective_from": "2024-01-01",
+            "effective_to": null,
+            "citation": "https://example.invalid/synthetic/merger-001",
+            "content_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        }
+      ],
+      "decision_at": {"session": "2024-06-03", "phase": 60, "sequence": 0},
+      "queries": [
+        {
+          "source_key": "AAA|INE000000001|2019-01-01",
+          "successor_key": "BBB|INE000000002|2024-05-01",
+          "on": "2024-06-04",
+          "expected": {"continuity": true, "reason": "admitted", "event_kind": "merger"}
+        }
+      ],
+      "expected": {"records": 1, "issues": []}
+    },
+    {
+      "id": "future_evidence_is_invisible",
+      "working": "The same documentary boundary becomes available only on 2024-06-05. A decision frozen at the 2024-06-04 close must see zero records; the later document is not disclosed as a pending or adjacent fact. Resolution is indistinguishable from the no-document case and reports no_admitted_continuity.",
+      "boundaries": [
+        {
+          "boundary_id": "b-future-merger",
+          "source_key": "AAA|INE000000001|2019-01-01",
+          "successor_key": "BBB|INE000000002|2024-05-01",
+          "event_kind": "merger",
+          "effective_on": "2024-05-01",
+          "evidence": {
+            "publisher": "Synthetic Exchange",
+            "document_id": "SYN/2024/MERGER/002",
+            "published_at": "2024-06-04",
+            "available_at": {"session": "2024-06-05", "phase": 10, "sequence": 0},
+            "effective_from": "2024-01-01",
+            "effective_to": null,
+            "citation": "https://example.invalid/synthetic/merger-002",
+            "content_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        }
+      ],
+      "decision_at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+      "queries": [
+        {
+          "source_key": "AAA|INE000000001|2019-01-01",
+          "successor_key": "BBB|INE000000002|2024-05-01",
+          "on": "2024-06-04",
+          "expected": {"continuity": false, "reason": "no_admitted_continuity"}
+        }
+      ],
+      "expected": {"records": 0, "issues": []}
+    },
+    {
+      "id": "outside_effective_interval",
+      "working": "The boundary is available at the decision close but its documentary effective interval ended on 2024-05-31. A 2024-06-10 query is outside the proven interval, so continuity must not be asserted even though the record was admitted for earlier dates.",
+      "boundaries": [
+        {
+          "boundary_id": "b-expired-successor",
+          "source_key": "AAA|INE000000001|2019-01-01",
+          "successor_key": "BBB|INE000000002|2024-05-01",
+          "event_kind": "successor",
+          "effective_on": "2024-05-01",
+          "evidence": {
+            "publisher": "Synthetic Exchange",
+            "document_id": "SYN/2024/SUCCESSOR/003",
+            "published_at": "2024-05-02",
+            "available_at": {"session": "2024-06-03", "phase": 60, "sequence": 0},
+            "effective_from": "2024-05-01",
+            "effective_to": "2024-05-31",
+            "citation": "https://example.invalid/synthetic/successor-003",
+            "content_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          }
+        }
+      ],
+      "decision_at": {"session": "2024-06-03", "phase": 60, "sequence": 0},
+      "queries": [
+        {
+          "source_key": "AAA|INE000000001|2019-01-01",
+          "successor_key": "BBB|INE000000002|2024-05-01",
+          "on": "2024-06-10",
+          "expected": {"continuity": false, "reason": "outside_effective_interval"}
+        }
+      ],
+      "expected": {"records": 1, "issues": []}
+    },
+    {
+      "id": "conflicting_successors_are_not_guessed",
+      "working": "Two equally available documents claim the same source identity became two different successors on the same effective date. A merger cannot silently pick one: zero records are admitted and the ambiguity is reported. Query resolution fails closed with conflicting_evidence.",
+      "boundaries": [
+        {
+          "boundary_id": "b-conflict-b",
+          "source_key": "AAA|INE000000001|2019-01-01",
+          "successor_key": "BBB|INE000000002|2024-05-01",
+          "event_kind": "merger",
+          "effective_on": "2024-05-01",
+          "evidence": {
+            "publisher": "Synthetic Exchange",
+            "document_id": "SYN/2024/CONFLICT/004A",
+            "published_at": "2024-05-02",
+            "available_at": {"session": "2024-06-03", "phase": 60, "sequence": 0},
+            "effective_from": "2024-01-01",
+            "effective_to": null,
+            "citation": "https://example.invalid/synthetic/conflict-004a",
+            "content_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+          }
+        },
+        {
+          "boundary_id": "b-conflict-c",
+          "source_key": "AAA|INE000000001|2019-01-01",
+          "successor_key": "CCC|INE000000003|2024-05-01",
+          "event_kind": "merger",
+          "effective_on": "2024-05-01",
+          "evidence": {
+            "publisher": "Synthetic Exchange",
+            "document_id": "SYN/2024/CONFLICT/004B",
+            "published_at": "2024-05-03",
+            "available_at": {"session": "2024-06-03", "phase": 60, "sequence": 0},
+            "effective_from": "2024-01-01",
+            "effective_to": null,
+            "citation": "https://example.invalid/synthetic/conflict-004b",
+            "content_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+          }
+        }
+      ],
+      "decision_at": {"session": "2024-06-03", "phase": 60, "sequence": 0},
+      "queries": [
+        {
+          "source_key": "AAA|INE000000001|2019-01-01",
+          "successor_key": "BBB|INE000000002|2024-05-01",
+          "on": "2024-06-04",
+          "expected": {"continuity": false, "reason": "conflicting_evidence"}
+        }
+      ],
+      "expected": {"records": 0, "issues": ["ambiguous_successor"]}
+    },
+    {
+      "id": "two_step_chain_preserves_each_identity",
+      "working": "A verified symbol change on 2024-05-01 is followed by a verified successor event on 2024-06-01. Both boundaries are available by 2024-06-03. Each edge remains a separate record; AAA, BBB and CCC are never collapsed into one key.",
+      "boundaries": [
+        {
+          "boundary_id": "b-chain-ab",
+          "source_key": "AAA|INE000000001|2019-01-01",
+          "successor_key": "BBB|INE000000002|2024-05-01",
+          "event_kind": "symbol_change",
+          "effective_on": "2024-05-01",
+          "evidence": {
+            "publisher": "Synthetic Exchange",
+            "document_id": "SYN/2024/SYMBOL/005A",
+            "published_at": "2024-05-02",
+            "available_at": {"session": "2024-05-02", "phase": 60, "sequence": 0},
+            "effective_from": "2024-05-01",
+            "effective_to": null,
+            "citation": "https://example.invalid/synthetic/symbol-005a",
+            "content_sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+          }
+        },
+        {
+          "boundary_id": "b-chain-bc",
+          "source_key": "BBB|INE000000002|2024-05-01",
+          "successor_key": "CCC|INE000000003|2024-06-01",
+          "event_kind": "successor",
+          "effective_on": "2024-06-01",
+          "evidence": {
+            "publisher": "Synthetic Exchange",
+            "document_id": "SYN/2024/SUCCESSOR/005B",
+            "published_at": "2024-06-02",
+            "available_at": {"session": "2024-06-02", "phase": 60, "sequence": 0},
+            "effective_from": "2024-06-01",
+            "effective_to": null,
+            "citation": "https://example.invalid/synthetic/successor-005b",
+            "content_sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+          }
+        }
+      ],
+      "decision_at": {"session": "2024-06-03", "phase": 60, "sequence": 0},
+      "queries": [
+        {
+          "source_key": "AAA|INE000000001|2019-01-01",
+          "successor_key": "BBB|INE000000002|2024-05-01",
+          "on": "2024-06-04",
+          "expected": {"continuity": true, "reason": "admitted", "event_kind": "symbol_change"}
+        },
+        {
+          "source_key": "BBB|INE000000002|2024-05-01",
+          "successor_key": "CCC|INE000000003|2024-06-01",
+          "on": "2024-06-04",
+          "expected": {"continuity": true, "reason": "admitted", "event_kind": "successor"}
+        }
+      ],
+      "expected": {"records": 2, "issues": []}
+    },
+    {
+      "id": "no_documentary_boundary_means_no_join",
+      "working": "No document is supplied. Even though a caller may ask whether AAA became BBB, the empty ledger returns no continuity. Similarity of names or ISINs is not an input to this contract.",
+      "boundaries": [],
+      "decision_at": {"session": "2024-06-03", "phase": 60, "sequence": 0},
+      "queries": [
+        {
+          "source_key": "AAA|INE000000001|2019-01-01",
+          "successor_key": "BBB|INE000000002|2024-05-01",
+          "on": "2024-06-04",
+          "expected": {"continuity": false, "reason": "no_admitted_continuity"}
+        }
+      ],
+      "expected": {"records": 0, "issues": []}
+    }
+  ]
+}

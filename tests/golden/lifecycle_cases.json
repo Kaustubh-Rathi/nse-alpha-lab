@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "fixture": "synthetic_fixture",
+  "status": "hand_derived_independent_oracle_only_not_production_P0_pass",
+  "derivation": "Lifecycle states are hand-written dated documentary fixtures. The latest available record whose effective interval covers the query date wins. No record means UNKNOWN. Missing bars are not an input and never create a state. Delisted terminal proceeds are null unless a verified amount is explicitly supplied; the last close is never consulted.",
+  "cases": [
+    {
+      "id": "listed_evidence",
+      "working": "One listing record is available before the query and its open-ended interval covers 2024-06-04. The state is LISTED and no terminal proceeds exist.",
+      "records": [
+        {
+          "security_key": "AAA",
+          "state": "listed",
+          "effective_from": "2024-01-01",
+          "available_at": {"session": "2023-12-20", "phase": 60, "sequence": 0},
+          "citation": "https://example.invalid/synthetic/listing-aaa",
+          "terminal_proceeds": null,
+          "effective_to": null,
+          "proceeds_verified": false
+        }
+      ],
+      "query": {"security_key": "AAA", "on": "2024-06-04"},
+      "decision_at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+      "expected": {"state": "listed", "reason": "listed", "terminal_proceeds": null, "effective_from": "2024-01-01"}
+    },
+    {
+      "id": "suspension_supersedes_listing",
+      "working": "The listing remains effective but a later dated suspension effective 2024-06-01 is available on 2024-05-30. At 2024-06-04 the latest covering record is SUSPENDED. Suspension is not inferred from a missing bar.",
+      "records": [
+        {
+          "security_key": "AAA",
+          "state": "listed",
+          "effective_from": "2024-01-01",
+          "available_at": {"session": "2023-12-20", "phase": 60, "sequence": 0},
+          "citation": "https://example.invalid/synthetic/listing-aaa",
+          "terminal_proceeds": null,
+          "effective_to": null,
+          "proceeds_verified": false
+        },
+        {
+          "security_key": "AAA",
+          "state": "suspended",
+          "effective_from": "2024-06-01",
+          "available_at": {"session": "2024-05-30", "phase": 60, "sequence": 0},
+          "citation": "https://example.invalid/synthetic/suspension-aaa",
+          "terminal_proceeds": null,
+          "effective_to": null,
+          "proceeds_verified": false
+        }
+      ],
+      "query": {"security_key": "AAA", "on": "2024-06-04"},
+      "decision_at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+      "expected": {"state": "suspended", "reason": "suspended", "terminal_proceeds": null, "effective_from": "2024-06-01"}
+    },
+    {
+      "id": "temporary_non_trading_is_distinct",
+      "working": "A dated temporary non-trading notice effective 2024-06-03 is distinct from suspension and delisting. The state must not be collapsed into either.",
+      "records": [
+        {
+          "security_key": "AAA",
+          "state": "temporary_non_trading",
+          "effective_from": "2024-06-03",
+          "available_at": {"session": "2024-06-03", "phase": 10, "sequence": 0},
+          "citation": "https://example.invalid/synthetic/temporary-aaa",
+          "terminal_proceeds": null,
+          "effective_to": "2024-06-05",
+          "proceeds_verified": false
+        }
+      ],
+      "query": {"security_key": "AAA", "on": "2024-06-04"},
+      "decision_at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+      "expected": {"state": "temporary_non_trading", "reason": "temporary_non_trading", "terminal_proceeds": null, "effective_from": "2024-06-03"}
+    },
+    {
+      "id": "delisted_without_verified_proceeds",
+      "working": "A verified delisting notice establishes DELISTED on 2024-06-01, but no terminal consideration is documented. Terminal proceeds remain null. A last market close, even if nearby, is not substituted.",
+      "records": [
+        {
+          "security_key": "AAA",
+          "state": "delisted",
+          "effective_from": "2024-06-01",
+          "available_at": {"session": "2024-06-01", "phase": 60, "sequence": 0},
+          "citation": "https://example.invalid/synthetic/delisting-aaa",
+          "terminal_proceeds": null,
+          "effective_to": null,
+          "proceeds_verified": false
+        }
+      ],
+      "query": {"security_key": "AAA", "on": "2024-06-04"},
+      "decision_at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+      "expected": {"state": "delisted", "reason": "delisted_terminal_proceeds_unknown", "terminal_proceeds": null, "effective_from": "2024-06-01"}
+    },
+    {
+      "id": "delisted_with_verified_proceeds",
+      "working": "The same delisting notice explicitly documents terminal consideration of 123.45 per share and is marked proceeds_verified. The typed amount is exposed; it was not inferred from a price series.",
+      "records": [
+        {
+          "security_key": "AAA",
+          "state": "delisted",
+          "effective_from": "2024-06-01",
+          "available_at": {"session": "2024-06-01", "phase": 60, "sequence": 0},
+          "citation": "https://example.invalid/synthetic/delisting-aaa-consideration",
+          "terminal_proceeds": "123.45",
+          "effective_to": null,
+          "proceeds_verified": true
+        }
+      ],
+      "query": {"security_key": "AAA", "on": "2024-06-04"},
+      "decision_at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+      "expected": {"state": "delisted", "reason": "delisted_verified_proceeds", "terminal_proceeds": "123.45", "effective_from": "2024-06-01"}
+    },
+    {
+      "id": "missing_evidence_is_unknown",
+      "working": "No lifecycle record exists. Missing OHLCV alone never establishes suspension or delisting, so the only admissible state is UNKNOWN with no effective date and no terminal proceeds.",
+      "records": [],
+      "query": {"security_key": "AAA", "on": "2024-06-04"},
+      "decision_at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+      "expected": {"state": "unknown", "reason": "no_authoritative_evidence", "terminal_proceeds": null, "effective_from": null}
+    },
+    {
+      "id": "future_suspension_is_invisible",
+      "working": "The suspension notice becomes available only on 2024-06-05. A decision frozen at the 2024-06-04 close still resolves LISTED; the future record cannot leak backwards.",
+      "records": [
+        {
+          "security_key": "AAA",
+          "state": "listed",
+          "effective_from": "2024-01-01",
+          "available_at": {"session": "2023-12-20", "phase": 60, "sequence": 0},
+          "citation": "https://example.invalid/synthetic/listing-aaa",
+          "terminal_proceeds": null,
+          "effective_to": null,
+          "proceeds_verified": false
+        },
+        {
+          "security_key": "AAA",
+          "state": "suspended",
+          "effective_from": "2024-06-01",
+          "available_at": {"session": "2024-06-05", "phase": 10, "sequence": 0},
+          "citation": "https://example.invalid/synthetic/suspension-aaa-future",
+          "terminal_proceeds": null,
+          "effective_to": null,
+          "proceeds_verified": false
+        }
+      ],
+      "query": {"security_key": "AAA", "on": "2024-06-04"},
+      "decision_at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+      "expected": {"state": "listed", "reason": "listed", "terminal_proceeds": null, "effective_from": "2024-01-01"}
+    },
+    {
+      "id": "query_before_listing_is_unknown",
+      "working": "The listing record is available but its effective_from is 2024-06-01. A 2024-05-31 query is not covered, so the state is UNKNOWN rather than backdated LISTED.",
+      "records": [
+        {
+          "security_key": "AAA",
+          "state": "listed",
+          "effective_from": "2024-06-01",
+          "available_at": {"session": "2024-05-31", "phase": 60, "sequence": 0},
+          "citation": "https://example.invalid/synthetic/listing-aaa",
+          "terminal_proceeds": null,
+          "effective_to": null,
+          "proceeds_verified": false
+        }
+      ],
+      "query": {"security_key": "AAA", "on": "2024-05-31"},
+      "decision_at": {"session": "2024-06-01", "phase": 10, "sequence": 0},
+      "expected": {"state": "unknown", "reason": "no_authoritative_evidence", "terminal_proceeds": null, "effective_from": null}
+    },
+    {
+      "id": "expired_interval_is_unknown",
+      "working": "The only listing record's effective interval ends 2024-05-31. It does not cover 2024-06-04, so the state after the interval is UNKNOWN; the previous state is not carried forward.",
+      "records": [
+        {
+          "security_key": "AAA",
+          "state": "listed",
+          "effective_from": "2024-01-01",
+          "available_at": {"session": "2023-12-20", "phase": 60, "sequence": 0},
+          "citation": "https://example.invalid/synthetic/listing-aaa",
+          "terminal_proceeds": null,
+          "effective_to": "2024-05-31",
+          "proceeds_verified": false
+        }
+      ],
+      "query": {"security_key": "AAA", "on": "2024-06-04"},
+      "decision_at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+      "expected": {"state": "unknown", "reason": "no_authoritative_evidence", "terminal_proceeds": null, "effective_from": null}
+    }
+  ]
+}

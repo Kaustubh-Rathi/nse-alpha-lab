@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "derivation": "Hand-derived from Stage-1 decision D-01/D-02. A declared max_order_notional is a hard principal limit floored to paise at use: applied = Decimal(str(declared)).quantize(Decimal('0.01'), ROUND_FLOOR). Never round a hard limit upward with ROUND_HALF_UP. Principal is the paise-quantized product of reference price and integer quantity; zero fees and slippage are used throughout this file, so total payable equals principal. On a buy the largest quantity q <= desired must satisfy principal <= min(as-of capacity budget, applied cap) and principal + fees <= cash budget; here cash and capacity are ample, reducing it to principal <= applied cap. On a sell the same principal-only bound applies, with no cash or fee constraint. Buy and sell are symmetric. Values are arithmetic literals, not production outputs.",
+  "cases": [
+    {
+      "id": "declared_cap_table",
+      "working": "Price 10.00, desired 100 shares, cash 1,000,000 and capacity 1,000,000. 99.994 and 99.996 both floor to 99.99, so only 9 shares (90.00 principal) fit; 10 shares would be 100.00 and exceed the limit. 19.999 floors to 19.99, so 1 share (10.00) fits and 2 shares (20.00) do not. 100.00 is inclusive: exactly 10 shares at 100.00. 99.99 also admits 9 shares. A declared 0.00 floors to 0.00 and admits no quantity; the buy reports unaffordable_or_partial_disallowed and the sell reports notional_limit_or_partial_disallowed, both with zero fees.",
+      "reference_price": "10",
+      "desired_quantity": 100,
+      "cash_budget": "1000000",
+      "capacity_notional": "1000000",
+      "rows": [
+        {"declared_cap": "99.994", "applied_principal_cap": "99.99", "quantity": 9, "notional": "90.00"},
+        {"declared_cap": "99.996", "applied_principal_cap": "99.99", "quantity": 9, "notional": "90.00"},
+        {"declared_cap": "19.999", "applied_principal_cap": "19.99", "quantity": 1, "notional": "10.00"},
+        {"declared_cap": "100.00", "applied_principal_cap": "100.00", "quantity": 10, "notional": "100.00"},
+        {"declared_cap": "99.99", "applied_principal_cap": "99.99", "quantity": 9, "notional": "90.00"},
+        {"declared_cap": "0.00", "applied_principal_cap": "0.00", "quantity": 0, "notional": "0.00"}
+      ]
+    },
+    {
+      "id": "paise_boundary_floor",
+      "working": "Price 10.00, desired 100 shares. 99.991 and 99.999 both floor to 99.99, so 9 shares (90.00) fit and 10 shares (100.00) exceed the limit. 100.001 floors to 100.00 because only the fractional paise beyond the declared limit is discarded, so 10 shares fit exactly. 19.9999 floors to 19.99, so 1 share (10.00) fits and 2 shares (20.00) do not. No case may use money() half-up: 99.999 would otherwise round to 100.00 and wrongly admit 10 shares.",
+      "reference_price": "10",
+      "desired_quantity": 100,
+      "cash_budget": "1000000",
+      "capacity_notional": "1000000",
+      "rows": [
+        {"declared_cap": "99.991", "applied_principal_cap": "99.99", "quantity": 9, "notional": "90.00"},
+        {"declared_cap": "99.999", "applied_principal_cap": "99.99", "quantity": 9, "notional": "90.00"},
+        {"declared_cap": "100.001", "applied_principal_cap": "100.00", "quantity": 10, "notional": "100.00"},
+        {"declared_cap": "19.9999", "applied_principal_cap": "19.99", "quantity": 1, "notional": "10.00"}
+      ]
+    },
+    {
+      "id": "large_quantity_exactness",
+      "working": "Price 0.01, desired 20,000,000 shares. A declared 100,000 floors to 100,000.00; 0.01 * 10,000,000 = 100,000.00 exactly, while 10,000,001 shares would be 100,000.01, so the fill is 10,000,000 shares. A declared 99,999.999 floors to 99,999.99; 0.01 * 9,999,999 = 99,999.99 exactly, while 10,000,000 shares would be 100,000.00, so the fill is 9,999,999 shares. Decimal arithmetic is exact; no binary float or exponent notation is permitted.",
+      "reference_price": "0.01",
+      "desired_quantity": 20000000,
+      "cash_budget": "100000000",
+      "capacity_notional": "100000000",
+      "rows": [
+        {"declared_cap": "100000", "applied_principal_cap": "100000.00", "quantity": 10000000, "notional": "100000.00"},
+        {"declared_cap": "99999.999", "applied_principal_cap": "99999.99", "quantity": 9999999, "notional": "99999.99"}
+      ]
+    }
+  ]
+}

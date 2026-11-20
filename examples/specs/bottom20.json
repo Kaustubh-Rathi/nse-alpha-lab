@@ -1,0 +1,15 @@
+{
+  "name": "bottom20",
+  "description": "Reversal counterfactual: monthly bottom-20 by trailing return. This tests the sign of the momentum effect; it is not a recommendation.",
+  "universe": "nifty500",
+  "benchmark": "nifty500",
+  "top_n": 20,
+  "direction": "bottom",
+  "lookback_sessions": 63,
+  "cadence": "monthly",
+  "stop_loss_pct": null,
+  "take_profit_pct": null,
+  "cost_model": "full_charges",
+  "start": "2013-01-31",
+  "end": "2026-09-30"
+}

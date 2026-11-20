@@ -1,0 +1,15 @@
+{
+  "name": "primary",
+  "description": "Flagship: monthly top-20 momentum on the point-in-time NIFTY 500, full charges, no exit overlay.",
+  "universe": "nifty500",
+  "benchmark": "nifty500",
+  "top_n": 20,
+  "direction": "top",
+  "lookback_sessions": 63,
+  "cadence": "monthly",
+  "stop_loss_pct": null,
+  "take_profit_pct": null,
+  "cost_model": "full_charges",
+  "start": "2013-01-31",
+  "end": "2026-09-30"
+}

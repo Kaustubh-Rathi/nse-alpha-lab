@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "fixture": "synthetic_fixture",
+  "status": "hand_derived_independent_oracle_only_not_production_P0_pass",
+  "derivation": "Sell-side arithmetic is hand-computed from the stated schedule. Slippage is adverse: sell price = reference*(1-100/10000). For 100 that is 99. Fee is the sell STT at 10 bps on the gross notional rounded half-up to paise: 396.00 -> 0.40, 990.00 -> 0.99, 148.50 -> 0.15. Net = gross - fee once per order. The zero-friction subtotal is filled quantity * reference price before slippage and fees. Unknown price or capacity yields null, never zero.",
+  "schedule": {
+    "schedule_id": "synthetic-sell-costs-2024",
+    "effective_from": "2024-01-01",
+    "effective_to": null,
+    "available_at": {"session": "2024-01-01", "phase": 10, "sequence": 0},
+    "citation": "https://example.invalid/synthetic/sell-cost-schedule",
+    "costs": {
+      "brokerage_bps": 0,
+      "brokerage_cap_per_order": 0,
+      "stt_bps_buy": 0,
+      "stt_bps_sell": 10,
+      "stamp_bps_buy": 0,
+      "exchange_bps": 0,
+      "gst_on_brokerage_pct": 0,
+      "schedule_basis": "flat_research_assumption",
+      "monetary_rounding": "paise_half_up_per_component"
+    },
+    "adverse_slippage_bps": "100"
+  },
+  "cases": [
+    {
+      "id": "capacity_limits_quantity",
+      "working": "Order 10 AAA at reference 100, capacity 4 shares. 1% adverse slippage gives 99.00 per share; gross 4*99=396.00; STT 10 bps = 0.396 rounded half-up to 0.40; net 395.60. Zero-friction subtotal is 4*100=400.00.",
+      "orders": [{"order_id": "o1", "security_key": "AAA", "quantity": 10}],
+      "prices": [{"security_key": "AAA", "price": "100", "on": "2024-06-04", "available_at": {"session": "2024-06-04", "phase": 60, "sequence": 0}, "citation": "synthetic close"}],
+      "capacities": [{"security_key": "AAA", "as_of": "2024-06-04", "available_at": {"session": "2024-06-04", "phase": 60, "sequence": 0}, "capacity_shares": 4, "citation": "synthetic capacity evidence"}],
+      "decision_at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+      "expected": {
+        "status": "estimated",
+        "gross_proceeds": "396.00",
+        "fees": "0.40",
+        "net_proceeds": "395.60",
+        "zero_friction_subtotal": "400.00",
+        "unknown_reasons": [],
+        "lines": [{"order_id": "o1", "requested_quantity": 10, "filled_quantity": 4, "reference_price": "100", "slipped_price": "99.00", "gross": "396.00", "fees": "0.40", "net": "395.60", "status": "capacity_limited"}]
+      }
+    },
+    {
+      "id": "two_orders_pay_fees_once_each",
+      "working": "Two independent orders. AAA 10 at 100 with 1% slippage: gross 990.00, STT 0.99, net 989.01. BBB 5 at 200 with 1% slippage: gross 990.00, STT 0.99, net 989.01. Totals: gross 1980.00, fees 1.98, net 1978.02. Fees are deducted per order exactly once, not again in the aggregate.",
+      "orders": [
+        {"order_id": "o1", "security_key": "AAA", "quantity": 10},
+        {"order_id": "o2", "security_key": "BBB", "quantity": 5}
+      ],
+      "prices": [
+        {"security_key": "AAA", "price": "100", "on": "2024-06-04", "available_at": {"session": "2024-06-04", "phase": 60, "sequence": 0}, "citation": "synthetic close AAA"},
+        {"security_key": "BBB", "price": "200", "on": "2024-06-04", "available_at": {"session": "2024-06-04", "phase": 60, "sequence": 0}, "citation": "synthetic close BBB"}
+      ],
+      "capacities": [
+        {"security_key": "AAA", "as_of": "2024-06-04", "available_at": {"session": "2024-06-04", "phase": 60, "sequence": 0}, "capacity_shares": 10, "citation": "synthetic capacity AAA"},
+        {"security_key": "BBB", "as_of": "2024-06-04", "available_at": {"session": "2024-06-04", "phase": 60, "sequence": 0}, "capacity_shares": 5, "citation": "synthetic capacity BBB"}
+      ],
+      "decision_at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+      "expected": {
+        "status": "estimated",
+        "gross_proceeds": "1980.00",
+        "fees": "1.98",
+        "net_proceeds": "1978.02",
+        "zero_friction_subtotal": "2000.00",
+        "unknown_reasons": [],
+        "lines": [
+          {"order_id": "o1", "requested_quantity": 10, "filled_quantity": 10, "reference_price": "100", "slipped_price": "99.00", "gross": "990.00", "fees": "0.99", "net": "989.01", "status": "filled"},
+          {"order_id": "o2", "requested_quantity": 5, "filled_quantity": 5, "reference_price": "200", "slipped_price": "198.00", "gross": "990.00", "fees": "0.99", "net": "989.01", "status": "filled"}
+        ]
+      }
+    },
+    {
+      "id": "unpriced_asset_makes_total_unknown",
+      "working": "AAA 3 at 50 with 1% slippage: slipped 49.50, gross 148.50, STT 0.15, net 148.35. BBB has no price record, so its line and every aggregate involving it are null; the known AAA subtotal is not published as a total. Zero-friction subtotal is null because the BBB component is unknown.",
+      "orders": [
+        {"order_id": "o1", "security_key": "AAA", "quantity": 3},
+        {"order_id": "o2", "security_key": "BBB", "quantity": 2}
+      ],
+      "prices": [
+        {"security_key": "AAA", "price": "50", "on": "2024-06-04", "available_at": {"session": "2024-06-04", "phase": 60, "sequence": 0}, "citation": "synthetic close AAA"}
+      ],
+      "capacities": [
+        {"security_key": "AAA", "as_of": "2024-06-04", "available_at": {"session": "2024-06-04", "phase": 60, "sequence": 0}, "capacity_shares": 3, "citation": "synthetic capacity AAA"},
+        {"security_key": "BBB", "as_of": "2024-06-04", "available_at": {"session": "2024-06-04", "phase": 60, "sequence": 0}, "capacity_shares": 2, "citation": "synthetic capacity BBB"}
+      ],
+      "decision_at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+      "expected": {
+        "status": "unknown",
+        "gross_proceeds": null,
+        "fees": null,
+        "net_proceeds": null,
+        "zero_friction_subtotal": null,
+        "unknown_reasons": ["BBB:unpriced"],
+        "lines": [
+          {"order_id": "o1", "requested_quantity": 3, "filled_quantity": 3, "reference_price": "50", "slipped_price": "49.50", "gross": "148.50", "fees": "0.15", "net": "148.35", "status": "filled"},
+          {"order_id": "o2", "requested_quantity": 2, "filled_quantity": 0, "reference_price": null, "slipped_price": null, "gross": null, "fees": null, "net": null, "status": "unpriced"}
+        ]
+      }
+    },
+    {
+      "id": "zero_capacity_is_a_known_zero_fill",
+      "working": "Capacity is explicitly zero shares. The order cannot fill: gross, fees and net are all exactly 0.00. This is a known zero outcome, not an unknown unpriced value.",
+      "orders": [{"order_id": "o1", "security_key": "AAA", "quantity": 10}],
+      "prices": [{"security_key": "AAA", "price": "100", "on": "2024-06-04", "available_at": {"session": "2024-06-04", "phase": 60, "sequence": 0}, "citation": "synthetic close AAA"}],
+      "capacities": [{"security_key": "AAA", "as_of": "2024-06-04", "available_at": {"session": "2024-06-04", "phase": 60, "sequence": 0}, "capacity_shares": 0, "citation": "synthetic zero capacity evidence"}],
+      "decision_at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+      "expected": {
+        "status": "estimated",
+        "gross_proceeds": "0.00",
+        "fees": "0.00",
+        "net_proceeds": "0.00",
+        "zero_friction_subtotal": "0.00",
+        "unknown_reasons": [],
+        "lines": [{"order_id": "o1", "requested_quantity": 10, "filled_quantity": 0, "reference_price": "100", "slipped_price": null, "gross": "0.00", "fees": "0.00", "net": "0.00", "status": "zero_capacity"}]
+      }
+    },
+    {
+      "id": "unknown_capacity_blocks_fill",
+      "working": "The capacity record explicitly reports unknown capacity (null). No fill may be assumed even though the price is known, so the line and aggregate net are null.",
+      "orders": [{"order_id": "o1", "security_key": "AAA", "quantity": 10}],
+      "prices": [{"security_key": "AAA", "price": "100", "on": "2024-06-04", "available_at": {"session": "2024-06-04", "phase": 60, "sequence": 0}, "citation": "synthetic close AAA"}],
+      "capacities": [{"security_key": "AAA", "as_of": "2024-06-04", "available_at": {"session": "2024-06-04", "phase": 60, "sequence": 0}, "capacity_shares": null, "citation": "synthetic unknown capacity evidence"}],
+      "decision_at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+      "expected": {
+        "status": "unknown",
+        "gross_proceeds": null,
+        "fees": null,
+        "net_proceeds": null,
+        "zero_friction_subtotal": null,
+        "unknown_reasons": ["AAA:capacity_unknown"],
+        "lines": [{"order_id": "o1", "requested_quantity": 10, "filled_quantity": 0, "reference_price": "100", "slipped_price": null, "gross": null, "fees": null, "net": null, "status": "capacity_unknown"}]
+      }
+    }
+  ]
+}

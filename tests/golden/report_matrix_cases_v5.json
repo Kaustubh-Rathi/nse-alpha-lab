@@ -1,0 +1,292 @@
+{
+  "schema_version": 2,
+  "description": "Stage-1 completion reissue of the hand-authored report oracle. Promotions cite R5 clause evidence (FEES/COVERAGE/CAPACITY/ADV), sizing clause evidence, and production SessionRunner perturbation/prefix proofs. SIGNALS remains PARTIAL because caller attestations do not enforce behavioral provenance distinction. Externally blocked rows are not promoted; no value is derived from report output.",
+  "contract_count": 29,
+  "expected_counts": {
+    "CONTRACT_PASS": 14,
+    "CONTRACT_PARTIAL": 12,
+    "CONTRACT_FAIL": 0,
+    "CONTRACT_NOT_IMPLEMENTED": 0,
+    "CONTRACT_BLOCKED": 3
+  },
+  "expected_component_status_counts": {
+    "COMPONENT_VERIFIED": 28,
+    "COMPONENT_IMPLEMENTED": 1,
+    "NO_COMPONENT": 0
+  },
+  "contracts": [
+    {
+      "contract_id": "P0-CASH",
+      "report_id": "cash",
+      "title": "Settled cash, reservations and prefunded liabilities",
+      "contract_status": "CONTRACT_PASS",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_core", "test_accounting_valuation"]
+    },
+    {
+      "contract_id": "P0-FEES",
+      "report_id": "fees",
+      "title": "Fee- and slippage-inclusive integer buy/sell limits",
+      "contract_status": "CONTRACT_PASS",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_fees", "test_accounting_core"]
+    },
+    {
+      "contract_id": "P0-ACTIONS",
+      "report_id": "actions",
+      "title": "Verified-scope raw-share split/bonus and quarantine",
+      "contract_status": "CONTRACT_PASS",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_actions"]
+    },
+    {
+      "contract_id": "P0-DIVIDEND",
+      "report_id": "dividend",
+      "title": "Normal entitlement, accrual and explicit delayed settlement",
+      "contract_status": "CONTRACT_PARTIAL",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_dividends", "test_accounting_dividend_decisions", "test_accounting_replay"]
+    },
+    {
+      "contract_id": "P0-COVERAGE",
+      "report_id": "coverage",
+      "title": "Operational and reference-notional diagnostics",
+      "contract_status": "CONTRACT_PASS",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_valuation"]
+    },
+    {
+      "contract_id": "P0-NAV-GAP",
+      "report_id": "nav_gap",
+      "title": "Missing/stale/unknown assets block NAV",
+      "contract_status": "CONTRACT_PASS",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_valuation", "test_accounting_dividends"]
+    },
+    {
+      "contract_id": "P0-CONSIDERATION",
+      "report_id": "consideration",
+      "title": "Explicit verified proceeds, no immediate cash",
+      "contract_status": "CONTRACT_PASS",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_core", "test_accounting_reconciliation"]
+    },
+    {
+      "contract_id": "P0-CONSERVATION",
+      "report_id": "conservation",
+      "title": "Independent typed-event replay and conservation",
+      "contract_status": "CONTRACT_PARTIAL",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_reconciliation", "test_accounting_replay", "test_accounting_external_flows", "test_accounting_observed_session_external_flows"]
+    },
+    {
+      "contract_id": "P0-SIZING",
+      "report_id": "sizing_budget",
+      "title": "Rank-sequential fee-inclusive supplied budgets",
+      "contract_status": "CONTRACT_PASS",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_sizing", "test_accounting_signal_sizing_clause_contract"]
+    },
+    {
+      "contract_id": "P0-CAPACITY",
+      "report_id": "capacity_fill",
+      "title": "Integer fills against supplied as-of capacity",
+      "contract_status": "CONTRACT_PASS",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_fees", "test_accounting_core", "test_accounting_adv"]
+    },
+    {
+      "contract_id": "P0-SLOT-CAP",
+      "report_id": "slot_cap",
+      "title": "Unresolved holdings retain slots, no forced disposal",
+      "contract_status": "CONTRACT_PASS",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_core"]
+    },
+    {
+      "contract_id": "P0-LIQUIDATION",
+      "report_id": "liquidation",
+      "title": "Named zero-friction subtotals/scenarios",
+      "contract_status": "CONTRACT_PASS",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_valuation"]
+    },
+    {
+      "contract_id": "P0-VERIFY",
+      "report_id": "verification",
+      "title": "Artifact guards, inventory checker and fail-closed report authorization",
+      "contract_status": "CONTRACT_PASS",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_verification_isolation", "test_inventory_verification"]
+    },
+    {
+      "contract_id": "P0-GATE",
+      "report_id": "gate",
+      "title": "Mandatory-report completeness blocks migration",
+      "contract_status": "CONTRACT_PARTIAL",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_report"]
+    },
+    {
+      "contract_id": "P0-CONTINUITY",
+      "report_id": "continuity",
+      "title": "Documentary security boundaries and evidence chains",
+      "contract_status": "CONTRACT_BLOCKED",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_continuity", "test_accounting_evidence_contract", "test_accounting_batch5_integration"]
+    },
+    {
+      "contract_id": "P0-IDENTITY",
+      "report_id": "identity",
+      "title": "Causal identity migration with stable IDs",
+      "contract_status": "CONTRACT_PARTIAL",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_identity", "test_accounting_batch5_integration"]
+    },
+    {
+      "contract_id": "P0-SCOPED-ADJ",
+      "report_id": "scoped_adjustment",
+      "title": "Horizon-admissible historical factors over proven scope",
+      "contract_status": "CONTRACT_PARTIAL",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_scoped_adjustment", "test_accounting_evidence_contract", "test_accounting_batch5_integration"]
+    },
+    {
+      "contract_id": "P0-UNIVERSE",
+      "report_id": "universe",
+      "title": "Spec-driven membership boundaries",
+      "contract_status": "CONTRACT_BLOCKED",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_universe"]
+    },
+    {
+      "contract_id": "P0-SIGNALS",
+      "report_id": "signals",
+      "title": "Exact causal momentum ranks with spec-sized fixtures",
+      "contract_status": "CONTRACT_PARTIAL",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_signals", "test_accounting_signal_sizing_clause_contract"]
+    },
+    {
+      "contract_id": "P0-LIFECYCLE",
+      "report_id": "lifecycle",
+      "title": "Causal absence, series and termination lifecycle",
+      "contract_status": "CONTRACT_PARTIAL",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_lifecycle", "test_accounting_evidence_contract", "test_accounting_batch5_integration"]
+    },
+    {
+      "contract_id": "P0-POLICIES",
+      "report_id": "policies",
+      "title": "Full P1/P2/P3 sizing and slot-policy comparisons",
+      "contract_status": "CONTRACT_PARTIAL",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_sizing", "test_specs", "test_accounting_signal_sizing_clause_contract"]
+    },
+    {
+      "contract_id": "P0-ADV",
+      "report_id": "adv",
+      "title": "Trailing as-of ADV and observation validation",
+      "contract_status": "CONTRACT_PASS",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_adv"]
+    },
+    {
+      "contract_id": "P0-EXECUTION",
+      "report_id": "execution_causality",
+      "title": "Complete frozen-order perturbation contracts",
+      "contract_status": "CONTRACT_PASS",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_execution_fixtures", "test_accounting_observed_session", "test_stage1_production_runner_contracts"]
+    },
+    {
+      "contract_id": "P0-BOUNDARY",
+      "report_id": "boundary",
+      "title": "Causal month-end calendar and signal scheduling",
+      "contract_status": "CONTRACT_BLOCKED",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_boundary"]
+    },
+    {
+      "contract_id": "P0-EVIDENCE",
+      "report_id": "evidence",
+      "title": "Session-based counts, censoring and ticker-reuse isolation",
+      "contract_status": "CONTRACT_PARTIAL",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_evidence", "test_accounting_evidence_contract"]
+    },
+    {
+      "contract_id": "P0-PREFIX",
+      "report_id": "prefix",
+      "title": "Future-input appends and economic/provenance prefix",
+      "contract_status": "CONTRACT_PASS",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_observed_session", "test_stage1_production_runner_contracts"]
+    },
+    {
+      "contract_id": "P0-SCENARIO",
+      "report_id": "scenario_isolation",
+      "title": "Separate scenario portfolios and statistics isolation",
+      "contract_status": "CONTRACT_PARTIAL",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_scenarios", "test_accounting_batch5_integration"]
+    },
+    {
+      "contract_id": "P0-FULL-LIQUIDATION",
+      "report_id": "full_liquidation",
+      "title": "Friction-aware per-order liquidation",
+      "contract_status": "CONTRACT_PARTIAL",
+      "component_status": "COMPONENT_VERIFIED",
+      "component_modules": ["test_accounting_liquidation", "test_accounting_batch5_integration"]
+    },
+    {
+      "contract_id": "P0-E2E",
+      "report_id": "e2e",
+      "title": "End-to-end causal integration",
+      "contract_status": "CONTRACT_PARTIAL",
+      "component_status": "COMPONENT_IMPLEMENTED",
+      "component_modules": ["test_stage1_production_runner_contracts", "test_stage1_production_e2e", "test_accounting_observed_session_phase30", "test_accounting_target_composition"]
+    }
+  ],
+  "component_cannot_authorize_contract": {
+    "contract_id": "P0-LIFECYCLE",
+    "contract_status": "CONTRACT_PARTIAL",
+    "component_status": "COMPONENT_VERIFIED",
+    "component_result": "PASS",
+    "authorizes": false,
+    "reason": "A passing component suite never changes a declared contract status."
+  },
+  "mandatory_skip_blocks_authorization": {
+    "contract_id": "P0-CASH",
+    "contract_status": "CONTRACT_PASS",
+    "mandatory_skip": "tests.test_accounting_core::test_required_cash_clause",
+    "authorizes": false
+  },
+  "skip_scenarios": [
+    {
+      "name": "no_skips",
+      "cases": [
+        {"id": "tests.test_accounting_core::test_ok", "status": "PASS"},
+        {"id": "tests.test_accounting_sizing::test_ok", "status": "PASS"}
+      ],
+      "expected": {"tests": 2, "pass": 2, "fail": 0, "skip": 0, "mandatory_skips": 0, "optional_skips": 0}
+    },
+    {
+      "name": "one_mandatory_skip",
+      "cases": [
+        {"id": "tests.test_accounting_core::test_ok", "status": "PASS"},
+        {"id": "tests.test_accounting_core::test_required_cash_clause", "status": "SKIP"}
+      ],
+      "expected": {"tests": 2, "pass": 1, "fail": 0, "skip": 1, "mandatory_skips": 1, "optional_skips": 0}
+    },
+    {
+      "name": "one_optional_pdf_skip",
+      "cases": [
+        {"id": "tests.test_ratios::RatioParseTests::test_pdf_roundtrip_if_pypdf_available", "status": "SKIP"},
+        {"id": "tests.test_accounting_core::test_ok", "status": "PASS"}
+      ],
+      "expected": {"tests": 2, "pass": 1, "fail": 0, "skip": 1, "mandatory_skips": 0, "optional_skips": 1},
+      "optional_dependency": "pdf"
+    }
+  ]
+}

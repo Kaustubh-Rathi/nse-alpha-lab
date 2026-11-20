@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "derivation": "Hand-derived from Stage-1 decisions D-06 (window-scoped momentum observations), D-07 (single-value momentum dispatch) and D-08 (structured basis provenance). No value in this file was produced by running the implementation. A momentum window is the closed set of observed sessions [anchor, as_of] with len == lookback_sessions + 1. The anchor is exactly lookback_sessions sessions before as_of; no earlier, later, nearest or first-available session may be substituted. valid_observations is the count of valid bars inside that window. history_valid_observations is the count over all observed sessions up to as_of and is diagnostic only: it may never admit a key whose window count is short. min_observations=None means every session in the window must be valid (lookback_sessions + 1). Momentum is the exact Fraction as_of_price / anchor_price - 1. The source digests below were computed independently (SHA-256 over UTF-8 of the normalized source: LF line endings, no trailing whitespace, one trailing newline), then transcribed; they are not implementation output. Basis provenance identity is (kind, basis_id, name, version, source_digest, parameters); a behaviorally different callable must produce a different record.",
+  "sessions": {
+    "ten_observed": ["2024-06-03", "2024-06-04", "2024-06-05", "2024-06-06", "2024-06-07",
+                     "2024-06-10", "2024-06-11", "2024-06-12", "2024-06-13", "2024-06-14"],
+    "working": "Ten observed sessions on consecutive weekdays. For lookback_sessions=3 and as_of at index 9, the anchor is index 6 (2024-06-11) and the window is indices 6,7,8,9."
+  },
+  "window_cases": {
+    "window_short_of_minimum": {
+      "working": "Valid bars on indices 0..6 and 9; no bar on 7 and 8. Window [6..9] has 4 sessions and 2 valid bars (6 and 9). Full history valid = 7 (indices 0..6) + 1 (index 9) = 8. 2 < min_observations=3, so the key is unrankable. The window lies wholly inside the observed stream, so no censoring suffix is permitted.",
+      "lookback_sessions": 3,
+      "min_observations": 3,
+      "valid_indices": [0, 1, 2, 3, 4, 5, 6, 9],
+      "closes": {"0": "100", "1": "100", "2": "100", "3": "100", "4": "100", "5": "100",
+                 "6": "100", "7": "105", "9": "110"},
+      "anchor_index": 6,
+      "window_sessions": 4,
+      "window_valid_observations": 2,
+      "history_valid_observations": 8,
+      "ranked": false,
+      "momentum": null,
+      "reason": "insufficient_window_observations"
+    },
+    "exact_minimum_ranked": {
+      "working": "Valid bars on indices 0..7 and 9; index 8 has no bar. Window [6..9] has valid bars at 6,7,9 = 3, exactly min_observations=3, so the key ranks. Full history valid = 8 + 1 = 9, and the reported valid_observations must be the window count 3, not 9. Momentum uses anchor close 100 at index 6 and as_of close 110 at index 9: 110/100 - 1 = 11/10 - 1 = 1/10.",
+      "lookback_sessions": 3,
+      "min_observations": 3,
+      "valid_indices": [0, 1, 2, 3, 4, 5, 6, 7, 9],
+      "closes": {"0": "100", "1": "100", "2": "100", "3": "100", "4": "100", "5": "100",
+                 "6": "100", "7": "105", "9": "110"},
+      "anchor_index": 6,
+      "window_sessions": 4,
+      "window_valid_observations": 3,
+      "history_valid_observations": 9,
+      "ranked": true,
+      "momentum": "1/10",
+      "anchor_price": "100",
+      "as_of_price": "110",
+      "reason": null
+    },
+    "none_requires_full_window": {
+      "working": "Same stream as exact_minimum_ranked (valid at 0..7 and 9), but min_observations=None. None means the full lookback_sessions+1 = 4-session window must be valid. Only 3 are valid, so the key is unrankable with insufficient_window_observations. None is not zero and not any positive count.",
+      "lookback_sessions": 3,
+      "min_observations": null,
+      "valid_indices": [0, 1, 2, 3, 4, 5, 6, 7, 9],
+      "closes": {"0": "100", "1": "100", "2": "100", "3": "100", "4": "100", "5": "100",
+                 "6": "100", "7": "105", "9": "110"},
+      "anchor_index": 6,
+      "window_sessions": 4,
+      "window_valid_observations": 3,
+      "history_valid_observations": 9,
+      "ranked": false,
+      "momentum": null,
+      "reason": "insufficient_window_observations"
+    },
+    "none_with_full_window": {
+      "working": "All ten sessions have valid bars. With min_observations=None the 4-session window [6..9] is complete (4 of 4), so the key ranks with momentum 110/100 - 1 = 1/10. Full history valid = 10.",
+      "lookback_sessions": 3,
+      "min_observations": null,
+      "valid_indices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      "closes": {"0": "100", "1": "100", "2": "100", "3": "100", "4": "100", "5": "100",
+                 "6": "100", "7": "105", "8": "106", "9": "110"},
+      "anchor_index": 6,
+      "window_sessions": 4,
+      "window_valid_observations": 4,
+      "history_valid_observations": 10,
+      "ranked": true,
+      "momentum": "1/10",
+      "anchor_price": "100",
+      "as_of_price": "110",
+      "reason": null
+    }
+  },
+  "anchor_cases": {
+    "invalid_anchor_not_substituted": {
+      "working": "104 generated observed sessions starting 2024-01-01, lookback_sessions=3, as_of index 103, so the exact anchor is index 100. Indices 0..99 are valid, index 100 is an explicit invalid bar, indices 101 and 102 are absent, index 103 is valid. The anchor bar exists but is invalid, so the key is unrankable as no_valid_bar_on_anchor. Index 99 (valid) and index 103 (valid) must not be substituted for the anchor. Window [100..103] has 1 valid bar (103); history valid = 100 (indices 0..99) + 1 (index 103) = 101. Adding 10 valid pre-window sessions shifts every index by 10 but leaves the verdict, anchor identity and reason unchanged.",
+      "session_start": "2024-01-01",
+      "session_count": 104,
+      "as_of_index": 103,
+      "lookback_sessions": 3,
+      "min_observations": 3,
+      "valid_indices": "0..99 and 103",
+      "invalid_indices": [100],
+      "absent_indices": [101, 102],
+      "anchor_index": 100,
+      "window_sessions": 4,
+      "window_valid_observations": 1,
+      "history_valid_observations": 101,
+      "ranked": false,
+      "momentum": null,
+      "reason": "no_valid_bar_on_anchor",
+      "extension": {
+        "working": "The same 104-session stream prefixed with 10 valid sessions: 114 sessions total, as_of index 113, anchor index 110 (the same original session at offset 100), verdict unchanged.",
+        "extra_leading_sessions": 10,
+        "session_count": 114,
+        "as_of_index": 113,
+        "anchor_index": 110,
+        "reason": "no_valid_bar_on_anchor"
+      }
+    },
+    "no_anchor_session": {
+      "working": "Three observed sessions with lookback_sessions=3 and as_of index 2. There is no session 3 positions back, so there is no anchor: anchor must be None and the reason is no_anchor_session. The available prefix is 3 sessions.",
+      "session_start": "2024-01-01",
+      "session_count": 3,
+      "as_of_index": 2,
+      "lookback_sessions": 3,
+      "min_observations": 3,
+      "anchor_index": null,
+      "window_sessions": 3,
+      "ranked": false,
+      "momentum": null,
+      "reason": "no_anchor_session"
+    }
+  },
+  "schema": {
+    "working": "MomentumSpec schema 2 makes min_observations window-scoped and defaults price_basis to close. A schema-1 payload is not silently reinterpreted: it raises unsupported_spec_schema with an explicit migration message naming schema 1 and schema 2. min_observations must satisfy 1 <= min_observations <= lookback_sessions + 1; with lookback_sessions=3 that is 1..4, so 0 and 5 are schema errors.",
+    "current_version": 2,
+    "v1_payload": "{\"schema_version\":1,\"type\":\"MomentumSpec\",\"values\":{\"anchor_rule\":\"exact_session_offset\",\"lookback_sessions\":63,\"min_observations\":130,\"observation_rule\":\"valid_observations\",\"price_basis\":\"adj_close\",\"tie_break\":\"key_asc\"}}",
+    "migration_error_token": "unsupported_spec_schema",
+    "migration_message_contains": ["schema 1", "schema 2", "migrat"],
+    "range_case": {"lookback_sessions": 3, "valid": [1, 2, 3, 4], "invalid": [0, 5, 6]}
+  },
+  "dispatch": {
+    "working": "Each field admits exactly one value and is consulted by rank_momentum through an explicit dispatch table. A second value raises ValueError naming the field at schema construction; an injected second value also raises when the ranker consults the field, proving the field is not inert. The tie vector TIE_A/TIE_Z has identical momentum 1/8; key_asc must yield TIE_A then TIE_Z regardless of input iterable order.",
+    "anchor_rule": {"accepted": "exact_session_offset", "second": "last_observed", "field": "anchor_rule"},
+    "observation_rule": {"accepted": "valid_observations", "second": "all_bars", "field": "observation_rule"},
+    "tie_break": {"accepted": "key_asc", "second": "momentum_desc", "field": "tie_break"},
+    "tie_vector": {
+      "keys": ["TIE_Z", "TIE_A"],
+      "anchor_prices": {"TIE_A": "160", "TIE_Z": "80"},
+      "as_of_prices": {"TIE_A": "180", "TIE_Z": "90"},
+      "momentum": "1/8",
+      "order": ["TIE_A", "TIE_Z"]
+    }
+  },
+  "basis_identity": {
+    "builtin_close": {
+      "working": "No callable: the built-in close basis keeps the spec label, has no basis_id, and publishes no source digest or parameters.",
+      "kind": "builtin",
+      "basis_id": null,
+      "name": "close",
+      "version": null,
+      "source_digest": null,
+      "parameters": {},
+      "price_basis": "close",
+      "reproducible": false
+    },
+    "callable_custom_basis": {
+      "working": "The module-level stateless callable custom_basis returns Decimal 101 for every session. It is invoked with basis_id=custom_basis_v1, version 1.0 and empty parameters. Its normalized source is exactly the two lines below plus one trailing newline, so its SHA-256 is transcribed from an independent hash calculation. The callable must publish custom:custom_basis_v1, never the spec string close and never the literal custom.",
+      "source": "def custom_basis(key, session, as_of):\n    return D(\"101\")\n",
+      "source_digest": "b1231587f0bbc4c315997a6d513e0498c4e06367b499d5e0e44bf2c75f832a89",
+      "kind": "callable",
+      "basis_id": "custom_basis_v1",
+      "name": "test_accounting_signals.custom_basis",
+      "version": "1.0",
+      "parameters": {},
+      "price_basis": "custom:custom_basis_v1",
+      "reproducible": true
+    },
+    "derived_named_function": {
+      "working": "A module-level stateless named function has a stable module + qualname identity and needs no caller-supplied basis_id. Its deterministic identity is test_accounting_signals.module_level_basis, used as both name and derived basis_id. Its normalized source is the two lines below plus one trailing newline; the digest was computed independently.",
+      "source": "def module_level_basis(key, session, as_of):\n    return D(\"11\") if session == as_of else D(\"10\")\n",
+      "source_digest": "c8e35db0413afa4b74d97e6ad9214189c6fe90c3fbaab494db787859874085e4",
+      "kind": "callable",
+      "basis_id": "test_accounting_signals.module_level_basis",
+      "name": "test_accounting_signals.module_level_basis",
+      "version": null,
+      "parameters": {},
+      "price_basis": "custom:test_accounting_signals.module_level_basis",
+      "reproducible": true
+    },
+    "same_name_different_modules": {
+      "working": "Two stateless callables both named basis, exposed as alpha.basis and beta.basis, with different source bodies (as_of prices 11 and 13, anchor price 10). Their source digests differ because the source differs. Explicit basis_ids alpha_v1 and beta_v1 give price_basis custom:alpha_v1 and custom:beta_v1. Momenta are 11/10 - 1 = 1/10 and 13/10 - 1 = 3/10.",
+      "rows": [
+        {"module": "alpha", "basis_id": "alpha_v1", "name": "alpha.basis", "price_basis": "custom:alpha_v1",
+         "anchor_price": "10", "as_of_price": "11", "momentum": "1/10"},
+        {"module": "beta", "basis_id": "beta_v1", "name": "beta.basis", "price_basis": "custom:beta_v1",
+         "anchor_price": "10", "as_of_price": "13", "momentum": "3/10"}
+      ],
+      "digests_differ": true
+    },
+    "parameterized_closures": {
+      "working": "Two closures from one factory share a name and normalized source digest because the body is identical; they capture scale 2 and 3. They are distinguished by basis_id and by immutable parameters. With anchor price 10, scale 2 returns 20 at as_of: 20/10 - 1 = 1. Scale 3 returns 30: 30/10 - 1 = 2. Identical provenance for these two would be a failure.",
+      "shared_name": true,
+      "shared_source_digest": true,
+      "rows": [
+        {"basis_id": "scale_2", "parameters": {"scale": 2}, "price_basis": "custom:scale_2",
+         "anchor_price": "10", "as_of_price": "20", "momentum": "1"},
+        {"basis_id": "scale_3", "parameters": {"scale": 3}, "price_basis": "custom:scale_3",
+         "anchor_price": "10", "as_of_price": "30", "momentum": "2"}
+      ]
+    },
+    "unstable_identity": {
+      "working": "A lambda, a closure, a functools.partial and a stateful callable object have no stable, behavior-unique identity, so each must supply basis_id or raise basis_id_required before any bar is read. With an explicit basis_id each record carries it. Source is unavailable for the partial and the stateful object, so their source_digest is None and reproducible is false; no reproducibility is claimed. Source is available for the lambda and the closure because each is a Python code object defined in the test module, so their digests are present and reproducible is true. A module-level stateless function is the accepted control without an ID.",
+      "rows": [
+        {"kind": "lambda", "basis_id": "lambda_v1", "source_digest_is_none": false, "reproducible": true},
+        {"kind": "closure", "basis_id": "closure_v1", "source_digest_is_none": false, "reproducible": true},
+        {"kind": "partial", "basis_id": "partial_v1", "source_digest_is_none": true, "reproducible": false},
+        {"kind": "stateful", "basis_id": "stateful_v1", "source_digest_is_none": true, "reproducible": false}
+      ]
+    }
+  }
+}

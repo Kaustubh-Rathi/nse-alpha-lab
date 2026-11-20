@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "fixture": "synthetic_fixture",
+  "status": "hand_derived_regression_case",
+  "derivation": "Three fixed observed sessions are used. At the decision session, A has momentum 15/10-1=50%, B has 12/10-1=20%, and C has 14/20-1=-30%, so their ranks are A, B, C. The two-session ADV windows have traded-value means 200, 100 and 100; at 50% sizing participation the as-of capacities are 100, 50 and 50. Explicit requests are 80, 100 and 100, so the capacity-clipped desires are 80, 50 and 50. Starting with 120 settled cash and zero costs, the canonical sizing routine buys whole shares at each decision close. Rank A therefore receives 5 shares for 75; rank B receives 3 shares for 36; rank C cannot buy one share from the remaining 9. Integer shares use floor(allocation/decision close): floor(75/15)=5 and floor(36/12)=3. X is explicitly excluded by its BE series; Q is eligible but has no valid exact anchor-session bar; U has partial two-session ADV and unknown capacity; V has fully observed known-zero ADV. Neither unknown nor zero capacity creates a target.",
+  "case": {
+    "rank_order": ["A", "B", "C"],
+    "targets": [
+      {"key": "A", "allocated_notional": "75.00", "requested_quantity": 5, "capacity_notional": "100.00", "decision_close": "15"},
+      {"key": "B", "allocated_notional": "36.00", "requested_quantity": 3, "capacity_notional": "50.00", "decision_close": "12"}
+    ],
+    "remaining_cash": "9.00"
+  }
+}

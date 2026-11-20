@@ -1,0 +1,38 @@
+[
+  {
+    "id": "mixed",
+    "working": "Current priced asset100*100=10000, unresolved stale reference100*50=5000. One of two positions priced; reference coverage10000/15000=2/3, never a NAV.",
+    "cash": "15000", "receivables": "0", "liabilities": "0",
+    "positions": [
+      {"shares": "100", "mark": "100", "reference": null},
+      {"shares": "100", "mark": null, "reference": "50"}
+    ],
+    "expected": {"position_completeness": "1/2", "reference_coverage": "2/3", "nav": null, "liquidation_known_zero_friction": "25000"}
+  },
+  {
+    "id": "larger_unknown_reference",
+    "working": "Only the stale reference changes tenfold: economic reference coverage falls to10000/60000=1/6; operational completeness stays1/2; no defensible value has been lost by this reference-only change.",
+    "cash": "15000", "receivables": "0", "liabilities": "0",
+    "positions": [
+      {"shares": "100", "mark": "100", "reference": null},
+      {"shares": "100", "mark": null, "reference": "500"}
+    ],
+    "expected": {"position_completeness": "1/2", "reference_coverage": "1/6", "nav": null, "liquidation_known_zero_friction": "25000"}
+  },
+  {
+    "id": "no_reference",
+    "working": "No reference for the unresolved position means unknown aggregate reference denominator, not zero notional. NAV and economic coverage are both unavailable; position completeness is still1/2.",
+    "cash": "15000", "receivables": "0", "liabilities": "0",
+    "positions": [
+      {"shares": "100", "mark": "100", "reference": null},
+      {"shares": "100", "mark": null, "reference": null}
+    ],
+    "expected": {"position_completeness": "1/2", "reference_coverage": null, "nav": null, "liquidation_known_zero_friction": "25000"}
+  },
+  {
+    "id": "empty",
+    "working": "No positions is operationally complete. Reference-notional coverage has a zero denominator and is undefined; cash-only NAV exists.",
+    "cash": "1000", "receivables": "0", "liabilities": "0", "positions": [],
+    "expected": {"position_completeness": "1", "reference_coverage": null, "nav": "1000", "liquidation_known_zero_friction": "1000"}
+  }
+]

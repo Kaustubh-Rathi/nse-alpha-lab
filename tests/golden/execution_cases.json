@@ -1,0 +1,17 @@
+{
+  "status": "independent_oracle_only_not_production_P0_pass",
+  "buy_cost": {
+    "working": "1000*100.05=100050 notional. Per-component paise rounding: brokerage20.01 + GST3.60 + STT100.05 + stamp15.01 + exchange3.00 =141.67. Purchase payable100191.67. Unrounded plan example141.6708 is not the configured rounded fee.",
+    "shares": "1000", "reference": "100", "slippage_bps": "5",
+    "expected": {"fill": "100.05", "total_payable": "100191.67", "fees": {"brokerage": "20.01", "gst": "3.60", "stt": "100.05", "stamp": "15.01", "exchange": "3.00"}}
+  },
+  "liquidity": [
+    {"adv": "1000000", "participation_rate": "0.05", "target": "10000", "cash": "100000", "open": "100", "expected_shares": 100, "working": "50000 capacity exceeds the10000 target: full100 shares."},
+    {"adv": "1000000", "participation_rate": "0.05", "target": "1000000", "cash": "10000000", "open": "100", "expected_shares": 500, "working": "50000 capacity binds a1000000 target: 500 shares or5% of the request, not full participation."},
+    {"adv": "1000000000", "participation_rate": "0.05", "target": "1000000", "cash": "10000000", "open": "100", "expected_shares": 10000, "working": "A nonbinding cap allows full10000 shares. Scale alone need not change normalized fills."}
+  ],
+  "sizing": [
+    {"policy": "P2", "cash": "1000000", "desired_in_rank_order": ["500000", "500000"], "expected_filled": ["500000", "500000"], "expected_cash": "0", "working": "Zero fees, unit price1 and enough slots: both requested notionals affordable."},
+    {"policy": "P3", "cash": "1000000", "desired_in_rank_order": ["550000", "550000"], "expected_filled": ["550000", "450000"], "expected_cash": "0", "working": "A1100000 screen-based sizing base does not supply1100000 cash. Rank-sequential zero-fee allocation clips the second purchase."}
+  ]
+}

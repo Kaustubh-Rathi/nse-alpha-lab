@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "fixture": "synthetic_fixture",
+  "status": "hand_derived_independent_oracle_only_not_production_P0_pass",
+  "derivation": "All scenario arithmetic is hand-computed. Reference cash is 1000 and the reference holds 10 AAA shares. Buy 5 at 80 with a 5 fee: cash 1000-400-5=595, shares 15, mark 90 gives 1350 marked and 1945 NAV. Sell 4 at 90 with a 2 fee: cash 1000+360-2=1358, shares 6, mark 95 gives 570 marked and 1928 NAV. Scenario values are hypothetical and never authoritative.",
+  "reference": {
+    "cash": "1000",
+    "holdings": [["AAA", 10]],
+    "claims": []
+  },
+  "cases": [
+    {
+      "id": "reference_snapshot_unchanged_by_buy",
+      "working": "Starting from reference cash 1000 and 10 shares, buy 5 shares at 80 with an explicit 5 fee. Scenario cash is 1000-400-5=595 and scenario holdings are 15 shares. At a 90 mark, marked value is 1350 and NAV is 595+1350=1945. The reference snapshot must remain cash 1000 and 10 shares.",
+      "operations": [{"kind": "buy", "key": "AAA", "quantity": 5, "price": "80", "fee": "5"}],
+      "marks": [{"security_key": "AAA", "price": "90", "on": "2024-06-04", "available_at": {"session": "2024-06-04", "phase": 60, "sequence": 0}}],
+      "at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+      "liquidation_value": null,
+      "expected": {"cash": "595", "holdings": {"AAA": 15}, "marked_value": "1350", "nav": "1945", "reason": "complete_marks", "hypothetical": true, "reference_unchanged": true}
+    },
+    {
+      "id": "reference_snapshot_unchanged_by_sell",
+      "working": "Starting from reference cash 1000 and 10 shares, sell 4 shares at 90 with an explicit 2 fee. Scenario cash is 1000+360-2=1358 and holdings are 6 shares. At a 95 mark, marked value is 570 and NAV is 1928. The reference snapshot must remain cash 1000 and 10 shares.",
+      "operations": [{"kind": "sell", "key": "AAA", "quantity": 4, "price": "90", "fee": "2"}],
+      "marks": [{"security_key": "AAA", "price": "95", "on": "2024-06-04", "available_at": {"session": "2024-06-04", "phase": 60, "sequence": 0}}],
+      "at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+      "liquidation_value": null,
+      "expected": {"cash": "1358", "holdings": {"AAA": 6}, "marked_value": "570", "nav": "1928", "reason": "complete_marks", "hypothetical": true, "reference_unchanged": true}
+    },
+    {
+      "id": "unpriced_scenario_holding_blocks_nav",
+      "working": "No mark is supplied for AAA. Scenario cash remains 1000 and the holding remains 10 shares, but NAV is unknown rather than 1000 or any zero-recovery assumption. Missing price is explicitly reported.",
+      "operations": [],
+      "marks": [],
+      "at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+      "liquidation_value": null,
+      "expected": {"cash": "1000", "holdings": {"AAA": 10}, "marked_value": "0", "nav": null, "reason": "unpriced_holdings", "hypothetical": true, "reference_unchanged": true}
+    },
+    {
+      "id": "liquidation_value_stays_separate_from_scenario_nav",
+      "working": "Reference 10 shares at a 90 mark are worth 900 plus 1000 cash = 1900 scenario NAV. A caller-supplied hypothetical liquidation estimate of 850 remains a separate field; the difference 1900-850=1050 is not disguised as authoritative wealth.",
+      "operations": [],
+      "marks": [{"security_key": "AAA", "price": "90", "on": "2024-06-04", "available_at": {"session": "2024-06-04", "phase": 60, "sequence": 0}}],
+      "at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+      "liquidation_value": "850",
+      "expected": {"cash": "1000", "holdings": {"AAA": 10}, "marked_value": "900", "nav": "1900", "reason": "complete_marks", "liquidation_value": "850", "nav_to_liquidation": "1050", "hypothetical": true, "reference_unchanged": true}
+    }
+  ]
+}

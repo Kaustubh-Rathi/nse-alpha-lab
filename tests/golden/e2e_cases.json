@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "fixture": "synthetic_fixture",
+  "status": "hand_derived_independent_oracle_only_not_production_P0_pass",
+  "derivation": "One synthetic two-symbol universe (AAA and BBB) is observed across seven EQ sessions with coherent OHLC. Zero fees and zero adverse slippage make the fill price equal the opening reference price (this fixture deliberately sets each fill session's open equal to the prior close, so the fill price coincides with the sizing close); every fee is zero. At the 2024-06-05 close a P2 decision ranks AAA above BBB (momentum 104/100-1=+0.04=1/25 versus 196/200-1=-0.02=-1/50 over a 2-session lookback), sizes desired notionals 60000/30000 at closes 104/196 (floor to 576 and 153 shares), and reserves 576 and 153 shares at supplied capacity 100000. Fills occur at the 2024-06-06 open (104/196) and settle at the 2024-06-07 pre-open: cash 100000-59904-29988=10108. Positions are 576 AAA and 153 BBB. NAV at 2024-06-07 close (AAA 106, BBB 192) is 10108+61056+29376=100540; at 2024-06-10 close (AAA 108, BBB 190) it is 10108+62208+29070=101386. All values are hand-computed; no production output is copied into this golden.",
+  "initial_cash": "100000",
+  "series": ["EQ"],
+  "bind_first_isin": false,
+  "max_positions": 2,
+  "capacity_notional": "100000",
+  "momentum": {"lookback_sessions": 2, "min_observations": 2, "price_basis": "close"},
+  "universe": {"series": ["EQ"], "isin_policy": "any", "min_price": 0.0, "min_volume": 0,
+               "min_adv_traded_value": 0.0, "min_avg_trades": 0.0,
+               "min_adv_window_sessions": 2, "min_listed_sessions": 1,
+               "label": "synthetic research universe (Batch 6 e2e)"},
+  "execution": {"trade_settlement_lag_sessions": 1, "adverse_slippage_bps_buy": 0,
+                "adverse_slippage_bps_sell": 0, "sizing_participation_rate": 0.05,
+                "max_participation_rate": 0.05, "adv_window_sessions": 20},
+  "symbols": [
+    {"symbol": "AAA", "isin": "INE000000001"},
+    {"symbol": "BBB", "isin": "INE000000002"}
+  ],
+  "sessions": [
+    {"date": "2024-06-03", "bars": [
+      {"symbol": "AAA", "open": "100", "high": "101", "low": "99", "close": "100", "volume": 10000, "traded_value": "2000000", "trades": 1000},
+      {"symbol": "BBB", "open": "200", "high": "201", "low": "199", "close": "200", "volume": 10000, "traded_value": "2000000", "trades": 1000}]},
+    {"date": "2024-06-04", "bars": [
+      {"symbol": "AAA", "open": "101", "high": "103", "low": "101", "close": "102", "volume": 10000, "traded_value": "2000000", "trades": 1000},
+      {"symbol": "BBB", "open": "199", "high": "200", "low": "197", "close": "198", "volume": 10000, "traded_value": "2000000", "trades": 1000}]},
+    {"date": "2024-06-05", "decision": {"desired_notionals": ["60000", "30000"]}, "bars": [
+      {"symbol": "AAA", "open": "103", "high": "105", "low": "103", "close": "104", "volume": 10000, "traded_value": "2000000", "trades": 1000},
+      {"symbol": "BBB", "open": "197", "high": "198", "low": "195", "close": "196", "volume": 10000, "traded_value": "2000000", "trades": 1000}]},
+    {"date": "2024-06-06", "fills": true, "bars": [
+      {"symbol": "AAA", "open": "104", "high": "107", "low": "103", "close": "106", "volume": 10000, "traded_value": "2000000", "trades": 1000},
+      {"symbol": "BBB", "open": "196", "high": "197", "low": "193", "close": "194", "volume": 10000, "traded_value": "2000000", "trades": 1000}]},
+    {"date": "2024-06-07", "settle": true, "valuation": true, "bars": [
+      {"symbol": "AAA", "open": "105", "high": "107", "low": "105", "close": "106", "volume": 10000, "traded_value": "2000000", "trades": 1000},
+      {"symbol": "BBB", "open": "193", "high": "194", "low": "191", "close": "192", "volume": 10000, "traded_value": "2000000", "trades": 1000}]},
+    {"date": "2024-06-10", "valuation": true, "bars": [
+      {"symbol": "AAA", "open": "107", "high": "109", "low": "107", "close": "108", "volume": 10000, "traded_value": "2000000", "trades": 1000},
+      {"symbol": "BBB", "open": "191", "high": "192", "low": "189", "close": "190", "volume": 10000, "traded_value": "2000000", "trades": 1000}]},
+    {"date": "2024-06-11", "bars": [
+      {"symbol": "AAA", "open": "109", "high": "111", "low": "109", "close": "110", "volume": 10000, "traded_value": "2000000", "trades": 1000},
+      {"symbol": "BBB", "open": "189", "high": "190", "low": "187", "close": "188", "volume": 10000, "traded_value": "2000000", "trades": 1000}]}
+  ],
+  "expected": {
+    "rank_order": ["AAA|INE000000001|2024-06-03", "BBB|INE000000002|2024-06-03"],
+    "momentum": {"AAA|INE000000001|2024-06-03": "1/25", "BBB|INE000000002|2024-06-03": "-1/50"},
+    "filled_notionals": ["59904", "29988"],
+    "remaining_cash_after_sizing": "10108",
+    "final_cash": "10108",
+    "positions": [
+      {"key": "AAA|INE000000001|2024-06-03", "shares": 576, "delivered_shares": 576},
+      {"key": "BBB|INE000000002|2024-06-03", "shares": 153, "delivered_shares": 153}
+    ],
+    "nav": {"2024-06-07": "100540", "2024-06-10": "101386"},
+    "reconciliation_ok": true
+  }
+}

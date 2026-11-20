@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "fixture": "synthetic_fixture",
+  "status": "hand_derived_independent_oracle_only_not_production_P0_pass",
+  "derivation": "Raw prices are immutable synthetic observations. Each factor is an exact rational applied only inside its security scope and proven date window. Expected adjusted values are the raw price multiplied by the selected factor: 100*(1/2)=50, 102*(1/2)=51, 98*(1/4)=24.5, 102*(1/10)=10.2. Availability gates were applied by hand from the stated decision event time.",
+  "raw_series": {
+    "security_key": "AAA|INE000000001|2019-01-01",
+    "prices": [
+      {"on": "2024-06-03", "price": "100"},
+      {"on": "2024-06-04", "price": "102"},
+      {"on": "2024-06-05", "price": "98"}
+    ]
+  },
+  "cases": [
+    {
+      "id": "point_in_time_excludes_future_split",
+      "working": "The 2:1 split document is available only at the 2024-06-05 pre-open. A decision frozen at the 2024-06-04 close sees raw 100/102/98. The later decision sees 50/51 for the affected 2024-06-01..2024-06-04 window and 98 unchanged on 2024-06-05, because the factor scope ends before the effective date's post-action prices.",
+      "factors": [
+        {
+          "security_key": "AAA|INE000000001|2019-01-01",
+          "action_id": "split",
+          "effective_date": "2024-06-05",
+          "available_at": {"session": "2024-06-05", "phase": 10, "sequence": 0},
+          "factor": "1/2",
+          "scope_from": "2024-06-01",
+          "scope_to": "2024-06-04",
+          "version": 1,
+          "citation": "https://example.invalid/synthetic/split-006",
+          "raw_series_sha256": null
+        }
+      ],
+      "queries": [
+        {
+          "mode": "point_in_time",
+          "decision_at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+          "expected": {
+            "points": [["2024-06-03", "100"], ["2024-06-04", "102"], ["2024-06-05", "98"]],
+            "applied": []
+          }
+        },
+        {
+          "mode": "point_in_time",
+          "decision_at": {"session": "2024-06-05", "phase": 10, "sequence": 0},
+          "expected": {
+            "points": [["2024-06-03", "50"], ["2024-06-04", "51"], ["2024-06-05", "98"]],
+            "applied": [["split", 1]]
+          }
+        }
+      ]
+    },
+    {
+      "id": "factor_is_limited_to_proven_scope",
+      "working": "A 10:1 adjustment is proved only for the single session 2024-06-04. 102/10 = 10.2 exactly; 2024-06-03 and 2024-06-05 keep raw 100 and 98. The split's effective_date lies inside its declared scope.",
+      "factors": [
+        {
+          "security_key": "AAA|INE000000001|2019-01-01",
+          "action_id": "scoped",
+          "effective_date": "2024-06-04",
+          "available_at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+          "factor": "1/10",
+          "scope_from": "2024-06-04",
+          "scope_to": "2024-06-04",
+          "version": 1,
+          "citation": "https://example.invalid/synthetic/scoped-007",
+          "raw_series_sha256": null
+        }
+      ],
+      "queries": [
+        {
+          "mode": "point_in_time",
+          "decision_at": {"session": "2024-06-05", "phase": 60, "sequence": 0},
+          "expected": {
+            "points": [["2024-06-03", "100"], ["2024-06-04", "51/5"], ["2024-06-05", "98"]],
+            "applied": [["scoped", 1]]
+          }
+        }
+      ]
+    },
+    {
+      "id": "later_version_supersedes_only_when_available",
+      "working": "Version 1 (1/2) is available on 2024-06-01 and version 2 (1/4) on 2024-06-05. A 2024-06-04 close decision must use version 1: 100/2=50, 102/2=51, 98/2=49. A 2024-06-05 close decision uses version 2: 100/4=25, 102/4=25.5, 98/4=24.5. Ex-post research may use version 2 over the same window.",
+      "factors": [
+        {
+          "security_key": "AAA|INE000000001|2019-01-01",
+          "action_id": "split",
+          "effective_date": "2024-06-05",
+          "available_at": {"session": "2024-06-01", "phase": 60, "sequence": 0},
+          "factor": "1/2",
+          "scope_from": "2024-06-01",
+          "scope_to": "2024-06-30",
+          "version": 1,
+          "citation": "https://example.invalid/synthetic/split-008-v1",
+          "raw_series_sha256": null
+        },
+        {
+          "security_key": "AAA|INE000000001|2019-01-01",
+          "action_id": "split",
+          "effective_date": "2024-06-05",
+          "available_at": {"session": "2024-06-05", "phase": 60, "sequence": 0},
+          "factor": "1/4",
+          "scope_from": "2024-06-01",
+          "scope_to": "2024-06-30",
+          "version": 2,
+          "citation": "https://example.invalid/synthetic/split-008-v2",
+          "raw_series_sha256": null
+        }
+      ],
+      "queries": [
+        {
+          "mode": "point_in_time",
+          "decision_at": {"session": "2024-06-04", "phase": 60, "sequence": 0},
+          "expected": {
+            "points": [["2024-06-03", "50"], ["2024-06-04", "51"], ["2024-06-05", "49"]],
+            "applied": [["split", 1]]
+          }
+        },
+        {
+          "mode": "point_in_time",
+          "decision_at": {"session": "2024-06-05", "phase": 60, "sequence": 0},
+          "expected": {
+            "points": [["2024-06-03", "25"], ["2024-06-04", "51/2"], ["2024-06-05", "49/2"]],
+            "applied": [["split", 2]]
+          }
+        },
+        {
+          "mode": "ex_post",
+          "decision_at": {"session": "2024-06-01", "phase": 60, "sequence": 0},
+          "expected": {
+            "points": [["2024-06-03", "25"], ["2024-06-04", "51/2"], ["2024-06-05", "49/2"]],
+            "applied": [["split", 2]]
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong_raw_digest_is_rejected",
+      "working": "The factor pins a raw-series digest that is not the supplied series. Fail closed rather than adjusting an unproven series; expected values are not produced.",
+      "factors": [
+        {
+          "security_key": "AAA|INE000000001|2019-01-01",
+          "action_id": "bad-digest",
+          "effective_date": "2024-06-05",
+          "available_at": {"session": "2024-06-01", "phase": 60, "sequence": 0},
+          "factor": "1/2",
+          "scope_from": "2024-06-01",
+          "scope_to": "2024-06-30",
+          "version": 1,
+          "citation": "https://example.invalid/synthetic/bad-digest",
+          "raw_series_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ],
+      "queries": [],
+      "expected_error": "factor_raw_series_digest_mismatch"
+    },
+    {
+      "id": "other_security_factor_is_rejected",
+      "working": "The factor belongs to a different security key. A security-scoped adjustment may not leak across identities; fail closed.",
+      "factors": [
+        {
+          "security_key": "BBB|INE000000002|2024-05-01",
+          "action_id": "foreign",
+          "effective_date": "2024-06-05",
+          "available_at": {"session": "2024-06-01", "phase": 60, "sequence": 0},
+          "factor": "1/2",
+          "scope_from": "2024-06-01",
+          "scope_to": "2024-06-30",
+          "version": 1,
+          "citation": "https://example.invalid/synthetic/foreign-009",
+          "raw_series_sha256": null
+        }
+      ],
+      "queries": [],
+      "expected_error": "factor_security_scope_mismatch"
+    }
+  ]
+}

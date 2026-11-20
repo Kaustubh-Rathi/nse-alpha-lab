@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "finding": "F5",
+  "authority": "docs/STAGE1_DECISION_REGISTER.md D-04 and D-05; docs/STAGE1_REGRESSION_TEST_PLAN.md T1.13-T1.16",
+  "derivation": [
+    "1,000 shares x 2.00 per share = 2,000.00 accrued dividend receivable; neither accrual nor confirmation credits cash.",
+    "At mark 20.00 the held book is 10,000.00 cash + 2,000.00 receivable + 20,000.00 marked shares = 32,000.00 NAV.",
+    "Confirmation at 2024-06-10 15:00 (CLOSE_VALUATION) is after that session's POST_OPEN_SETTLEMENT phase, so the causal due date is the next observed session index: index(2024-06-10) + 1 = 6, at POST_OPEN_SETTLEMENT.",
+    "Settlement pays exactly the accrued face value: 10,000.00 + 2,000.00 = 12,000.00 cash, receivable 0.00, marked 20,000.00, NAV 32,000.00.",
+    "A void is a write-off, not a payment: dividend_receivable -2,000.00 and dividend_writeoff +2,000.00, cash unchanged at 10,000.00 and NAV falls from 32,000.00 to 30,000.00.",
+    "Terminal close refuses a known-amount claim with no due date and names it; after settlement or a verified void no claim remains."
+  ],
+  "cases": [
+    {
+      "id": "hold_confirm_settle",
+      "cash": "10000.00",
+      "shares": 1000,
+      "per_share": "2.00",
+      "mark": "20.00",
+      "ex_date": "2024-06-03",
+      "confirm_session": "2024-06-10",
+      "settle_session": "2024-06-11",
+      "expected": {
+        "held_claim_amount": "2000.00",
+        "held_state": "accrued_held",
+        "held_reason": "hold_receivable",
+        "confirmed_state": "confirmed",
+        "confirmed_basis": "verified",
+        "confirmed_due_session_index": 6,
+        "cash_before_settlement": "10000.00",
+        "nav_before_settlement": "32000.00",
+        "cash_after_settlement": "12000.00",
+        "marked_after_settlement": "20000.00",
+        "receivables_after_settlement": "0.00",
+        "nav_after_settlement": "32000.00",
+        "open_claims_after_settlement": []
+      }
+    },
+    {
+      "id": "duplicate_confirm",
+      "expected": {
+        "error": "already_confirmed",
+        "payment_confirmed_events": 1,
+        "cash": "10000.00",
+        "receivable": "2000.00"
+      }
+    },
+    {
+      "id": "void_held",
+      "void_reason": "issuer withdrew the dividend",
+      "expected": {
+        "event_id": "void-dividend:d",
+        "event_kind": "dividend_voided",
+        "postings": [
+          ["dividend_receivable", "-2000.00"],
+          ["dividend_writeoff", "2000.00"]
+        ],
+        "cash": "10000.00",
+        "receivable": "0.00",
+        "nav_before": "32000.00",
+        "nav_after": "30000.00",
+        "open_claims_after": []
+      }
+    },
+    {
+      "id": "terminal_open",
+      "expected": {
+        "error": "open_unrealizable_claim",
+        "named_claims": ["dividend:d"],
+        "disclosure": ["dividend:d"],
+        "close_after_resolution": true
+      }
+    }
+  ]
+}

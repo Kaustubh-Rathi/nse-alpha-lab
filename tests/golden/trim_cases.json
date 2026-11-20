@@ -1,0 +1,60 @@
+{
+  "description": "Hand-derived rupee-target trim reductions with exact floor-share math.",
+  "cases": [
+    {
+      "name": "explicit_1000_target_at_30",
+      "shares": 100,
+      "delivered": 100,
+      "target": "1000.00",
+      "close": "30.00",
+      "capacity": "3000.00",
+      "target_shares": 33,
+      "quantity": 67,
+      "reason": "proposed_trim"
+    },
+    {
+      "name": "target_zero_full_reduction",
+      "shares": 100,
+      "delivered": 100,
+      "target": "0",
+      "close": "30.00",
+      "capacity": "3000.00",
+      "target_shares": 0,
+      "quantity": 100,
+      "reason": "proposed_trim"
+    },
+    {
+      "name": "target_above_current_value_no_op",
+      "shares": 100,
+      "delivered": 100,
+      "target": "4000.00",
+      "close": "30.00",
+      "capacity": null,
+      "target_shares": 133,
+      "quantity": 0,
+      "reason": "at_or_below_target"
+    },
+    {
+      "name": "delivered_shares_cap",
+      "shares": 100,
+      "delivered": 40,
+      "target": "1000.00",
+      "close": "30.00",
+      "capacity": "3000.00",
+      "target_shares": 33,
+      "quantity": 40,
+      "reason": "proposed_trim"
+    },
+    {
+      "name": "fractional_close_exact_floor",
+      "shares": 100,
+      "delivered": 100,
+      "target": "1000.00",
+      "close": "30.50",
+      "capacity": "3000.00",
+      "target_shares": 32,
+      "quantity": 68,
+      "reason": "proposed_trim"
+    }
+  ]
+}

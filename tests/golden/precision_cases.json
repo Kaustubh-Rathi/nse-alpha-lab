@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "derivation": "Hand-derived from D-03 and regression test plan T1.10-T1.12. Each holding is marked at the given price with cash 0 and no receivables or liabilities; a position entry with count>1 represents that many distinct one-share holdings. marked_value_priced is the exact sum of shares*price with no per-position quantization. NAV equals that exact sum. nav_reported is money(nav), quantized once at the reporting boundary with ROUND_HALF_UP to paise. per_position_rounding_total is the wrong alternative that quantizes each position before summation; it is recorded to prove the implementation does not use it.",
+  "cases": [
+    {
+      "id": "three_shares_33_335",
+      "working": "3*33.335 = 100.005 exactly. NAV=0+100.005=100.005. money(100.005) with ROUND_HALF_UP is 100.01; nav stays 100.005.",
+      "cash": "0",
+      "positions": [
+        {"shares": 3, "price": "33.335", "count": 1}
+      ],
+      "expected": {
+        "marked_value_priced": "100.005",
+        "nav": "100.005",
+        "nav_reported": "100.01",
+        "per_position_rounding_total": "100.01"
+      }
+    },
+    {
+      "id": "two_positions_half_paise",
+      "working": "Two positions of 1*0.005 each sum exactly to 0.010. NAV=0.010 and money(0.010)=0.01. Quantizing each position first gives 0.01+0.01=0.02, which must not appear as NAV or nav_reported.",
+      "cash": "0",
+      "positions": [
+        {"shares": 1, "price": "0.005", "count": 2}
+      ],
+      "expected": {
+        "marked_value_priced": "0.010",
+        "nav": "0.010",
+        "nav_reported": "0.01",
+        "per_position_rounding_total": "0.02"
+      }
+    },
+    {
+      "id": "two_hundred_positions_half_paise",
+      "working": "Two hundred positions of 1*0.005 each sum exactly to 1.000. NAV=1.000 and money(1.000)=1.00. Quantizing each position first would produce 2.00, which must not appear as NAV or nav_reported.",
+      "cash": "0",
+      "positions": [
+        {"shares": 1, "price": "0.005", "count": 200}
+      ],
+      "expected": {
+        "marked_value_priced": "1.000",
+        "nav": "1.000",
+        "nav_reported": "1.00",
+        "per_position_rounding_total": "2.00"
+      }
+    }
+  ]
+}

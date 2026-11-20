@@ -1,0 +1,96 @@
+# Build and publish the container image to GitHub Container Registry.
+#
+# Tag push (v1.2.3) -> ghcr.io/<owner>/<repo>:1.2.3, :1.2, :latest
+# Push to main     -> ghcr.io/<owner>/<repo>:edge (build only, no push)
+# Pull request     -> build only, no push (validates the Dockerfile)
+name: docker
+
+on:
+  push:
+    branches: ["main"]
+    tags: ["v*.*.*"]
+  pull_request:
+    paths:
+      - "docker/**"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".dockerignore"
+      - ".github/workflows/docker.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: docker-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build:
+    name: build-and-push
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        # Only on a tag push: pull requests from forks have no packages:write token.
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Derive image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=ref,event=branch
+            type=sha,format=short,prefix=sha-
+            type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/v') }}
+          labels: |
+            org.opencontainers.image.title=nse-alpha-lab
+            org.opencontainers.image.description=NSE rotation research lab (embedded DuckDB + parquet; no Postgres, no Redis)
+
+      - name: Build (and push on tags)
+        uses: docker/build-push-action@v6
+        with:
+          # Context is the repository root: the builder stage needs pyproject.toml
+          # and uv.lock. .dockerignore sits at the root for the same reason.
+          context: .
+          file: docker/Dockerfile
+          platforms: linux/amd64
+          push: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            PYTHON_BASE=python:3.14-slim
+
+      - name: Smoke-test the published image (no data, no network)
+        run: |
+          set -euo pipefail
+          IMAGE="$(echo "${{ steps.meta.outputs.tags }}" | head -n1)"
+          docker run --rm --network none "$IMAGE" \
+            python -c "import nse_pipeline, duckdb, pandas, pyarrow; print('imports ok')"
+          # The published `runtime` stage deliberately has no pytest: pytest lives
+          # in the separate `test` stage. Exercise the real CLI entry point
+          # instead of a Python import (src/nse_pipeline/__main__.py exists).
+          # Do not mask failures: a broken CLI must fail this job.
+          docker run --rm --network none "$IMAGE" python -m nse_pipeline --help > /dev/null

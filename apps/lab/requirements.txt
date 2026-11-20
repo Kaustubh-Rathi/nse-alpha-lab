@@ -1,0 +1,10 @@
+# UI extras for the NSE Alpha Lab Streamlit app.
+#
+# These are deliberately NOT in the repository's core dependency set: the engine
+# and its tests must stay installable without a browser UI. `pandas` and `numpy`
+# already come from the core `pyproject.toml` dependencies; streamlit is the only
+# genuinely new requirement.
+#
+#   pip install -r apps/lab/requirements.txt
+#   streamlit run apps/lab/app.py
+streamlit>=1.40

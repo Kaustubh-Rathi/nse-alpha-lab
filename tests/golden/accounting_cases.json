@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "status": "independent_oracle_only_not_production_P0_pass",
+  "currency": "INR",
+  "amount_convention": "Exact Decimal literals; fees already rounded to paise where present.",
+  "cases": [
+    {
+      "id": "prefunded_purchase",
+      "working": "1000 cash + 50 dividend receivable + 5*100 holdings = 1550 NAV. Reserve310: wealth unchanged. Buy 3 shares at100, fee10: asset +300, payable +310, NAV1540. Settle: cash -310 and payable -310, NAV unchanged.",
+      "initial": {"cash": "1000", "dividend_receivable": "50", "shares": "5", "mark": "100"},
+      "events": [
+        {"id": "reserve", "session": "2024-06-03", "phase": 70, "sequence": 1, "delta": {"order_reserve": "310"}, "expected": {"cash": "1000", "order_reserve": "310", "cash_available": "690", "nav": "1550"}},
+        {"id": "buy", "session": "2024-06-04", "phase": 40, "sequence": 1, "delta": {"order_reserve": "-310", "liability": "310", "payable_reserve": "310", "shares": "3"}, "expected": {"cash": "1000", "liability": "310", "payable_reserve": "310", "cash_available": "690", "shares": "8", "nav": "1540"}},
+        {"id": "settle_buy", "session": "2024-06-05", "phase": 20, "sequence": 1, "delta": {"cash": "-310", "liability": "-310", "payable_reserve": "-310"}, "expected": {"cash": "690", "liability": "0", "payable_reserve": "0", "cash_available": "690", "nav": "1540"}}
+      ]
+    },
+    {
+      "id": "unsettled_sale",
+      "working": "Sell 2 of 5 shares at100, fee1: remove asset200 and recognize net receivable199. NAV1500 ->1499; 1000 cash unchanged. On settlement cash1199 replaces the receivable; NAV1499.",
+      "initial": {"cash": "1000", "shares": "5", "mark": "100"},
+      "events": [
+        {"id": "sell", "session": "2024-06-04", "phase": 40, "sequence": 1, "delta": {"shares": "-2", "sale_receivable": "199"}, "expected": {"cash": "1000", "cash_available": "1000", "sale_receivable": "199", "nav": "1499"}},
+        {"id": "settle_sale", "session": "2024-06-05", "phase": 20, "sequence": 1, "delta": {"cash": "199", "sale_receivable": "-199"}, "expected": {"cash": "1199", "cash_available": "1199", "sale_receivable": "0", "nav": "1499"}}
+      ]
+    },
+    {
+      "id": "dividend_lag",
+      "working": "1000 eligible shares * D2 = 2000 receivable; ex-date buyers are excluded by the future entitlement component. Explicit research lag: 2 observed sessions; payment phase50, not phase40. Flat marks isolate settlement: NAV112000 at accrual and settlement; cash10000 until payment.",
+      "initial": {"cash": "10000", "shares": "1000", "mark": "100"},
+      "events": [
+        {"id": "accrue", "session": "2024-06-03", "phase": 30, "sequence": 1, "delta": {"dividend_receivable": "2000"}, "expected": {"cash": "10000", "cash_available": "10000", "dividend_receivable": "2000", "nav": "112000"}},
+        {"id": "lag_day_one", "session": "2024-06-04", "phase": 60, "sequence": 1, "delta": {}, "expected": {"cash": "10000", "cash_available": "10000", "nav": "112000"}},
+        {"id": "payment_session_open", "session": "2024-06-05", "phase": 40, "sequence": 1, "delta": {}, "expected": {"cash": "10000", "dividend_receivable": "2000", "cash_available": "10000", "nav": "112000"}},
+        {"id": "settle_dividend", "session": "2024-06-05", "phase": 50, "sequence": 1, "delta": {"cash": "2000", "dividend_receivable": "-2000"}, "expected": {"cash": "12000", "dividend_receivable": "0", "cash_available": "12000", "nav": "112000"}}
+      ]
+    },
+    {
+      "id": "split_up",
+      "working": "100 shares at100 -> 200 shares at50 mechanically; ex-date close51 adds a real 2% return. The same vector describes a 1:1 bonus.",
+      "initial": {"shares": "100", "mark": "100"},
+      "events": [
+        {"id": "split", "session": "2024-06-04", "phase": 30, "sequence": 1, "delta": {"shares": "100"}, "mark": "50", "expected": {"shares": "200", "cash": "0", "nav": "10000"}},
+        {"id": "market_move", "session": "2024-06-04", "phase": 60, "sequence": 1, "delta": {}, "mark": "51", "expected": {"shares": "200", "cash": "0", "nav": "10200"}}
+      ]
+    },
+    {
+      "id": "split_down",
+      "working": "The 2:1 split is not a return; 200 post-split shares at49 lose200 from pre-split100*100, or -2%.",
+      "initial": {"shares": "100", "mark": "100"},
+      "events": [
+        {"id": "split", "session": "2024-06-04", "phase": 30, "sequence": 1, "delta": {"shares": "100"}, "mark": "50", "expected": {"nav": "10000"}},
+        {"id": "market_move", "session": "2024-06-04", "phase": 60, "sequence": 1, "delta": {}, "mark": "49", "expected": {"shares": "200", "nav": "9800"}}
+      ]
+    },
+    {
+      "id": "absence_reopening",
+      "working": "No observation means unknown NAV, not zero or a carried value. The 100 shares remain open. At reopening80 the portfolio is cash200 + holdings8000 = 8200; no gap-bridged one-session return is specified.",
+      "initial": {"cash": "200", "shares": "100", "mark": "100"},
+      "events": [
+        {"id": "absent", "session": "2024-06-04", "phase": 60, "sequence": 1, "delta": {}, "mark": null, "expected": {"shares": "100", "cash": "200", "nav": null}},
+        {"id": "reopened", "session": "2024-06-05", "phase": 60, "sequence": 1, "delta": {}, "mark": "80", "expected": {"shares": "100", "cash": "200", "nav": "8200"}}
+      ]
+    },
+    {
+      "id": "reservation_cancel",
+      "working": "A cash reservation changes cash availability but never wealth; cancellation reverses only the reservation.",
+      "initial": {"cash": "1000"},
+      "events": [
+        {"id": "reserve", "session": "2024-06-03", "phase": 70, "sequence": 1, "delta": {"order_reserve": "300"}, "expected": {"cash_available": "700", "nav": "1000"}},
+        {"id": "cancel", "session": "2024-06-04", "phase": 30, "sequence": 1, "delta": {"order_reserve": "-300"}, "expected": {"cash_available": "1000", "nav": "1000"}}
+      ]
+    },
+    {
+      "id": "verified_proceeds",
+      "working": "A verified cash consideration12/share extinguishes100 shares and creates a1200 receivable, not an immediate cash exit. Paid later: cash200 ->1400, receivable1200 ->0; wealth1400 unchanged. Documentary applicability is an independent production gate.",
+      "initial": {"cash": "200", "shares": "100", "mark": null},
+      "events": [
+        {"id": "still_unresolved", "session": "2024-06-03", "phase": 60, "sequence": 1, "delta": {}, "expected": {"cash_available": "200", "nav": null}},
+        {"id": "verified_consideration", "session": "2024-06-04", "phase": 30, "sequence": 1, "delta": {"shares": "-100", "other_receivable": "1200"}, "expected": {"cash_available": "200", "other_receivable": "1200", "nav": "1400"}},
+        {"id": "settle_consideration", "session": "2024-06-05", "phase": 50, "sequence": 1, "delta": {"cash": "1200", "other_receivable": "-1200"}, "expected": {"cash_available": "1400", "other_receivable": "0", "nav": "1400"}}
+      ]
+    }
+  ]
+}

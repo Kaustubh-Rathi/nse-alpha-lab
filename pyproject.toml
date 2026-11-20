@@ -1,0 +1,41 @@
+[project]
+name = "nse-rotation-research"
+version = "0.1.0"
+description = "NSE Alpha Lab - momentum rotation research, backtesting engine and strategy lab"
+readme = "README.md"
+requires-python = ">=3.12,<3.15"
+dependencies = [
+    "duckdb>=1.4,<2",
+    "pandas>=2.2,<4",
+    "pyarrow>=18,<26",
+    "numpy>=2,<3",
+]
+
+[project.optional-dependencies]
+pdf = ["pypdf>=6,<7", "pymupdf>=1.26,<2"]
+lab = ["streamlit>=1.40,<2"]
+# Backends for `nse-alpha fetch --source kaggle|hf` (see cli.FETCH_SOURCES) and
+# the `uv sync --extra fetch` command the README documents. `six` is pinned
+# explicitly: kaggle 2.2.5 imports it at import time but does not declare it as
+# a dependency, so without it the Kaggle backend cannot be imported at all.
+fetch = ["huggingface-hub>=2,<3", "kaggle>=2,<3", "six>=1.17,<2"]
+
+[project.scripts]
+nse-alpha = "nse_pipeline.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=9,<10"]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
