@@ -1,10 +1,16 @@
 # Publishing the NSE Alpha Lab data pack
 
-**Status: built and verified locally — NOT uploaded.** This build environment has
-no Kaggle credentials (`~/.kaggle/kaggle.json` absent, `KAGGLE_USERNAME` /
-`KAGGLE_KEY` unset), no Hugging Face token (`HF_TOKEN` unset) and no Zenodo
-token. The release owner must run the commands below after supplying
-credentials.
+**Status: built, verified, and uploaded to a PRIVATE Hugging Face dataset — not yet
+public.** The upload was verified file-by-file against the manifest
+(`85/85` paths present, `0` missing, `0` unexpected). Making it public is one action,
+held for the release owner's approval; Kaggle and Zenodo credentials are absent in this
+environment, so those hosts are documented below but unused.
+
+| Host | Repository | State |
+|---|---|---|
+| Hugging Face | `manydream/nse-alpha-lab-data-pack` | uploaded, commit `9cf24b8`, **private** |
+| Kaggle | `kaustubh-rathi/nse-alpha-lab-data-pack` | staging prepared, not uploaded (no token) |
+| Zenodo | — | not uploaded (no token) |
 
 ## 1. The artifact
 
@@ -16,7 +22,7 @@ credentials.
 | Files in tree | 85 |
 | Manifest entries | 84 (`manifest.json` is not self-listed) |
 | Archive | `dist/nse-alpha-data-pack-1.0.0.tar.gz` |
-| Archive size | 148,619,160 bytes (148.6 MB / 141.7 MiB) |
+| Archive size | 148,619,194 bytes (148.6 MB / 141.7 MiB) |
 | **Archive SHA-256** | `bfc2140113b59480153841f641a37901120affb89374355da161f03eafe60708` |
 | Bars file | `processed/adjusted/adjusted_bars.parquet` — 143,298,565 bytes, SHA-256 `247dfd5f8ac0b5b736054caa0224ae3c21bd196a2b619c700cc1dd70bb360509` |
 | Bars coverage | 8,870,589 rows, 6,677 sessions, 5,810 stable keys, 2000-01-03 → 2026-11-06 |
@@ -229,8 +235,11 @@ Logs are under `dist/_verify/` (git-ignored):
 
 ## 7. Blockers before first public release (owner action)
 
-1. **Credentials.** No Kaggle/HF/Zenodo credentials exist in this environment;
-   nothing was uploaded. Commands above are ready.
+1. **Publish the pack (one action, held for approval).** The tree is already uploaded
+   and verified at `manydream/nse-alpha-lab-data-pack` (Hugging Face, **private**,
+   commit `9cf24b8`, 85/85 paths matched the manifest). Flipping it public is the only
+   remaining step; after that, point the README's "Getting data" section at the dataset
+   URL. Kaggle and Zenodo have no credentials here, so their commands stay unexecuted.
 2. ~~Contact email placeholder~~ — **fixed.** `DATA_LICENSES.md` §header and §5 now name the
    repository issue tracker as the monitored public contact channel. Substitute a dedicated
    address in both places if private correspondence is preferred.
