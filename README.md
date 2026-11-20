@@ -22,12 +22,7 @@ writing and testing your own specifications.
 The headline finding is a **null result**, and this README leads with it. The lab exists
 to make a strategy falsifiable, not to produce a flattering backtest.
 
-<!-- README walkthrough player. Once the compressed web encode is attached to the
-     pinned "Walkthrough video (media host)" issue, insert the bare user-attachment
-     URL on its own paragraph (blank lines around it, e.g.
-     https://github.com/user-attachments/assets/<uuid>). Do not wrap it in <video>,
-     an iframe, or Markdown link syntax, and do not delete the pinned issue: the
-     README depends on its attachment. -->
+https://github.com/user-attachments/assets/35c7a9ff-4242-44e8-9e06-3946a54e4d57
 
 <p align="center">
   <a href="https://github.com/Kaustubh-Rathi/nse-alpha-lab/raw/main/docs/assets/demo.mp4">
