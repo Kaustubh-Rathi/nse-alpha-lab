@@ -48,10 +48,12 @@ htmlcov/
 coverage.xml
 
 # ---------------------------------------------------------------------------
-# Build artefacts
+# Build artefacts. Root-anchored on purpose: a bare `build/` would also match
+# the real source package src/nse_pipeline/build/, silently dropping it from
+# every commit (caught by CI: ModuleNotFoundError: nse_pipeline.build).
 # ---------------------------------------------------------------------------
-build/
-dist/
+/build/
+/dist/
 *.egg-info/
 .eggs/
 src/*.egg-info/
