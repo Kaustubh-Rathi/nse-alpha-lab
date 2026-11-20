@@ -37,5 +37,10 @@ where = ["src"]
 package = false
 
 [tool.pytest.ini_options]
-pythonpath = ["src"]
+# "." (the repository root) is required, not cosmetic: several tests import
+# helpers as `from tests.<module> import ...`, which resolves as a namespace
+# package only when the root is importable. `python -m pytest` adds the cwd
+# implicitly, but the `pytest` console script (what CI runs via `uv run pytest`)
+# does not — without this the suite fails at collection on a clean checkout.
+pythonpath = ["src", "."]
 testpaths = ["tests"]
