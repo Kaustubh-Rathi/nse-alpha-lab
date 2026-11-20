@@ -76,6 +76,10 @@ jobs:
           file: docker/Dockerfile
           platforms: linux/amd64
           push: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') }}
+          # `--load` puts the result in the local daemon so the smoke test has an
+          # image to run. It cannot be combined with a registry push, so it is on
+          # exactly when we are not pushing (every PR and branch build).
+          load: ${{ !(github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')) }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
@@ -87,6 +91,11 @@ jobs:
         run: |
           set -euo pipefail
           IMAGE="$(echo "${{ steps.meta.outputs.tags }}" | head -n1)"
+          # Branch/PR builds are loaded into the daemon by `load:`; a tag build is
+          # pushed to GHCR instead, so pull it back to smoke-test the same bytes.
+          if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then
+            docker pull "$IMAGE"
+          fi
           docker run --rm --network none "$IMAGE" \
             python -c "import nse_pipeline, duckdb, pandas, pyarrow; print('imports ok')"
           # The published `runtime` stage deliberately has no pytest: pytest lives
